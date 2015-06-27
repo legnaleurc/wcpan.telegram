@@ -32,7 +32,7 @@ def encode_multipart_formdata(fields):
     return content_type, body
 
 
-def encode_multipart_formdata_2(fields):
+def generate_multipart_formdata(fields):
     BOUNDARY = '----------ThIs_Is_tHe_bouNdaRY_$'
 
     @gen.coroutine

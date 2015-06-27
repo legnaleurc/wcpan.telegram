@@ -241,7 +241,7 @@ class TeleZombie(object):
     @gen.coroutine
     def _post(self, api_method, args):
         url = self._get_api_url(api_method)
-        content_type, stream = util.encode_multipart_formdata_2(args.items())
+        content_type, stream = util.generate_multipart_formdata(args.items())
 
         link = httpclient.AsyncHTTPClient()
         request = httpclient.HTTPRequest(url, method='POST', headers={
