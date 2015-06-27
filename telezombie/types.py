@@ -1,4 +1,5 @@
 import json
+import os.path as op
 
 
 class User(object):
@@ -388,6 +389,7 @@ class Update(object):
 
     def __init__(self, data):
         self._data = data
+        self._message = Message(data['message'])
 
     def __str__(self):
         return json.dumps(self._data)
@@ -398,7 +400,7 @@ class Update(object):
 
     @property
     def message(self):
-        return self._data['message']
+        return self._message
 
 
 class UserProfilePhotos(object):
@@ -463,19 +465,16 @@ class ReplyKeyboardHide(object):
 
 class ForceReply(object):
 
-    def __init__(self, data):
+    def __init__(self, force_reply, selective=None):
+        data = {
+            'force_reply': force_reply,
+        }
+        if selective is not None:
+            data['selective'] = selective
         self._data = data
 
     def __str__(self):
         return json.dumps(self._data)
-
-    @property
-    def force_reply(self):
-        return self._data['force_reply']
-
-    @property
-    def selective(self):
-        return self._data.get('selective', None)
 
 
 class InputFile(object):
@@ -497,3 +496,15 @@ class InputFile(object):
     def content(self):
         with open(self._file_path, 'rb') as fin:
             return fin.read()
+
+    @property
+    def size(self):
+        return op.getsize(self._file_path)
+
+    def stream(self, chunk_size=524288):
+        with open(self._file_path, 'rb') as fin:
+            while True:
+                chunk = fin.read(chunk_size)
+                if not chunk:
+                    break
+                yield chunk

@@ -4,7 +4,7 @@ import json
 from tornado import gen, httpclient
 import yaml
 
-from . import settings, types
+from . import settings, types, util
 
 
 _API_TEMPLATE = 'https://api.telegram.org/bot{api_token}/{api_method}'
@@ -241,12 +241,12 @@ class TeleZombie(object):
     @gen.coroutine
     def _post(self, api_method, args):
         url = self._get_api_url(api_method)
-        content_type, body = util.encode_multipart_formdata(args.items())
+        content_type, stream = util.encode_multipart_formdata_2(args.items())
 
         link = httpclient.AsyncHTTPClient()
         request = httpclient.HTTPRequest(url, method='POST', headers={
             'Content-Type': content_type,
-        }, body=body)
+        }, body_producer=stream, request_timeout=0.0)
         response = yield link.fetch(request, raise_error=False)
 
         return self._parse_response(response)
