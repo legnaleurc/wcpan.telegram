@@ -1,7 +1,7 @@
 import urllib.parse as up
 import json
 
-from tornado import gen, httpclient
+from tornado import gen, httpclient, web
 import yaml
 
 from . import settings, types, util
@@ -247,7 +247,67 @@ class TeleZombie(object):
         return self._parse_response(response)
 
 
-class TeleLich(object):
+class _DispatcherMixin(object):
+
+    def __init__(self, *args, **kwargs):
+        super(_DispatchMixin, self).__init__()
+
+    @gen.coroutine
+    def on_text(self, message):
+        pass
+
+    @gen.coroutine
+    def on_audio(self, message):
+        pass
+
+    @gen.coroutine
+    def on_document(self, message):
+        pass
+
+    @gen.coroutine
+    def on_photo(self, message):
+        pass
+
+    @gen.coroutine
+    def on_sticker(self, message):
+        pass
+
+    @gen.coroutine
+    def on_video(self, message):
+        pass
+
+    @gen.coroutine
+    def on_contact(self, message):
+        pass
+
+    @gen.coroutine
+    def on_location(self, message):
+        pass
+
+    @gen.coroutine
+    def _receive_message(self, message):
+        if message.text is not None:
+            yield self.on_text(message)
+        elif message.audio is not None:
+            yield self.on_audio(message)
+        elif message.document is not None:
+            yield self.on_document(message)
+        elif message.photo is not None:
+            yield self.on_photo(message)
+        elif message.sticker is not None:
+            yield self.on_sticker(message)
+        elif message.video is not None:
+            yield self.on_video(message)
+        elif message.contact is not None:
+            yield self.on_contact(message)
+        elif message.location is not None:
+            yield self.on_location(message)
+        else:
+            # TODO log error
+            print('unknown', message)
+
+
+class TeleLich(_DispatchMixin):
 
     def __init__(self, api_token=None):
         self._api = TeleZombie(api_token)
@@ -334,52 +394,24 @@ class TeleLich(object):
         while True:
             updates = yield self.get_updates(timeout)
             for u in updates:
-                self._receive_message(u.message)
+                yield self._receive_message(u.message)
 
     @gen.coroutine
     def listen(self, hook_url):
         yield self._api.set_webhook(url=hook_url)
 
-    def on_text(self, message):
-        pass
+    @gen.coroutine
+    def close(self):
+        # remove webhook
+        yield self._api.set_webhook()
 
-    def on_audio(self, message):
-        pass
 
-    def on_document(self, message):
-        pass
+class TeleHookHandler(web.RequestHandler, _DispatcherMixin):
 
-    def on_photo(self, message):
-        pass
-
-    def on_sticker(self, message):
-        pass
-
-    def on_video(self, message):
-        pass
-
-    def on_contact(self, message):
-        pass
-
-    def on_location(self, message):
-        pass
-
-    def _receive_message(self, message):
-        if message.text is not None:
-            self.on_text(message)
-        elif message.audio is not None:
-            self.on_audio(message)
-        elif message.document is not None:
-            self.on_document(message)
-        elif message.photo is not None:
-            self.on_photo(message)
-        elif message.sticker is not None:
-            self.on_sticker(message)
-        elif message.video is not None:
-            self.on_video(message)
-        elif message.contact is not None:
-            self.on_contact(message)
-        elif message.location is not None:
-            self.on_location(message)
-        else:
-            print('unknown', message)
+    @gen.coroutine
+    def post(self):
+        data = self.request.body
+        data = data.decode('utf-8')
+        data = json.loads(data)
+        update = types.Update(data)
+        yield self._receive_message(update.message)
