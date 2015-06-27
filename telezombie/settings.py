@@ -1,5 +1,12 @@
 import os.path as op
 
+import yaml
+
 
 MODULE_ROOT = op.dirname(__file__)
-DEFAULT_TOKEN_PATH = op.join(MODULE_ROOT, 'token.yaml')
+
+
+def load(self, path):
+    with open(path, 'r') as fin:
+        data = yaml.safe_load(fin)
+        return data['api_token']

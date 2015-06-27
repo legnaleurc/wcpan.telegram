@@ -2,7 +2,6 @@ import urllib.parse as up
 import json
 
 from tornado import gen, httpclient, web
-import yaml
 
 from . import settings, types, util
 
@@ -12,10 +11,7 @@ _API_TEMPLATE = 'https://api.telegram.org/bot{api_token}/{api_method}'
 
 class TeleZombie(object):
 
-    def __init__(self, api_token=None):
-        if not api_token:
-            api_token = self._get_api_token(settings.DEFAULT_TOKEN_PATH)
-
+    def __init__(self, api_token):
         self._api_token = api_token
 
     @gen.coroutine
@@ -202,11 +198,6 @@ class TeleZombie(object):
         data = yield self._get('getUserProfilePhotos', args)
         return types.UserProfilePhotos(data)
 
-    def _get_api_token(self, path):
-        with open(path, 'r') as fin:
-            data = yaml.safe_load(fin)
-            return data['api_token']
-
     def _get_api_url(self, api_method):
         return _API_TEMPLATE.format(api_token=self._api_token, api_method=api_method)
 
@@ -250,7 +241,7 @@ class TeleZombie(object):
 class _DispatcherMixin(object):
 
     def __init__(self, *args, **kwargs):
-        super(_DispatchMixin, self).__init__()
+        super(_DispatcherMixin, self).__init__()
 
     @gen.coroutine
     def on_text(self, message):
@@ -307,9 +298,9 @@ class _DispatcherMixin(object):
             print('unknown', message)
 
 
-class TeleLich(_DispatchMixin):
+class TeleLich(_DispatcherMixin):
 
-    def __init__(self, api_token=None):
+    def __init__(self, api_token):
         self._api = TeleZombie(api_token)
 
     @property
