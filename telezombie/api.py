@@ -41,10 +41,6 @@ class TeleZombie(object):
         data = yield self._get('setWebhook', args)
         return None
 
-    # TODO
-    def listen_webhook(self):
-        pass
-
     @gen.coroutine
     def get_me(self):
         data = yield self._get('getMe')
@@ -203,7 +199,6 @@ class TeleZombie(object):
             'limit': limit,
         }
 
-        # TODO undocumented return type
         data = yield self._get('getUserProfilePhotos', args)
         return types.UserProfilePhotos(data)
 
@@ -250,3 +245,137 @@ class TeleZombie(object):
         response = yield link.fetch(request, raise_error=False)
 
         return self._parse_response(response)
+
+
+class TeleLich(object):
+
+    def __init__(self, api_token=None):
+        self._api = TeleZombie(api_token)
+
+    @gen.coroutine
+    def get_updates(self, timeout=0):
+        offset = 0
+        updates = []
+        while True:
+            us = yield self._api.get_updates(offset, timeout=timeout)
+            updates.extend(us)
+            if not us:
+                break
+            offset = us[-1].update_id + 1
+        return updates
+
+    @gen.coroutine
+    def get_me(self):
+        return (yield self._api.get_me())
+
+    @gen.coroutine
+    def send_message(self, chat_id, text, disable_web_page_preview=None, reply_to_message_id=None, reply_markup=None):
+        return (yield self._api.send_message(chat_id, text, disable_web_page_preview, reply_to_message_id, reply_markup))
+
+    @gen.coroutine
+    def forward_message(self, chat_id, from_chat_id, message_id):
+        return (yield self._api.forward_message(chat_id, from_chat_id, message_id))
+
+    @gen.coroutine
+    def send_photo(self, chat_id, photo, caption=None, reply_to_message_id=None, reply_markup=None):
+        return (yield self._api.send_photo(chat_id, photo, caption, reply_to_message_id, reply_markup))
+
+    @gen.coroutine
+    def send_audio(self, chat_id, audio, reply_to_message_id=None, reply_markup=None):
+        return (yield self._api.send_audio(chat_id, audio, reply_to_message_id, reply_markup))
+
+    @gen.coroutine
+    def send_document(self, chat_id, document, reply_to_message_id=None, reply_markup=None):
+        return (yield self._api.send_document(chat_id, document, reply_to_message_id, reply_markup))
+
+    @gen.coroutine
+    def send_sticker(self, chat_id, sticker, reply_to_message_id=None, reply_markup=None):
+        return (yield self._api.send_sticker(chat_id, sticker, reply_to_message_id, reply_markup))
+
+    @gen.coroutine
+    def send_video(self, chat_id, video, reply_to_message_id=None, reply_markup=None):
+        return (yield self._api.send_video(chat_id, video, reply_to_message_id, reply_markup))
+
+    @gen.coroutine
+    def send_location(self, chat_id, latitude, longitude, reply_to_message_id=None, reply_markup=None):
+        return (yield self._api.send_location(chat_id, latitude, longitude, reply_to_message_id, reply_markup))
+
+    @gen.coroutine
+    def send_chat_action(self, chat_id, action):
+        return (yield self._api.send_chat_action(chat_id, action))
+
+    @gen.coroutine
+    def get_user_profile_photos(self, user_id):
+        offset = 0
+        photos = []
+        total = 0
+        while True:
+            ps = yield self._api.get_user_profile_photos(user_id, offset)
+            total = ps.total_count
+            photos.extend(ps.photos)
+            if not ps:
+                break
+            offset = ps[-1][-1].file_id + 1
+
+        return types.UserProfilePhotos({
+            'total_count': total,
+            'photos': photos,
+        })
+
+    @gen.coroutine
+    def poll(self, timeout=3):
+        # remove previous webhook first
+        yield self._api.set_webhook()
+        # forever
+        while True:
+            updates = yield self.get_updates(timeout)
+            for u in updates:
+                self._receive_message(u.message)
+
+    @gen.coroutine
+    def listen(self, hook_url):
+        yield self._api.set_webhook(url=hook_url)
+
+    def on_text(self, message):
+        pass
+
+    def on_audio(self, message):
+        pass
+
+    def on_document(self, message):
+        pass
+
+    def on_photo(self, message):
+        pass
+
+    def on_sticker(self, message):
+        pass
+
+    def on_video(self, message):
+        pass
+
+    def on_contact(self, message):
+        pass
+
+    def on_location(self, message):
+        pass
+
+    def _receive_message(self, message):
+        if message.text is not None:
+            self.on_text(message)
+        elif message.audio is not None:
+            self.on_audio(message)
+        elif message.document is not None:
+            self.on_document(message)
+        elif message.photo is not None:
+            self.on_photo(message)
+        elif message.sticker is not None:
+            self.on_sticker(message)
+        elif message.video is not None:
+            self.on_video(message)
+        elif message.contact is not None:
+            self.on_contact(message)
+        elif message.location is not None:
+            self.on_location(message)
+        else:
+            print('unknown', message)
