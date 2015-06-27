@@ -24,7 +24,7 @@ setup(
     license='MIT',
 
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 3 - Alpha',
 
         'Intended Audience :: Developers',
         'Topic :: Communications :: Chat',
