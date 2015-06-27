@@ -252,6 +252,10 @@ class TeleLich(object):
     def __init__(self, api_token=None):
         self._api = TeleZombie(api_token)
 
+    @property
+    def zombie(self):
+        return self._api
+
     @gen.coroutine
     def get_updates(self, timeout=0):
         offset = 0
