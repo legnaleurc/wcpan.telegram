@@ -50,7 +50,8 @@ def encode_multipart_formdata_2(fields):
                 yield _crlf_bytes(write, 'Content-Length: %s' % value.size)
                 yield _crlf_bytes(write, '')
                 for chunk in value.stream():
-                    yield _crlf_bytes(write, chunk)
+                    yield write(chunk)
+                yield _crlf_bytes(write, '')
         yield _crlf_bytes(write, '--' + BOUNDARY + '--')
 
     content_type = 'multipart/form-data; boundary=%s' % BOUNDARY
