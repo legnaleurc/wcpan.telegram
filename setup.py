@@ -1,17 +1,18 @@
 from setuptools import setup, find_packages
-from codecs import open
 from os import path
 
 here = path.abspath(path.dirname(__file__))
 
-# Get the long description from the relevant file
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
-    long_description = f.read()
+try:
+    import pypandoc
+    long_description = pypandoc.convert(path.join(here, 'README.md'), 'rst')
+except (IOError, ImportError):
+    long_description = ''
 
 setup(
     name='telezombie',
 
-    version='0.1.0',
+    version='0.1.0.post1',
 
     description='Telegram Bot API with Tornado',
     long_description=long_description,
@@ -45,4 +46,8 @@ setup(
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
 
     install_requires=['tornado >= 4', 'pyyaml'],
+
+    extras_require={
+        'dev': ['pypandoc'],
+    },
 )
