@@ -203,10 +203,12 @@ class TeleZombie(object):
 
     def _parse_response(self, response):
         if response.code != 200:
+            # TODO report error
             return None
         data = response.body.decode('utf-8')
         data = json.loads(data)
         if not data['ok']:
+            # TODO report error
             print(data['description'])
             return None
         return data['result']
