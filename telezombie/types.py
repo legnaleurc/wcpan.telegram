@@ -423,44 +423,34 @@ class UserProfilePhotos(object):
 
 class ReplyKeyboardMarkup(object):
 
-    def __init__(self, data):
+    def __init__(self, keyboard, resize_keyboard=None, one_time_keyboard=None, selective=None):
+        data = {
+            'hide_keyboard': hide_keyboard,
+        }
+        if resize_keyboard is not None:
+            data['resize_keyboard'] = resize_keyboard
+        if one_time_keyboard is not None:
+            data['one_time_keyboard'] = one_time_keyboard
+        if selective is not None:
+            data['selective'] = selective
         self._data = data
 
     def __str__(self):
         return json.dumps(self._data)
-
-    @property
-    def keyboard(self):
-        return self._data['keyboard']
-
-    @property
-    def resize_keyboard(self):
-        return self._data.get('resize_keyboard', None)
-
-    @property
-    def one_time_keyboard(self):
-        return self._data.get('one_time_keyboard', None)
-
-    @property
-    def selective(self):
-        return self._data.get('selective', None)
 
 
 class ReplyKeyboardHide(object):
 
-    def __init__(self, data):
+    def __init__(self, hide_keyboard, selective=None):
+        data = {
+            'hide_keyboard': hide_keyboard,
+        }
+        if selective is not None:
+            data['selective'] = selective
         self._data = data
 
     def __str__(self):
         return json.dumps(self._data)
-
-    @property
-    def hide_keyboard(self):
-        return self._data['hide_keyboard']
-
-    @property
-    def selective(self):
-        return self._data.get('selective', None)
 
 
 class ForceReply(object):
