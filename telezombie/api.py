@@ -275,6 +275,30 @@ class _DispatcherMixin(object):
         pass
 
     @gen.coroutine
+    def on_new_chat_participant(self, message):
+        pass
+
+    @gen.coroutine
+    def on_left_chat_participant(self, message):
+        pass
+
+    @gen.coroutine
+    def on_new_chat_title(self, message):
+        pass
+
+    @gen.coroutine
+    def on_new_chat_photo(self, message):
+        pass
+
+    @gen.coroutine
+    def on_delete_chat_photo(self, message):
+        pass
+
+    @gen.coroutine
+    def on_group_chat_created(self, message):
+        pass
+
+    @gen.coroutine
     def _receive_message(self, message):
         if message.text is not None:
             yield self.on_text(message)
@@ -292,6 +316,18 @@ class _DispatcherMixin(object):
             yield self.on_contact(message)
         elif message.location is not None:
             yield self.on_location(message)
+        elif message.new_chat_participant is not None:
+            yield self.on_new_chat_participant(message)
+        elif message.left_chat_participant is not None:
+            yield self.on_left_chat_participant(message)
+        elif message.new_chat_title is not None:
+            yield self.on_new_chat_title(message)
+        elif message.new_chat_photo is not None:
+            yield self.on_new_chat_photo(message)
+        elif message.delete_chat_photo is not None:
+            yield self.on_delete_chat_photo(message)
+        elif message.group_chat_created is not None:
+            yield self.on_group_chat_created(message)
         else:
             raise TeleError('unknown message type')
 
