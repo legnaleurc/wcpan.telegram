@@ -44,7 +44,7 @@ setup(
 
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
 
-    install_requires=['tornado >= 4', 'pyyaml'],
+    install_requires=['tornado >= 4'],
 
     extras_require={
         'dev': ['pypandoc'],
