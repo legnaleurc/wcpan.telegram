@@ -202,15 +202,10 @@ class TeleZombie(object):
         return _API_TEMPLATE.format(api_token=self._api_token, api_method=api_method)
 
     def _parse_response(self, response):
-        if response.code != 200:
-            # TODO report error
-            return None
         data = response.body.decode('utf-8')
         data = json.loads(data)
         if not data['ok']:
-            # TODO report error
-            print(data['description'])
-            return None
+            raise TeleError(data['description'])
         return data['result']
 
     @gen.coroutine
@@ -222,7 +217,7 @@ class TeleZombie(object):
 
         link = httpclient.AsyncHTTPClient()
         request = httpclient.HTTPRequest(url)
-        response = yield link.fetch(request, raise_error=False)
+        response = yield link.fetch(request)
 
         return self._parse_response(response)
 
@@ -235,7 +230,7 @@ class TeleZombie(object):
         request = httpclient.HTTPRequest(url, method='POST', headers={
             'Content-Type': content_type,
         }, body_producer=stream, request_timeout=0.0)
-        response = yield link.fetch(request, raise_error=False)
+        response = yield link.fetch(request)
 
         return self._parse_response(response)
 
@@ -408,3 +403,12 @@ class TeleHookHandler(web.RequestHandler, _DispatcherMixin):
         data = json.loads(data)
         update = types.Update(data)
         yield self._receive_message(update.message)
+
+
+class TeleError(Exception):
+
+    def __init__(self, description):
+        self.description = description
+
+    def __str__(self):
+        return self.description
