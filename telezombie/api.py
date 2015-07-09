@@ -1,7 +1,8 @@
-import urllib.parse as up
+from __future__ import unicode_literals
+
 import json
 
-from tornado import gen, httpclient, web
+from tornado import gen, httpclient, web, httputil
 
 from . import settings, types, util
 
@@ -22,7 +23,7 @@ class TeleZombie(object):
             'timeout': timeout,
         }
         data = yield self._get('getUpdates', args)
-        return [types.Update(u) for u in data]
+        raise gen.Return([types.Update(u) for u in data])
 
     @gen.coroutine
     def set_webhook(self, url=None):
@@ -35,12 +36,12 @@ class TeleZombie(object):
 
         # TODO undocumented return type
         data = yield self._get('setWebhook', args)
-        return None
+        raise gen.Return(None)
 
     @gen.coroutine
     def get_me(self):
         data = yield self._get('getMe')
-        return types.User(data)
+        raise gen.Return(types.User(data))
 
     @gen.coroutine
     def send_message(self, chat_id, text, disable_web_page_preview=None, reply_to_message_id=None, reply_markup=None):
@@ -56,7 +57,7 @@ class TeleZombie(object):
             args['reply_markup'] = str(reply_markup)
 
         data = yield self._get('sendMessage', args)
-        return types.Message(data)
+        raise gen.Return(types.Message(data))
 
     @gen.coroutine
     def forward_message(self, chat_id, from_chat_id, message_id):
@@ -67,7 +68,7 @@ class TeleZombie(object):
         }
 
         data = yield self._get('forwardMessage', args)
-        return types.Message(data)
+        raise gen.Return(types.Message(data))
 
     @gen.coroutine
     def send_photo(self, chat_id, photo, caption=None, reply_to_message_id=None, reply_markup=None):
@@ -87,7 +88,7 @@ class TeleZombie(object):
         else:
             data = yield self._post('sendPhoto', args)
 
-        return types.Message(data)
+        raise gen.Return(types.Message(data))
 
     @gen.coroutine
     def send_audio(self, chat_id, audio, reply_to_message_id=None, reply_markup=None):
@@ -105,7 +106,7 @@ class TeleZombie(object):
         else:
             data = yield self._post('sendAudio', args)
 
-        return types.Message(data)
+        raise gen.Return(types.Message(data))
 
     @gen.coroutine
     def send_document(self, chat_id, document, reply_to_message_id=None, reply_markup=None):
@@ -123,7 +124,7 @@ class TeleZombie(object):
         else:
             data = yield self._post('sendDocument', args)
 
-        return types.Message(data)
+        raise gen.Return(types.Message(data))
 
     @gen.coroutine
     def send_sticker(self, chat_id, sticker, reply_to_message_id=None, reply_markup=None):
@@ -141,7 +142,7 @@ class TeleZombie(object):
         else:
             data = yield self._post('sendSticker', args)
 
-        return types.Message(data)
+        raise gen.Return(types.Message(data))
 
     @gen.coroutine
     def send_video(self, chat_id, video, reply_to_message_id=None, reply_markup=None):
@@ -159,7 +160,7 @@ class TeleZombie(object):
         else:
             data = yield self._post('sendVideo', args)
 
-        return types.Message(data)
+        raise gen.Return(types.Message(data))
 
     @gen.coroutine
     def send_location(self, chat_id, latitude, longitude, reply_to_message_id=None, reply_markup=None):
@@ -174,7 +175,7 @@ class TeleZombie(object):
             args['reply_markup'] = str(reply_markup)
 
         data = yield self._get('sendLocation', args)
-        return types.Message(data)
+        raise gen.Return(types.Message(data))
 
     @gen.coroutine
     def send_chat_action(self, chat_id, action):
@@ -185,7 +186,7 @@ class TeleZombie(object):
 
         # TODO undocumented return type
         data = yield self._get('sendChatAction', args)
-        return None
+        raise gen.Return(None)
 
     @gen.coroutine
     def get_user_profile_photos(self, user_id, offset=0, limit=100):
@@ -196,7 +197,7 @@ class TeleZombie(object):
         }
 
         data = yield self._get('getUserProfilePhotos', args)
-        return types.UserProfilePhotos(data)
+        raise gen.Return(types.UserProfilePhotos(data))
 
     def _get_api_url(self, api_method):
         return _API_TEMPLATE.format(api_token=self._api_token, api_method=api_method)
@@ -212,14 +213,13 @@ class TeleZombie(object):
     def _get(self, api_method, args=None):
         url = self._get_api_url(api_method)
         if args is not None:
-            query = up.urlencode(args)
-            url += '?' + query
+            url = httputil.url_concat(url, args)
 
         link = httpclient.AsyncHTTPClient()
         request = httpclient.HTTPRequest(url)
         response = yield link.fetch(request)
 
-        return self._parse_response(response)
+        raise gen.Return(self._parse_response(response))
 
     @gen.coroutine
     def _post(self, api_method, args):
@@ -232,7 +232,7 @@ class TeleZombie(object):
         }, body_producer=stream, request_timeout=0.0)
         response = yield link.fetch(request)
 
-        return self._parse_response(response)
+        raise gen.Return(self._parse_response(response))
 
 
 class _DispatcherMixin(object):
@@ -314,47 +314,47 @@ class TeleLich(_DispatcherMixin):
             if not us:
                 break
             offset = us[-1].update_id + 1
-        return updates
+        raise gen.Return(updates)
 
     @gen.coroutine
     def get_me(self):
-        return (yield self._api.get_me())
+        raise gen.Return((yield self._api.get_me()))
 
     @gen.coroutine
     def send_message(self, chat_id, text, disable_web_page_preview=None, reply_to_message_id=None, reply_markup=None):
-        return (yield self._api.send_message(chat_id, text, disable_web_page_preview, reply_to_message_id, reply_markup))
+        raise gen.Return((yield self._api.send_message(chat_id, text, disable_web_page_preview, reply_to_message_id, reply_markup)))
 
     @gen.coroutine
     def forward_message(self, chat_id, from_chat_id, message_id):
-        return (yield self._api.forward_message(chat_id, from_chat_id, message_id))
+        raise gen.Return((yield self._api.forward_message(chat_id, from_chat_id, message_id)))
 
     @gen.coroutine
     def send_photo(self, chat_id, photo, caption=None, reply_to_message_id=None, reply_markup=None):
-        return (yield self._api.send_photo(chat_id, photo, caption, reply_to_message_id, reply_markup))
+        raise gen.Return((yield self._api.send_photo(chat_id, photo, caption, reply_to_message_id, reply_markup)))
 
     @gen.coroutine
     def send_audio(self, chat_id, audio, reply_to_message_id=None, reply_markup=None):
-        return (yield self._api.send_audio(chat_id, audio, reply_to_message_id, reply_markup))
+        raise gen.Return((yield self._api.send_audio(chat_id, audio, reply_to_message_id, reply_markup)))
 
     @gen.coroutine
     def send_document(self, chat_id, document, reply_to_message_id=None, reply_markup=None):
-        return (yield self._api.send_document(chat_id, document, reply_to_message_id, reply_markup))
+        raise gen.Return((yield self._api.send_document(chat_id, document, reply_to_message_id, reply_markup)))
 
     @gen.coroutine
     def send_sticker(self, chat_id, sticker, reply_to_message_id=None, reply_markup=None):
-        return (yield self._api.send_sticker(chat_id, sticker, reply_to_message_id, reply_markup))
+        raise gen.Return((yield self._api.send_sticker(chat_id, sticker, reply_to_message_id, reply_markup)))
 
     @gen.coroutine
     def send_video(self, chat_id, video, reply_to_message_id=None, reply_markup=None):
-        return (yield self._api.send_video(chat_id, video, reply_to_message_id, reply_markup))
+        raise gen.Return((yield self._api.send_video(chat_id, video, reply_to_message_id, reply_markup)))
 
     @gen.coroutine
     def send_location(self, chat_id, latitude, longitude, reply_to_message_id=None, reply_markup=None):
-        return (yield self._api.send_location(chat_id, latitude, longitude, reply_to_message_id, reply_markup))
+        raise gen.Return((yield self._api.send_location(chat_id, latitude, longitude, reply_to_message_id, reply_markup)))
 
     @gen.coroutine
     def send_chat_action(self, chat_id, action):
-        return (yield self._api.send_chat_action(chat_id, action))
+        raise gen.Return((yield self._api.send_chat_action(chat_id, action)))
 
     @gen.coroutine
     def get_user_profile_photos(self, user_id):
@@ -369,10 +369,10 @@ class TeleLich(_DispatcherMixin):
                 break
             offset = ps[-1][-1].file_id + 1
 
-        return types.UserProfilePhotos({
+        raise gen.Return(types.UserProfilePhotos({
             'total_count': total,
             'photos': photos,
-        })
+        }))
 
     @gen.coroutine
     def poll(self, timeout=3):
