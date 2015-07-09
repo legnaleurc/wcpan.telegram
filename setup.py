@@ -12,7 +12,7 @@ except (IOError, ImportError):
 setup(
     name='telezombie',
 
-    version='0.1.0.post1',
+    version='0.2.0',
 
     description='Telegram Bot API with Tornado',
     long_description=long_description,
