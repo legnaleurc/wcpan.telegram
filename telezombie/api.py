@@ -14,6 +14,8 @@ class TeleZombie(object):
 
     def __init__(self, api_token):
         self._api_token = api_token
+        if not self._api_token:
+            raise TeleError('invalid API token')
 
     @gen.coroutine
     def get_updates(self, offset=0, limit=100, timeout=0):
@@ -291,8 +293,7 @@ class _DispatcherMixin(object):
         elif message.location is not None:
             yield self.on_location(message)
         else:
-            # TODO log error
-            print('unknown', message)
+            raise TeleError('unknown message type')
 
 
 class TeleLich(_DispatcherMixin):
