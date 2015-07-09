@@ -412,14 +412,18 @@ class TeleLich(_DispatcherMixin):
         }))
 
     @gen.coroutine
-    def poll(self, timeout=3):
+    def poll(self, timeout=1):
         # remove previous webhook first
         yield self._api.set_webhook()
         # forever
         while True:
-            updates = yield self.get_updates(timeout)
-            for u in updates:
-                yield self._receive_message(u.message)
+            try:
+                updates = yield self.get_updates(timeout)
+                for u in updates:
+                    yield self._receive_message(u.message)
+            except httpclient.HTTPError as e:
+                if e.code != 599:
+                    raise
 
     @gen.coroutine
     def listen(self, hook_url):
