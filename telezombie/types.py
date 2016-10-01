@@ -102,6 +102,8 @@ class Message(object):
             self._new_chat_photo = [PhotoSize(ps) for ps in data['new_chat_photo']]
         else:
             self._new_chat_photo = None
+        if 'voice' in data:
+            self._voice = {}
 
     def __str__(self):
         return json.dumps(self._data)
@@ -190,6 +192,10 @@ class Message(object):
     def group_chat_created(self):
         return self._data.get('group_chat_created', None)
 
+    @property
+    def voice(self):
+        return 'dummy'
+
 
 class PhotoSize(object):
 
@@ -245,7 +251,7 @@ class Document(object):
 
     def __init__(self, data):
         self._data = data
-        self._thumb = PhotoSize(data['thumb'])
+        self._thumb = PhotoSize(data['thumb']) if 'thumb' in data else None
 
     def __str__(self):
         return json.dumps(self._data)

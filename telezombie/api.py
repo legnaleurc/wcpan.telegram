@@ -328,6 +328,8 @@ class _DispatcherMixin(object):
             yield self.on_delete_chat_photo(message)
         elif message.group_chat_created is not None:
             yield self.on_group_chat_created(message)
+        elif message.voice is not None:
+            pass
         else:
             raise TeleError('unknown message type')
 
@@ -442,6 +444,8 @@ class TeleHookHandler(web.RequestHandler, _DispatcherMixin):
         data = self.request.body
         data = data.decode('utf-8')
         data = json.loads(data)
+        if 'message' not in data:
+            return
         update = types.Update(data)
         yield self._receive_message(update.message)
 
