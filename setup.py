@@ -10,14 +10,14 @@ except (IOError, ImportError):
     long_description = ''
 
 setup(
-    name='telezombie',
+    name='wcpan.telegram',
 
     version='0.2.1',
 
     description='Telegram Bot API with Tornado',
     long_description=long_description,
 
-    url='https://github.com/legnaleurc/telezombie',
+    url='https://github.com/legnaleurc/wcpan.telegram',
 
     author='Wei-Cheng Pan',
     author_email='legnaleurc@gmail.com',
