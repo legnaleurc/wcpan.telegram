@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import json
 
 from tornado import gen, httpclient, web, httputil
@@ -17,18 +15,16 @@ class TeleZombie(object):
         if not self._api_token:
             raise TeleError('invalid API token')
 
-    @gen.coroutine
-    def get_updates(self, offset=0, limit=100, timeout=0):
+    async def get_updates(self, offset=0, limit=100, timeout=0):
         args = {
             'offset': offset,
             'limit': limit,
             'timeout': timeout,
         }
-        data = yield self._get('getUpdates', args)
-        raise gen.Return([types.Update(u) for u in data])
+        data = await self._get('getUpdates', args)
+        return [types.Update(u) for u in data]
 
-    @gen.coroutine
-    def set_webhook(self, url=None):
+    async def set_webhook(self, url=None):
         if url is None:
             args = None
         else:
@@ -37,16 +33,14 @@ class TeleZombie(object):
             }
 
         # TODO undocumented return type
-        data = yield self._get('setWebhook', args)
-        raise gen.Return(None)
+        data = await self._get('setWebhook', args)
 
-    @gen.coroutine
-    def get_me(self):
-        data = yield self._get('getMe')
-        raise gen.Return(types.User(data))
+    async def get_me(self):
+        data = await self._get('getMe')
+        return types.User(data)
 
-    @gen.coroutine
-    def send_message(self, chat_id, text, disable_web_page_preview=None, reply_to_message_id=None, reply_markup=None):
+    async def send_message(self, chat_id, text, disable_web_page_preview=None,
+                           reply_to_message_id=None, reply_markup=None):
         args = {
             'chat_id': chat_id,
             'text': text,
@@ -58,22 +52,21 @@ class TeleZombie(object):
         if reply_markup is not None:
             args['reply_markup'] = str(reply_markup)
 
-        data = yield self._get('sendMessage', args)
-        raise gen.Return(types.Message(data))
+        data = await self._get('sendMessage', args)
+        return types.Message(data)
 
-    @gen.coroutine
-    def forward_message(self, chat_id, from_chat_id, message_id):
+    async def forward_message(self, chat_id, from_chat_id, message_id):
         args = {
             'chat_id': chat_id,
             'from_chat_id': from_chat_id,
             'message_id': message_id,
         }
 
-        data = yield self._get('forwardMessage', args)
-        raise gen.Return(types.Message(data))
+        data = await self._get('forwardMessage', args)
+        return types.Message(data)
 
-    @gen.coroutine
-    def send_photo(self, chat_id, photo, caption=None, reply_to_message_id=None, reply_markup=None):
+    async def send_photo(self, chat_id, photo, caption=None,
+                         reply_to_message_id=None, reply_markup=None):
         args = {
             'chat_id': chat_id,
             'photo': photo,
@@ -86,14 +79,14 @@ class TeleZombie(object):
             args['reply_markup'] = str(reply_markup)
 
         if isinstance(photo, str):
-            data = yield self._get('sendPhoto', args)
+            data = await self._get('sendPhoto', args)
         else:
-            data = yield self._post('sendPhoto', args)
+            data = await self._post('sendPhoto', args)
 
-        raise gen.Return(types.Message(data))
+        return types.Message(data)
 
-    @gen.coroutine
-    def send_audio(self, chat_id, audio, reply_to_message_id=None, reply_markup=None):
+    async def send_audio(self, chat_id, audio, reply_to_message_id=None,
+                         reply_markup=None):
         args = {
             'chat_id': chat_id,
             'audio': audio,
@@ -104,14 +97,14 @@ class TeleZombie(object):
             args['reply_markup'] = str(reply_markup)
 
         if isinstance(audio, str):
-            data = yield self._get('sendAudio', args)
+            data = await self._get('sendAudio', args)
         else:
-            data = yield self._post('sendAudio', args)
+            data = await self._post('sendAudio', args)
 
-        raise gen.Return(types.Message(data))
+        return types.Message(data)
 
-    @gen.coroutine
-    def send_document(self, chat_id, document, reply_to_message_id=None, reply_markup=None):
+    async def send_document(self, chat_id, document, reply_to_message_id=None,
+                            reply_markup=None):
         args = {
             'chat_id': chat_id,
             'document': document,
@@ -122,14 +115,14 @@ class TeleZombie(object):
             args['reply_markup'] = str(reply_markup)
 
         if isinstance(document, str):
-            data = yield self._get('sendDocument', args)
+            data = await self._get('sendDocument', args)
         else:
-            data = yield self._post('sendDocument', args)
+            data = await self._post('sendDocument', args)
 
-        raise gen.Return(types.Message(data))
+        return types.Message(data)
 
-    @gen.coroutine
-    def send_sticker(self, chat_id, sticker, reply_to_message_id=None, reply_markup=None):
+    async def send_sticker(self, chat_id, sticker, reply_to_message_id=None,
+                           reply_markup=None):
         args = {
             'chat_id': chat_id,
             'sticker': sticker,
@@ -140,14 +133,14 @@ class TeleZombie(object):
             args['reply_markup'] = str(reply_markup)
 
         if isinstance(sticker, str):
-            data = yield self._get('sendSticker', args)
+            data = await self._get('sendSticker', args)
         else:
-            data = yield self._post('sendSticker', args)
+            data = await self._post('sendSticker', args)
 
-        raise gen.Return(types.Message(data))
+        return types.Message(data)
 
-    @gen.coroutine
-    def send_video(self, chat_id, video, reply_to_message_id=None, reply_markup=None):
+    async def send_video(self, chat_id, video, reply_to_message_id=None,
+                         reply_markup=None):
         args = {
             'chat_id': chat_id,
             'video': video,
@@ -158,14 +151,14 @@ class TeleZombie(object):
             args['reply_markup'] = str(reply_markup)
 
         if isinstance(video, str):
-            data = yield self._get('sendVideo', args)
+            data = await self._get('sendVideo', args)
         else:
-            data = yield self._post('sendVideo', args)
+            data = await self._post('sendVideo', args)
 
-        raise gen.Return(types.Message(data))
+        return types.Message(data)
 
-    @gen.coroutine
-    def send_location(self, chat_id, latitude, longitude, reply_to_message_id=None, reply_markup=None):
+    async def send_location(self, chat_id, latitude, longitude,
+                            reply_to_message_id=None, reply_markup=None):
         args = {
             'chat_id': chat_id,
             'latitude': latitude,
@@ -176,33 +169,31 @@ class TeleZombie(object):
         if reply_markup is not None:
             args['reply_markup'] = str(reply_markup)
 
-        data = yield self._get('sendLocation', args)
-        raise gen.Return(types.Message(data))
+        data = await self._get('sendLocation', args)
+        return types.Message(data)
 
-    @gen.coroutine
-    def send_chat_action(self, chat_id, action):
+    async def send_chat_action(self, chat_id, action):
         args = {
             'chat_id': chat_id,
             'action': action,
         }
 
         # TODO undocumented return type
-        data = yield self._get('sendChatAction', args)
-        raise gen.Return(None)
+        data = await self._get('sendChatAction', args)
 
-    @gen.coroutine
-    def get_user_profile_photos(self, user_id, offset=0, limit=100):
+    async def get_user_profile_photos(self, user_id, offset=0, limit=100):
         args = {
             'user_id': user_id,
             'offset': offset,
             'limit': limit,
         }
 
-        data = yield self._get('getUserProfilePhotos', args)
-        raise gen.Return(types.UserProfilePhotos(data))
+        data = await self._get('getUserProfilePhotos', args)
+        return types.UserProfilePhotos(data)
 
     def _get_api_url(self, api_method):
-        return _API_TEMPLATE.format(api_token=self._api_token, api_method=api_method)
+        return _API_TEMPLATE.format(api_token=self._api_token,
+                                    api_method=api_method)
 
     def _parse_response(self, response):
         data = response.body.decode('utf-8')
@@ -211,20 +202,18 @@ class TeleZombie(object):
             raise TeleError(data['description'])
         return data['result']
 
-    @gen.coroutine
-    def _get(self, api_method, args=None):
+    async def _get(self, api_method, args=None):
         url = self._get_api_url(api_method)
         if args is not None:
             url = httputil.url_concat(url, args)
 
         link = httpclient.AsyncHTTPClient()
         request = httpclient.HTTPRequest(url)
-        response = yield link.fetch(request)
+        response = await link.fetch(request)
 
-        raise gen.Return(self._parse_response(response))
+        return self._parse_response(response)
 
-    @gen.coroutine
-    def _post(self, api_method, args):
+    async def _post(self, api_method, args):
         url = self._get_api_url(api_method)
         content_type, stream = util.generate_multipart_formdata(args.items())
 
@@ -232,9 +221,9 @@ class TeleZombie(object):
         request = httpclient.HTTPRequest(url, method='POST', headers={
             'Content-Type': content_type,
         }, body_producer=stream, request_timeout=0.0)
-        response = yield link.fetch(request)
+        response = await link.fetch(request)
 
-        raise gen.Return(self._parse_response(response))
+        return self._parse_response(response)
 
 
 class _DispatcherMixin(object):
@@ -242,92 +231,77 @@ class _DispatcherMixin(object):
     def __init__(self, *args, **kwargs):
         super(_DispatcherMixin, self).__init__()
 
-    @gen.coroutine
-    def on_text(self, message):
+    async def on_text(self, message):
         pass
 
-    @gen.coroutine
-    def on_audio(self, message):
+    async def on_audio(self, message):
         pass
 
-    @gen.coroutine
-    def on_document(self, message):
+    async def on_document(self, message):
         pass
 
-    @gen.coroutine
-    def on_photo(self, message):
+    async def on_photo(self, message):
         pass
 
-    @gen.coroutine
-    def on_sticker(self, message):
+    async def on_sticker(self, message):
         pass
 
-    @gen.coroutine
-    def on_video(self, message):
+    async def on_video(self, message):
         pass
 
-    @gen.coroutine
-    def on_contact(self, message):
+    async def on_contact(self, message):
         pass
 
-    @gen.coroutine
-    def on_location(self, message):
+    async def on_location(self, message):
         pass
 
-    @gen.coroutine
-    def on_new_chat_participant(self, message):
+    async def on_new_chat_participant(self, message):
         pass
 
-    @gen.coroutine
-    def on_left_chat_participant(self, message):
+    async def on_left_chat_participant(self, message):
         pass
 
-    @gen.coroutine
-    def on_new_chat_title(self, message):
+    async def on_new_chat_title(self, message):
         pass
 
-    @gen.coroutine
-    def on_new_chat_photo(self, message):
+    async def on_new_chat_photo(self, message):
         pass
 
-    @gen.coroutine
-    def on_delete_chat_photo(self, message):
+    async def on_delete_chat_photo(self, message):
         pass
 
-    @gen.coroutine
-    def on_group_chat_created(self, message):
+    async def on_group_chat_created(self, message):
         pass
 
-    @gen.coroutine
-    def _receive_message(self, message):
+    async def _receive_message(self, message):
         if message.text is not None:
-            yield self.on_text(message)
+            await self.on_text(message)
         elif message.audio is not None:
-            yield self.on_audio(message)
+            await self.on_audio(message)
         elif message.document is not None:
-            yield self.on_document(message)
+            await self.on_document(message)
         elif message.photo is not None:
-            yield self.on_photo(message)
+            await self.on_photo(message)
         elif message.sticker is not None:
-            yield self.on_sticker(message)
+            await self.on_sticker(message)
         elif message.video is not None:
-            yield self.on_video(message)
+            await self.on_video(message)
         elif message.contact is not None:
-            yield self.on_contact(message)
+            await self.on_contact(message)
         elif message.location is not None:
-            yield self.on_location(message)
+            await self.on_location(message)
         elif message.new_chat_participant is not None:
-            yield self.on_new_chat_participant(message)
+            await self.on_new_chat_participant(message)
         elif message.left_chat_participant is not None:
-            yield self.on_left_chat_participant(message)
+            await self.on_left_chat_participant(message)
         elif message.new_chat_title is not None:
-            yield self.on_new_chat_title(message)
+            await self.on_new_chat_title(message)
         elif message.new_chat_photo is not None:
-            yield self.on_new_chat_photo(message)
+            await self.on_new_chat_photo(message)
         elif message.delete_chat_photo is not None:
-            yield self.on_delete_chat_photo(message)
+            await self.on_delete_chat_photo(message)
         elif message.group_chat_created is not None:
-            yield self.on_group_chat_created(message)
+            await self.on_group_chat_created(message)
         elif message.voice is not None:
             pass
         else:
@@ -343,111 +317,111 @@ class TeleLich(_DispatcherMixin):
     def zombie(self):
         return self._api
 
-    @gen.coroutine
-    def get_updates(self, timeout=0):
+    async def get_updates(self, timeout=0):
         offset = 0
         updates = []
         while True:
-            us = yield self._api.get_updates(offset, timeout=timeout)
+            us = await self._api.get_updates(offset, timeout=timeout)
             updates.extend(us)
             if not us:
                 break
             offset = us[-1].update_id + 1
-        raise gen.Return(updates)
+        return updates
 
-    @gen.coroutine
-    def get_me(self):
-        raise gen.Return((yield self._api.get_me()))
+    async def get_me(self):
+        return await self._api.get_me()
 
-    @gen.coroutine
-    def send_message(self, chat_id, text, disable_web_page_preview=None, reply_to_message_id=None, reply_markup=None):
-        raise gen.Return((yield self._api.send_message(chat_id, text, disable_web_page_preview, reply_to_message_id, reply_markup)))
+    async def send_message(self, chat_id, text, disable_web_page_preview=None,
+                           reply_to_message_id=None, reply_markup=None):
+        return await self._api.send_message(chat_id, text,
+                                            disable_web_page_preview,
+                                            reply_to_message_id, reply_markup)
 
-    @gen.coroutine
-    def forward_message(self, chat_id, from_chat_id, message_id):
-        raise gen.Return((yield self._api.forward_message(chat_id, from_chat_id, message_id)))
+    async def forward_message(self, chat_id, from_chat_id, message_id):
+        return await self._api.forward_message(chat_id, from_chat_id,
+                                               message_id)
 
-    @gen.coroutine
-    def send_photo(self, chat_id, photo, caption=None, reply_to_message_id=None, reply_markup=None):
-        raise gen.Return((yield self._api.send_photo(chat_id, photo, caption, reply_to_message_id, reply_markup)))
+    async def send_photo(self, chat_id, photo, caption=None,
+                         reply_to_message_id=None, reply_markup=None):
+        return await self._api.send_photo(chat_id, photo, caption,
+                                          reply_to_message_id, reply_markup)
 
-    @gen.coroutine
-    def send_audio(self, chat_id, audio, reply_to_message_id=None, reply_markup=None):
-        raise gen.Return((yield self._api.send_audio(chat_id, audio, reply_to_message_id, reply_markup)))
+    async def send_audio(self, chat_id, audio, reply_to_message_id=None,
+                         reply_markup=None):
+        return await self._api.send_audio(chat_id, audio, reply_to_message_id,
+                                          reply_markup)
 
-    @gen.coroutine
-    def send_document(self, chat_id, document, reply_to_message_id=None, reply_markup=None):
-        raise gen.Return((yield self._api.send_document(chat_id, document, reply_to_message_id, reply_markup)))
+    async def send_document(self, chat_id, document, reply_to_message_id=None,
+                            reply_markup=None):
+        return await self._api.send_document(chat_id, document,
+                                             reply_to_message_id, reply_markup)
 
-    @gen.coroutine
-    def send_sticker(self, chat_id, sticker, reply_to_message_id=None, reply_markup=None):
-        raise gen.Return((yield self._api.send_sticker(chat_id, sticker, reply_to_message_id, reply_markup)))
+    async def send_sticker(self, chat_id, sticker, reply_to_message_id=None,
+                           reply_markup=None):
+        return await self._api.send_sticker(chat_id, sticker,
+                                            reply_to_message_id, reply_markup)
 
-    @gen.coroutine
-    def send_video(self, chat_id, video, reply_to_message_id=None, reply_markup=None):
-        raise gen.Return((yield self._api.send_video(chat_id, video, reply_to_message_id, reply_markup)))
+    async def send_video(self, chat_id, video, reply_to_message_id=None,
+                         reply_markup=None):
+        return await self._api.send_video(chat_id, video, reply_to_message_id,
+                                          reply_markup)
 
-    @gen.coroutine
-    def send_location(self, chat_id, latitude, longitude, reply_to_message_id=None, reply_markup=None):
-        raise gen.Return((yield self._api.send_location(chat_id, latitude, longitude, reply_to_message_id, reply_markup)))
+    async def send_location(self, chat_id, latitude, longitude,
+                            reply_to_message_id=None, reply_markup=None):
+        return await self._api.send_location(chat_id, latitude, longitude,
+                                             reply_to_message_id, reply_markup)
 
-    @gen.coroutine
-    def send_chat_action(self, chat_id, action):
-        raise gen.Return((yield self._api.send_chat_action(chat_id, action)))
+    async def send_chat_action(self, chat_id, action):
+        return await self._api.send_chat_action(chat_id, action)
 
-    @gen.coroutine
-    def get_user_profile_photos(self, user_id):
+    async def get_user_profile_photos(self, user_id):
         offset = 0
         photos = []
         total = 0
         while True:
-            ps = yield self._api.get_user_profile_photos(user_id, offset)
+            ps = await self._api.get_user_profile_photos(user_id, offset)
             total = ps.total_count
             photos.extend(ps.photos)
             if not ps:
                 break
             offset = ps[-1][-1].file_id + 1
 
-        raise gen.Return(types.UserProfilePhotos({
+        return types.UserProfilePhotos({
             'total_count': total,
             'photos': photos,
-        }))
+        })
 
-    @gen.coroutine
-    def poll(self, timeout=1):
+    async def poll(self, timeout=1):
         # remove previous webhook first
-        yield self._api.set_webhook()
+        await self._api.set_webhook()
         # forever
         while True:
             try:
-                updates = yield self.get_updates(timeout)
+                updates = await self.get_updates(timeout)
                 for u in updates:
-                    yield self._receive_message(u.message)
+                    await self._receive_message(u.message)
             except httpclient.HTTPError as e:
                 if e.code != 599:
                     raise
 
-    @gen.coroutine
-    def listen(self, hook_url):
-        yield self._api.set_webhook(url=hook_url)
+    async def listen(self, hook_url):
+        await self._api.set_webhook(url=hook_url)
 
-    @gen.coroutine
-    def close(self):
+    async def close(self):
         # remove webhook
-        yield self._api.set_webhook()
+        await self._api.set_webhook()
 
 
 class TeleHookHandler(web.RequestHandler, _DispatcherMixin):
 
-    @gen.coroutine
-    def post(self):
+    async def post(self):
         data = self.request.body
         data = data.decode('utf-8')
         data = json.loads(data)
         if 'message' not in data:
             return
         update = types.Update(data)
-        yield self._receive_message(update.message)
+        await self._receive_message(update.message)
 
 
 class TeleError(Exception):
