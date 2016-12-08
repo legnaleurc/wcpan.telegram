@@ -278,26 +278,34 @@ class PhotoSize(object):
 
 class Audio(object):
 
-    def __init__(self, data):
+    def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self):
+    def __str__(self) -> str:
         return json.dumps(self._data)
 
     @property
-    def file_id(self):
+    def file_id(self) -> str:
         return self._data['file_id']
 
     @property
-    def duration(self):
+    def duration(self) -> int:
         return self._data['duration']
 
     @property
-    def mime_type(self):
+    def performer(self) -> Optional[str]:
+        return _wrap_data(self._data, 'performer')
+
+    @property
+    def title(self) -> Optional[str]:
+        return _wrap_data(self._data, 'title')
+
+    @property
+    def mime_type(self) -> Optional[str]:
         return self._data.get('mime_type', None)
 
     @property
-    def file_size(self):
+    def file_size(self) -> Optional[int]:
         return self._data.get('file_size', None)
 
 
