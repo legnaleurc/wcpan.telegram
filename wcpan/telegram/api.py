@@ -1,8 +1,8 @@
 import json
 
-from tornado import gen, httpclient, web, httputil
+from tornado import httpclient as thc, web as tw, httputil as thu
 
-from . import settings, types, util
+from . import types, util
 
 
 _API_TEMPLATE = 'https://api.telegram.org/bot{api_token}/{api_method}'
@@ -205,10 +205,10 @@ class TeleZombie(object):
     async def _get(self, api_method, args=None):
         url = self._get_api_url(api_method)
         if args is not None:
-            url = httputil.url_concat(url, args)
+            url = thu.url_concat(url, args)
 
-        link = httpclient.AsyncHTTPClient()
-        request = httpclient.HTTPRequest(url)
+        link = thc.AsyncHTTPClient()
+        request = thc.HTTPRequest(url)
         response = await link.fetch(request)
 
         return self._parse_response(response)
@@ -217,8 +217,8 @@ class TeleZombie(object):
         url = self._get_api_url(api_method)
         content_type, stream = util.generate_multipart_formdata(args.items())
 
-        link = httpclient.AsyncHTTPClient()
-        request = httpclient.HTTPRequest(url, method='POST', headers={
+        link = thc.AsyncHTTPClient()
+        request = thc.HTTPRequest(url, method='POST', headers={
             'Content-Type': content_type,
         }, body_producer=stream, request_timeout=0.0)
         response = await link.fetch(request)
@@ -400,7 +400,7 @@ class TeleLich(_DispatcherMixin):
                 updates = await self.get_updates(timeout)
                 for u in updates:
                     await self._receive_message(u.message)
-            except httpclient.HTTPError as e:
+            except thc.HTTPError as e:
                 if e.code != 599:
                     raise
 
@@ -412,7 +412,7 @@ class TeleLich(_DispatcherMixin):
         await self._api.set_webhook()
 
 
-class TeleHookHandler(web.RequestHandler, _DispatcherMixin):
+class TeleHookHandler(tw.RequestHandler, _DispatcherMixin):
 
     async def post(self):
         data = self.request.body
