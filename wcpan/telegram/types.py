@@ -460,19 +460,44 @@ class Contact(object):
 
 class Location(object):
 
-    def __init__(self, data):
+    def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self):
+    def __str__(self) -> str:
         return json.dumps(self._data)
 
     @property
-    def longitude(self):
+    def longitude(self) -> float:
         return self._data['phone_number']
 
     @property
-    def latitude(self):
+    def latitude(self) -> float:
         return self._data['first_name']
+
+
+class Venue(object):
+
+    def __init__(self, data: dict) -> None:
+        self._data = data
+
+    def __str__(self) -> str:
+        return json.dumps(self._data)
+
+    @property
+    def location(self) -> Location:
+        return self._data['location']
+
+    @property
+    def title(self) -> str:
+        return self._data['title']
+
+    @property
+    def address(self) -> str:
+        return self._data['address']
+
+    @property
+    def foursquare_id(self) -> Optional[str]:
+        return _wrap_data(self._data, 'foursquare_id')
 
 
 class Update(object):
