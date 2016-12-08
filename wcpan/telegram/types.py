@@ -652,17 +652,17 @@ class KeyboardButton(object):
         return json.dumps(self._data)
 
 
-class ReplyKeyboardHide(object):
+class ReplyKeyboardRemove(object):
 
-    def __init__(self, hide_keyboard, selective=None):
+    def __init__(self, remove_keyboard: bool, selective: bool = None) -> None:
         data = {
-            'hide_keyboard': hide_keyboard,
+            'remove_keyboard': remove_keyboard,
         }
         if selective is not None:
             data['selective'] = selective
         self._data = data
 
-    def __str__(self):
+    def __str__(self) -> str:
         return json.dumps(self._data)
 
 
