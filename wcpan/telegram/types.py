@@ -435,26 +435,26 @@ class Voice(object):
 
 class Contact(object):
 
-    def __init__(self, data):
+    def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self):
+    def __str__(self) -> str:
         return json.dumps(self._data)
 
     @property
-    def phone_number(self):
+    def phone_number(self) -> str:
         return self._data['phone_number']
 
     @property
-    def first_name(self):
+    def first_name(self) -> str:
         return self._data['first_name']
 
     @property
-    def last_name(self):
+    def last_name(self) -> Optional[str]:
         return self._data.get('last_name', None)
 
     @property
-    def user_id(self):
+    def user_id(self) -> Optional[int]:
         return self._data.get('user_id', None)
 
 
