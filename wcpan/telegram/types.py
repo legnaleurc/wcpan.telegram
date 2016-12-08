@@ -222,28 +222,57 @@ class Message(object):
         return _wrap_data(self._data, 'pinned_message', Message)
 
 
-class PhotoSize(object):
+class MessageEntity(object):
 
-    def __init__(self, data):
+    def __init__(self, data) -> None:
         self._data = data
 
-    def __str__(self):
+    def __str__(self) -> str:
         return json.dumps(self._data)
 
     @property
-    def file_id(self):
+    def type_(self) -> str:
+        return self._data['type']
+
+    @property
+    def offset(self) -> int:
+        return self._data['offset']
+
+    @property
+    def length(self) -> int:
+        return self._data['length']
+
+    @property
+    def url(self) -> Optional[str]:
+        return _wrap_data(self._data, 'url')
+
+    @property
+    def user(self) -> Optional[User]:
+        return _wrap_data(self._data, 'user', User)
+
+
+class PhotoSize(object):
+
+    def __init__(self, data: dict) -> None:
+        self._data = data
+
+    def __str__(self) -> str:
+        return json.dumps(self._data)
+
+    @property
+    def file_id(self) -> str:
         return self._data['file_id']
 
     @property
-    def width(self):
+    def width(self) -> int:
         return self._data['width']
 
     @property
-    def height(self):
+    def height(self) -> int:
         return self._data['height']
 
     @property
-    def file_size(self):
+    def file_size(self) -> Optional[int]:
         return self._data.get('file_size', None)
 
 
