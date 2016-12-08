@@ -755,6 +755,23 @@ class ForceReply(object):
         return json.dumps(self._data)
 
 
+class ChatMember(object):
+
+    def __init__(self, data: dict) -> None:
+        self._data = data
+
+    def __str__(self) -> str:
+        return json.dumps(self._data)
+
+    @property
+    def user(self) -> User:
+        return User(self._data['user'])
+
+    @property
+    def status(self) -> str:
+        return self._data['status']
+
+
 class InputFile(object):
 
     def __init__(self, file_path):
