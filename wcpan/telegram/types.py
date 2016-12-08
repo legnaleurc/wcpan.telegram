@@ -616,9 +616,11 @@ class File(object):
 
 class ReplyKeyboardMarkup(object):
 
-    def __init__(self, keyboard, resize_keyboard=None, one_time_keyboard=None, selective=None):
+    def __init__(self, keyboard: List[List[KeyboardButton]],
+                 resize_keyboard: bool = None, one_time_keyboard: bool = None,
+                 selective: bool = None) -> None:
         data = {
-            'hide_keyboard': hide_keyboard,
+            'keyboard': keyboard,
         }
         if resize_keyboard is not None:
             data['resize_keyboard'] = resize_keyboard
@@ -628,7 +630,7 @@ class ReplyKeyboardMarkup(object):
             data['selective'] = selective
         self._data = data
 
-    def __str__(self):
+    def __str__(self) -> str:
         return json.dumps(self._data)
 
 
