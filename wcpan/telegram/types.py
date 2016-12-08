@@ -5,26 +5,26 @@ from typing import Optional
 
 class User(object):
 
-    def __init__(self, data):
+    def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self):
+    def __str__(self) -> str:
         return json.dumps(self._data)
 
     @property
-    def id_(self):
+    def id_(self) -> int:
         return self._data['id']
 
     @property
-    def first_name(self):
+    def first_name(self) -> str:
         return self._data['first_name']
 
     @property
-    def last_name(self):
+    def last_name(self) -> str:
         return self._data.get('last_name', None)
 
     @property
-    def username(self):
+    def username(self) -> str:
         return self._data.get('username', None)
 
 
