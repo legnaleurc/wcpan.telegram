@@ -616,7 +616,7 @@ class File(object):
 
 class ReplyKeyboardMarkup(object):
 
-    def __init__(self, keyboard: List[List[KeyboardButton]],
+    def __init__(self, keyboard: List[List['KeyboardButton']],
                  resize_keyboard: bool = None, one_time_keyboard: bool = None,
                  selective: bool = None) -> None:
         data = {
@@ -660,6 +660,44 @@ class ReplyKeyboardRemove(object):
         }
         if selective is not None:
             data['selective'] = selective
+        self._data = data
+
+    def __str__(self) -> str:
+        return json.dumps(self._data)
+
+
+class InlineKeyboardMarkup(object):
+
+    def __init__(self, inline_keyboard: List[List['InlineKeyboardButton']]
+                 ) -> None:
+        data = {
+            'inline_keyboard': inline_keyboard,
+        }
+        self._data = data
+
+    def __str__(self) -> str:
+        return json.dumps(self._data)
+
+
+class InlineKeyboardButton(object):
+
+    def __init__(self, text: str, url: str = None, callback_data: str = None,
+                 switch_inline_query: str = None,
+                 switch_inline_query_current_chat: str = None,
+                 callback_game: 'CallbackGame' = None) -> None:
+        data = {
+            'text': text,
+        }
+        if url is not None:
+            data['url'] = url
+        if callback_data is not None:
+            data['callback_data'] = callback_data
+        if switch_inline_query is not None:
+            data['switch_inline_query'] = switch_inline_query
+        if switch_inline_query_current_chat is not None:
+            data['switch_inline_query_current_chat'] = switch_inline_query_current_chat
+        if callback_game is not None:
+            data['callback_game'] = callback_game
         self._data = data
 
     def __str__(self) -> str:
