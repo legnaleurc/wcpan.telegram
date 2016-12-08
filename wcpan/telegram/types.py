@@ -593,6 +593,27 @@ class UserProfilePhotos(object):
         return self._photos
 
 
+class File(object):
+
+    def __init__(self, data: dict) -> None:
+        self._data = data
+
+    def __str__(self) -> str:
+        return json.dumps(self._data)
+
+    @property
+    def file_id(self) -> str:
+        return self._data['file_id']
+
+    @property
+    def file_size(self) -> Optional[int]:
+        return _wrap_data(self._data, 'file_size')
+
+    @property
+    def file_path(self) -> Optional[str]:
+        return _wrap_data(self._data, 'file_path')
+
+
 class ReplyKeyboardMarkup(object):
 
     def __init__(self, keyboard, resize_keyboard=None, one_time_keyboard=None, selective=None):
