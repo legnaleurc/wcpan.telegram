@@ -3,6 +3,47 @@ import os.path as op
 from typing import Optional
 
 
+class Update(object):
+
+    def __init__(self, data: dict) -> None:
+        self._data = data
+
+    def __str__(self) -> str:
+        return json.dumps(self._data)
+
+    @property
+    def update_id(self) -> int:
+        return self._data['update_id']
+
+    @property
+    def message(self) -> Optional[Message]:
+        return _wrap_data(self._data, 'message', Message)
+
+    @property
+    def edited_message(self) -> Optional[Message]:
+        return _wrap_data(self._data, 'edited_message', Message)
+
+    @property
+    def channel_post(self) -> Optional[Message]:
+        return _wrap_data(self._data, 'channel_post', Message)
+
+    @property
+    def edited_channel_post(self) -> Optional[Message]:
+        return _wrap_data(self._data, 'edited_channel_post', Message)
+
+    @property
+    def inline_query(self) -> Optional[InlineQuery]:
+        return _wrap_data(self._data, 'inline_query', InlineQuery)
+
+    @property
+    def chosen_inline_result(self) -> Optional[ChosenInlineResult]:
+        return _wrap_data(self._data, 'chosen_inline_result', ChosenInlineResult)
+
+    @property
+    def callback_query(self) -> Optional[CallbackQuery]:
+        return _wrap_data(self._data, 'callback_query', CallbackQuery)
+
+
 class User(object):
 
     def __init__(self, data: dict) -> None:
@@ -498,47 +539,6 @@ class Venue(object):
     @property
     def foursquare_id(self) -> Optional[str]:
         return _wrap_data(self._data, 'foursquare_id')
-
-
-class Update(object):
-
-    def __init__(self, data: dict) -> None:
-        self._data = data
-
-    def __str__(self) -> str:
-        return json.dumps(self._data)
-
-    @property
-    def update_id(self) -> int:
-        return self._data['update_id']
-
-    @property
-    def message(self) -> Optional[Message]:
-        return _wrap_data(self._data, 'message', Message)
-
-    @property
-    def edited_message(self) -> Optional[Message]:
-        return _wrap_data(self._data, 'edited_message', Message)
-
-    @property
-    def channel_post(self) -> Optional[Message]:
-        return _wrap_data(self._data, 'channel_post', Message)
-
-    @property
-    def edited_channel_post(self) -> Optional[Message]:
-        return _wrap_data(self._data, 'edited_channel_post', Message)
-
-    @property
-    def inline_query(self) -> Optional[InlineQuery]:
-        return _wrap_data(self._data, 'inline_query', InlineQuery)
-
-    @property
-    def chosen_inline_result(self) -> Optional[ChosenInlineResult]:
-        return _wrap_data(self._data, 'chosen_inline_result', ChosenInlineResult)
-
-    @property
-    def callback_query(self) -> Optional[CallbackQuery]:
-        return _wrap_data(self._data, 'callback_query', CallbackQuery)
 
 
 class UserProfilePhotos(object):
