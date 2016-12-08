@@ -311,31 +311,30 @@ class Audio(object):
 
 class Document(object):
 
-    def __init__(self, data):
+    def __init__(self, data: dict) -> None:
         self._data = data
-        self._thumb = PhotoSize(data['thumb']) if 'thumb' in data else None
 
-    def __str__(self):
+    def __str__(self) -> str:
         return json.dumps(self._data)
 
     @property
-    def file_id(self):
+    def file_id(self) -> str:
         return self._data['file_id']
 
     @property
-    def thumb(self):
-        return self._thumb
+    def thumb(self) -> Optional[PhotoSize]:
+        return _wrap_data(self._data, 'thumb', PhotoSize)
 
     @property
-    def file_name(self):
+    def file_name(self) -> Optional[str]:
         return self._data.get('file_name', None)
 
     @property
-    def mime_type(self):
+    def mime_type(self) -> Optional[str]:
         return self._data.get('mime_type', None)
 
     @property
-    def file_size(self):
+    def file_size(self) -> Optional[int]:
         return self._data.get('file_size', None)
 
 
