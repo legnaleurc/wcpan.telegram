@@ -543,19 +543,19 @@ class Venue(object):
 
 class UserProfilePhotos(object):
 
-    def __init__(self, data):
+    def __init__(self, data: dict) -> None:
         self._data = data
         self._photos = [[PhotoSize(ps) for ps in pss] for pss in data['photos']]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return json.dumps(self._data)
 
     @property
-    def total_count(self):
+    def total_count(self) -> int:
         return self._data['total_count']
 
     @property
-    def photos(self):
+    def photos(self) -> List[List[PhotoSize]]:
         return self._photos
 
 
