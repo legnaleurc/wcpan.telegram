@@ -395,7 +395,6 @@ class Update(object):
 
     def __init__(self, data):
         self._data = data
-        self._message = Message(data['message'])
 
     def __str__(self):
         return json.dumps(self._data)
@@ -406,7 +405,31 @@ class Update(object):
 
     @property
     def message(self):
-        return self._message
+        return _wrap_data(self._data, 'message', Message)
+
+    @property
+    def edited_message(self):
+        return _wrap_data(self._data, 'edited_message', Message)
+
+    @property
+    def channel_post(self):
+        return _wrap_data(self._data, 'channel_post', Message)
+
+    @property
+    def edited_channel_post(self):
+        return _wrap_data(self._data, 'edited_channel_post', Message)
+
+    @property
+    def inline_query(self):
+        return _wrap_data(self._data, 'inline_query', InlineQuery)
+
+    @property
+    def chosen_inline_result(self):
+        return _wrap_data(self._data, 'chosen_inline_result', ChosenInlineResult)
+
+    @property
+    def callback_query(self):
+        return _wrap_data(self._data, 'callback_query', CallbackQuery)
 
 
 class UserProfilePhotos(object):
@@ -504,3 +527,9 @@ class InputFile(object):
                 if not chunk:
                     break
                 yield chunk
+
+
+def _wrap_data(data, key, type_):
+    if key in data:
+        return type_(data[key])
+    return None
