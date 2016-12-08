@@ -67,155 +67,159 @@ class Chat(object):
 
 class Message(object):
 
-    def __init__(self, data):
+    def __init__(self, data: dict) -> None:
         self._data = data
-        self._from = User(data['from'])
-        chat = data['chat']
-        if 'first_name' in chat:
-            self._chat = User(chat)
-        else:
-            self._chat = GroupChat(chat)
-        if 'forward_from' in data:
-            self._forward_from = User(data['forward_from'])
-        else:
-            self._forward_from = None
-        if 'reply_to_message' in data:
-            self._reply_to_message = Message(data['reply_to_message'])
-        else:
-            self._reply_to_message = None
-        if 'audio' in data:
-            self._audio = Audio(data['audio'])
-        else:
-            self._audio = None
-        if 'document' in data:
-            self._document = Document(data['document'])
-        else:
-            self._document = None
-        if 'photo' in data:
-            self._photo = [PhotoSize(ps) for ps in data['photo']]
-        else:
-            self._photo = None
-        if 'sticker' in data:
-            self._sticker = Sticker(data['sticker'])
-        else:
-            self._sticker = None
-        if 'video' in data:
-            self._video = Video(data['video'])
-        else:
-            self._video = None
-        if 'contact' in data:
-            self._contact = Contact(data['contact'])
-        else:
-            self._contact = None
-        if 'location' in data:
-            self._location = Location(data['location'])
-        else:
-            self._location = None
-        if 'new_chat_participant' in data:
-            self._new_chat_participant = User(data['new_chat_participant'])
-        else:
-            self._new_chat_participant = None
-        if 'left_chat_participant' in data:
-            self._left_chat_participant = User(data['left_chat_participant'])
-        else:
-            self._left_chat_participant = None
-        if 'new_chat_photo' in data:
-            self._new_chat_photo = [PhotoSize(ps) for ps in data['new_chat_photo']]
-        else:
-            self._new_chat_photo = None
-        if 'voice' in data:
-            self._voice = {}
 
-    def __str__(self):
+    def __str__(self) -> str:
         return json.dumps(self._data)
 
     @property
-    def message_id(self):
+    def message_id(self) -> int:
         return self._data['message_id']
 
     @property
-    def from_(self):
-        return self._from
+    def from_(self) -> Optional[User]:
+        return _wrap_data(self._data, 'from', User)
 
     @property
-    def date(self):
+    def date(self) -> int:
         return self._data['date']
 
     @property
-    def chat(self):
-        return self._chat
+    def chat(self) -> Chat:
+        return Chat(data['chat'])
 
     @property
-    def forward_from(self):
-        return self._forward_from
+    def forward_from(self) -> Optional[User]:
+        return _wrap_data(self._data, 'forward_from', User)
 
     @property
-    def forward_date(self):
+    def forward_from_chat(self) -> Optional[Chat]:
+        return _wrap_data(self._data, 'forward_from_chat', Chat)
+
+    @property
+    def forward_from_message_id(self) -> Optional[int]:
+        return _wrap_data(self._data, 'forward_from_message_id')
+
+    @property
+    def forward_date(self) -> Optional[int]:
         return self._data.get('forward_date', None)
 
     @property
-    def reply_to_message(self):
-        return self._reply_to_message
+    def reply_to_message(self) -> Optional[Message]:
+        return _wrap_data(self._data, 'reply_to_message', Message)
 
     @property
-    def text(self):
+    def edit_date(self) -> Optional[int]:
+        return _wrap_data(self._data, 'edit_date')
+
+    @property
+    def text(self) -> Optional[str]:
         return self._data.get('text', None)
 
     @property
-    def audio(self):
-        return self._audio
+    def entities(self) -> Optional[List[MessageEntity]]:
+        if 'entities' not in self._data:
+            return None
+        data = self._data['entities']
+        data = [MessageEntity(_) for _ in data]
+        return data
 
     @property
-    def document(self):
-        return self._document
+    def audio(self) -> Optional[Audio]:
+        return _wrap_data(self._data, 'audio', Audio)
 
     @property
-    def photo(self):
-        return self._photo
+    def document(self) -> Optional[Document]:
+        return _wrap_data(self._data, 'document', Document)
 
     @property
-    def sticker(self):
-        return self._sticker
+    def game(self) -> Optional[Game]:
+        return _wrap_data(self._data, 'game', Game)
 
     @property
-    def video(self):
-        return self._video
+    def photo(self) -> Optional[List[PhotoSize]]:
+        if 'photo' not in self._data:
+            return None
+        data = self._data['photo']
+        data = [PhotoSize(_) for _ in data]
+        return data
 
     @property
-    def contact(self):
-        return self._contact
+    def sticker(self) -> Optional[Sticker]:
+        return _wrap_data(self._data, 'sticker', Sticker)
 
     @property
-    def location(self):
-        return self._location
+    def video(self) -> Optional[Video]:
+        return _wrap_data(self._data, 'video', Video)
 
     @property
-    def new_chat_participant(self):
-        return self._new_chat_participant
+    def voice(self) -> Optional[Voice]:
+        return _wrap_data(self._data, 'voice', Voice)
 
     @property
-    def left_chat_participant(self):
-        return self._left_chat_participant
+    def caption(self) -> Optional[str]:
+        return _wrap_data(self._data, 'caption')
 
     @property
-    def new_chat_title(self):
+    def contact(self) -> Optional[Contact]:
+        return _wrap_data(self._data, 'contact', Contact)
+
+    @property
+    def location(self) -> Optional[Location]:
+        return _wrap_data(self._data, 'location', Location)
+
+    @property
+    def venue(self) -> Optional[Venue]:
+        return _wrap_data(self._data, 'venue', Venue)
+
+    @property
+    def new_chat_member(self) -> Optional[User]:
+        return _wrap_data(self._data, 'new_chat_member', User)
+
+    @property
+    def left_chat_member(self) -> Optional[User]:
+        return _wrap_data(self._data, 'left_chat_member', User)
+
+    @property
+    def new_chat_title(self) -> Optional[str]:
         return self._data.get('new_chat_title', None)
 
     @property
-    def new_chat_photo(self):
-        return self._new_chat_photo
+    def new_chat_photo(self) -> Optional[List[PhotoSize]]:
+        if 'new_chat_photo' not in self._data:
+            return None
+        data = self._data['new_chat_photo']
+        data = [PhotoSize(_) for _ in data]
+        return data
 
     @property
-    def delete_chat_photo(self):
+    def delete_chat_photo(self) -> Optional[bool]:
         return self._data.get('delete_chat_photo', None)
 
     @property
-    def group_chat_created(self):
+    def group_chat_created(self) -> Optional[bool]:
         return self._data.get('group_chat_created', None)
 
     @property
-    def voice(self):
-        return 'dummy'
+    def supergroup_chat_created(self) -> Optional[bool]:
+        return _wrap_data(self._data, 'supergroup_chat_created')
+
+    @property
+    def channel_chat_created(self) -> Optional[bool]:
+        return _wrap_data(self._data, 'channel_chat_created')
+
+    @property
+    def migrate_to_chat_id(self) -> Optional[int]:
+        return _wrap_data(self._data, 'migrate_to_chat_id')
+
+    @property
+    def migrate_from_chat_id(self) -> Optional[int]:
+        return _wrap_data(self._data, 'migrate_from_chat_id')
+
+    @property
+    def pinned_message(self) -> Optional[Message]:
+        return _wrap_data(self._data, 'pinned_message', Message)
 
 
 class PhotoSize(object):
