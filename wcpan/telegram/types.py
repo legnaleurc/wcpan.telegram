@@ -1,5 +1,6 @@
 import json
 import os.path as op
+from typing import Optional
 
 
 class User(object):
@@ -393,42 +394,42 @@ class Location(object):
 
 class Update(object):
 
-    def __init__(self, data):
+    def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self):
+    def __str__(self) -> str:
         return json.dumps(self._data)
 
     @property
-    def update_id(self):
+    def update_id(self) -> int:
         return self._data['update_id']
 
     @property
-    def message(self):
+    def message(self) -> Optional[Message]:
         return _wrap_data(self._data, 'message', Message)
 
     @property
-    def edited_message(self):
+    def edited_message(self) -> Optional[Message]:
         return _wrap_data(self._data, 'edited_message', Message)
 
     @property
-    def channel_post(self):
+    def channel_post(self) -> Optional[Message]:
         return _wrap_data(self._data, 'channel_post', Message)
 
     @property
-    def edited_channel_post(self):
+    def edited_channel_post(self) -> Optional[Message]:
         return _wrap_data(self._data, 'edited_channel_post', Message)
 
     @property
-    def inline_query(self):
+    def inline_query(self) -> Optional[InlineQuery]:
         return _wrap_data(self._data, 'inline_query', InlineQuery)
 
     @property
-    def chosen_inline_result(self):
+    def chosen_inline_result(self) -> Optional[ChosenInlineResult]:
         return _wrap_data(self._data, 'chosen_inline_result', ChosenInlineResult)
 
     @property
-    def callback_query(self):
+    def callback_query(self) -> Optional[CallbackQuery]:
         return _wrap_data(self._data, 'callback_query', CallbackQuery)
 
 
@@ -529,7 +530,43 @@ class InputFile(object):
                 yield chunk
 
 
-def _wrap_data(data, key, type_):
-    if key in data:
-        return type_(data[key])
-    return None
+class WebhookInfo(object):
+
+    def __init__(self, data) -> None:
+        self._data = data
+
+    @property
+    def url(self) -> str:
+        return self._data['url']
+
+    @property
+    def has_custom_certificate(self) -> bool:
+        return self._data['has_custom_certificate']
+
+    @property
+    def pending_update_count(self) -> int:
+        return self._data['pending_update_count']
+
+    @property
+    def last_error_date(self) -> int:
+        return _wrap_data(self._data, 'last_error_date')
+
+    @property
+    def last_error_message(self) -> str:
+        return _wrap_data(self._data, 'last_error_message')
+
+    @property
+    def max_connections(self) -> int:
+        return _wrap_data(self._data, 'max_connections')
+
+    @property
+    def allowed_updates(self) -> List[str]:
+        return _wrap_data(self._data, 'allowed_updates')
+
+
+def _wrap_data(data, key, type_=None):
+    if key not in data:
+        return None
+    if type_ is None:
+        return data[key]
+    return type_(data[key])
