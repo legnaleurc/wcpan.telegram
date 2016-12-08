@@ -772,6 +772,23 @@ class ChatMember(object):
         return self._data['status']
 
 
+class ResponseParameters(object):
+
+    def __init__(self, data: dict) -> None:
+        self._data = data
+
+    def __str__(self) -> str:
+        return json.dumps(self._data)
+
+    @property
+    def migrate_to_chat_id(self) -> int:
+        return _wrap_data(self._data, 'migrate_to_chat_id')
+
+    @property
+    def retry_after(self) -> int:
+        return _wrap_data(self._data, 'retry_after')
+
+
 class InputFile(object):
 
     def __init__(self, file_path):
