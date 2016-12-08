@@ -1,18 +1,16 @@
-from setuptools import setup, find_packages
 from os import path
 
-here = path.abspath(path.dirname(__file__))
+from setuptools import setup, find_packages
 
-try:
-    import pypandoc
-    long_description = pypandoc.convert(path.join(here, 'README.md'), 'rst')
-except (IOError, ImportError):
-    long_description = ''
+
+with open(op.join(op.dirname(__file__), './README.rst')) as fin:
+    long_description = fin.read()
+
 
 setup(
     name='wcpan.telegram',
 
-    version='0.2.1',
+    version='0.3.0.dev1',
 
     description='Telegram Bot API with Tornado',
     long_description=long_description,
@@ -32,8 +30,7 @@ setup(
 
         'License :: OSI Approved :: MIT License',
 
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',
@@ -45,8 +42,4 @@ setup(
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
 
     install_requires=['tornado >= 4'],
-
-    extras_require={
-        'dev': ['pypandoc'],
-    },
 )
