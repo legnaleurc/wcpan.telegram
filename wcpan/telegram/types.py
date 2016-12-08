@@ -44,6 +44,40 @@ class Update(object):
         return _wrap_data(self._data, 'callback_query', CallbackQuery)
 
 
+class WebhookInfo(object):
+
+    def __init__(self, data) -> None:
+        self._data = data
+
+    @property
+    def url(self) -> str:
+        return self._data['url']
+
+    @property
+    def has_custom_certificate(self) -> bool:
+        return self._data['has_custom_certificate']
+
+    @property
+    def pending_update_count(self) -> int:
+        return self._data['pending_update_count']
+
+    @property
+    def last_error_date(self) -> int:
+        return _wrap_data(self._data, 'last_error_date')
+
+    @property
+    def last_error_message(self) -> str:
+        return _wrap_data(self._data, 'last_error_message')
+
+    @property
+    def max_connections(self) -> int:
+        return _wrap_data(self._data, 'max_connections')
+
+    @property
+    def allowed_updates(self) -> List[str]:
+        return _wrap_data(self._data, 'allowed_updates')
+
+
 class User(object):
 
     def __init__(self, data: dict) -> None:
@@ -636,40 +670,6 @@ class InputFile(object):
                 if not chunk:
                     break
                 yield chunk
-
-
-class WebhookInfo(object):
-
-    def __init__(self, data) -> None:
-        self._data = data
-
-    @property
-    def url(self) -> str:
-        return self._data['url']
-
-    @property
-    def has_custom_certificate(self) -> bool:
-        return self._data['has_custom_certificate']
-
-    @property
-    def pending_update_count(self) -> int:
-        return self._data['pending_update_count']
-
-    @property
-    def last_error_date(self) -> int:
-        return _wrap_data(self._data, 'last_error_date')
-
-    @property
-    def last_error_message(self) -> str:
-        return _wrap_data(self._data, 'last_error_message')
-
-    @property
-    def max_connections(self) -> int:
-        return _wrap_data(self._data, 'max_connections')
-
-    @property
-    def allowed_updates(self) -> List[str]:
-        return _wrap_data(self._data, 'allowed_updates')
 
 
 def _wrap_data(data, key, type_=None):
