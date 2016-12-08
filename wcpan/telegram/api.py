@@ -1,4 +1,5 @@
 import json
+from typing import List, Awaitable
 
 from tornado import httpclient as thc, web as tw, httputil as thu
 
@@ -10,12 +11,14 @@ _API_TEMPLATE = 'https://api.telegram.org/bot{api_token}/{api_method}'
 
 class BotClient(object):
 
-    def __init__(self, api_token):
+    def __init__(self, api_token: str) -> None:
         self._api_token = api_token
         if not self._api_token:
             raise BotError('invalid API token')
 
-    async def get_updates(self, offset=0, limit=100, timeout=0):
+    async def get_updates(self, offset: int = 0, limit: int = 100,
+                          timeout: int = 0, allowed_updates: List[str] = None
+                          ) -> Awaitable[List[types.Update]]:
         args = {
             'offset': offset,
             'limit': limit,
@@ -24,16 +27,28 @@ class BotClient(object):
         data = await self._get('getUpdates', args)
         return [types.Update(u) for u in data]
 
-    async def set_webhook(self, url=None):
-        if url is None:
-            args = None
-        else:
-            args = {
-                'url': url
-            }
+    async def set_webhook(self, url: str, certificate: types.InputFile = None,
+                          max_connections: int = 40,
+                          allowed_updates: List[str] = None) -> Awaitable[bool]:
+        args = {
+            'url': '' if not url else str(url),
+            'max_connections': max_connections,
+        }
+        if certificate is not None:
+            args['certificate'] = str(certificate)
+        args['allowed_updates'] = ([] if allowed_updates is None
+                                   else str(allowed_updates))
 
-        # TODO undocumented return type
         data = await self._get('setWebhook', args)
+        return data
+
+    async def delete_webhook(self) -> Awaitable[bool]:
+        data = await self._get('deleteWebhook')
+        return data
+
+    async def get_webhook_info(self) -> Awaitable[types.WebhookInfo]:
+        data = await self._get('getWebhookInfo')
+        return types.WebhookInfo(data)
 
     async def get_me(self):
         data = await self._get('getMe')
