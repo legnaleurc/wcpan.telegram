@@ -6,7 +6,7 @@ Telegram Bot API with Tornado.
 High Level API Example
 ----------------------
 
-``TeleLich`` is a high level undead, you can demand it to send requests:
+``BotAgent`` is a high level undead, you can demand it to send requests:
 
 .. code:: python
 
@@ -16,7 +16,7 @@ High Level API Example
 
     async def main():
         API_TOKEN = 'your_token'
-        lich = api.TeleLich(API_TOKEN)
+        lich = api.BotAgent(API_TOKEN)
         talk_to = 42
 
         # getMe
@@ -63,7 +63,7 @@ And let it handles updates:
     from wcpan.telegram import api
 
 
-    class KelThuzad(api.TeleLich):
+    class KelThuzad(api.BotAgent):
 
         def __init__(self, api_token):
             super(KelThuzad, self).__init__(api_token)
@@ -99,7 +99,7 @@ Or handles updates by webhook:
     from wcpan.telegram import api
 
 
-    class HookHandler(api.TeleHookHandler):
+    class HookHandler(api.BotHookHandler):
 
         async def on_text(self, message):
             lich = self.application.settings['lich']
@@ -112,7 +112,7 @@ Or handles updates by webhook:
 
     async def create_lich():
         API_TOKEN = 'your_token'
-        lich = api.TeleLich(API_TOKEN)
+        lich = api.BotAgent(API_TOKEN)
         await lich.listen('https://your.host/hook')
         return lich
 
@@ -131,10 +131,7 @@ Or handles updates by webhook:
 Low Level API Example
 ---------------------
 
-Although the ``TeleLich`` is handy, sometimes you just need a ghoul to collect
-lumber for you, so you can use it to build your own Ziggurat.
-
-``TeleZombie`` provides simple and direct API mapping:
+``BotClient`` is also there, which provides simple and direct API mapping:
 
 .. code:: python
 
@@ -144,7 +141,7 @@ lumber for you, so you can use it to build your own Ziggurat.
 
     async def main():
         API_TOKEN = 'your_token'
-        ghoul = api.TeleZombie(API_TOKEN)
+        ghoul = api.BotClient(API_TOKEN)
         talk_to = 42
 
         # getMe
