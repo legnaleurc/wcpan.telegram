@@ -408,6 +408,31 @@ class Video(object):
         return self._data.get('file_size', None)
 
 
+class Voice(object):
+
+    def __init__(self, data: dict) -> None:
+        self._data = data
+
+    def __str__(self) -> str:
+        return json.dumps(self._data)
+
+    @property
+    def file_id(self) -> str:
+        return self._data['file_id']
+
+    @property
+    def duration(self) -> int:
+        return self._data['duration']
+
+    @property
+    def mime_type(self) -> Optional[str]:
+        return _wrap_data(self._data, 'mime_type')
+
+    @property
+    def file_size(self) -> Optional[int]:
+        return _wrap_data(self._data, 'file_size')
+
+
 class Contact(object):
 
     def __init__(self, data):
