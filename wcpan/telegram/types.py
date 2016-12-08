@@ -634,6 +634,24 @@ class ReplyKeyboardMarkup(object):
         return json.dumps(self._data)
 
 
+class KeyboardButton(object):
+
+    def __init__(self, text: str,
+                 request_contact: bool = None, request_location: bool = None
+                 ) -> None:
+        data = {
+            'text': text,
+        }
+        if request_contact is not None:
+            data['request_contact'] = request_contact
+        if request_location is not None:
+            data['request_location'] = request_location
+        self._data = data
+
+    def __str__(self) -> str:
+        return json.dumps(self._data)
+
+
 class ReplyKeyboardHide(object):
 
     def __init__(self, hide_keyboard, selective=None):
