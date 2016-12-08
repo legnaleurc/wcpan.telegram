@@ -1,7 +1,3 @@
-from __future__ import unicode_literals
-
-from tornado import gen
-
 from . import types
 
 
@@ -37,24 +33,23 @@ def encode_multipart_formdata(fields):
 def generate_multipart_formdata(fields):
     BOUNDARY = '----------ThIs_Is_tHe_bouNdaRY_$'
 
-    @gen.coroutine
-    def stream(write):
+    async def stream(write):
         for (key, value) in fields:
             if not isinstance(value, types.InputFile):
-                yield _crlf_bytes(write, '--' + BOUNDARY)
-                yield _crlf_bytes(write, 'Content-Disposition: form-data; name="%s"' % key)
-                yield _crlf_bytes(write, '')
-                yield _crlf_bytes(write, value)
+                await _crlf_bytes(write, '--' + BOUNDARY)
+                await _crlf_bytes(write, 'Content-Disposition: form-data; name="%s"' % key)
+                await _crlf_bytes(write, '')
+                await _crlf_bytes(write, value)
             else:
-                yield _crlf_bytes(write, '--' + BOUNDARY)
-                yield _crlf_bytes(write, 'Content-Disposition: form-data; name="%s"; filename="%s"' % (key, value.name))
-                yield _crlf_bytes(write, 'Content-Type: %s' % value.content_type)
-                yield _crlf_bytes(write, 'Content-Length: %s' % value.size)
-                yield _crlf_bytes(write, '')
+                await _crlf_bytes(write, '--' + BOUNDARY)
+                await _crlf_bytes(write, 'Content-Disposition: form-data; name="%s"; filename="%s"' % (key, value.name))
+                await _crlf_bytes(write, 'Content-Type: %s' % value.content_type)
+                await _crlf_bytes(write, 'Content-Length: %s' % value.size)
+                await _crlf_bytes(write, '')
                 for chunk in value.stream():
-                    yield write(chunk)
-                yield _crlf_bytes(write, '')
-        yield _crlf_bytes(write, '--' + BOUNDARY + '--')
+                    await write(chunk)
+                await _crlf_bytes(write, '')
+        await _crlf_bytes(write, '--' + BOUNDARY + '--')
 
     content_type = 'multipart/form-data; boundary=%s' % BOUNDARY
 
@@ -65,10 +60,9 @@ def _append_bytes(l, value):
     l.append(_to_bytes(value))
 
 
-@gen.coroutine
-def _crlf_bytes(write, value):
+async def _crlf_bytes(write, value):
     b = _to_bytes(value) + '\r\n'.encode('utf-8')
-    yield write(b)
+    await write(b)
 
 
 def _to_bytes(value):
