@@ -20,29 +20,49 @@ class User(object):
         return self._data['first_name']
 
     @property
-    def last_name(self) -> str:
+    def last_name(self) -> Optional[str]:
         return self._data.get('last_name', None)
 
     @property
-    def username(self) -> str:
+    def username(self) -> Optional[str]:
         return self._data.get('username', None)
 
 
-class GroupChat(object):
+class Chat(object):
 
-    def __init__(self, data):
+    def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self):
+    def __str__(self) -> str:
         return json.dumps(self._data)
 
     @property
-    def id_(self):
+    def id_(self) -> int:
         return self._data['id']
 
     @property
-    def title(self):
-        return self._data['title']
+    def type_(self) -> str:
+        return self._data['type']
+
+    @property
+    def title(self) -> Optional[str]:
+        return self._data.get('title', None)
+
+    @property
+    def username(self) -> Optional[str]:
+        return self._data.get('username', None)
+
+    @property
+    def first_name(self) -> Optional[str]:
+        return self._data.get('first_name', None)
+
+    @property
+    def last_name(self) -> Optional[str]:
+        return self._data.get('last_name', None)
+
+    @property
+    def all_members_are_administrators(self) -> Optional[bool]:
+        return self._data.get('all_members_are_administrators', None)
 
 
 class Message(object):
