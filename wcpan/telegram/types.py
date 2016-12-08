@@ -704,6 +704,43 @@ class InlineKeyboardButton(object):
         return json.dumps(self._data)
 
 
+class CallbackQuery(object):
+
+    def __init__(self, data: dict) -> None:
+        self._data = data
+
+    def __str__(self) -> str:
+        return json.dumps(self._data)
+
+    @property
+    def id_(self) -> str:
+        return self._data['id']
+
+    @property
+    def from_(self) -> User:
+        return User(self._data['from'])
+
+    @property
+    def message(self) -> Optional[Message]:
+        return _wrap_data(self._data, 'message', Message)
+
+    @property
+    def inline_message_id(self) -> Optional[str]:
+        return _wrap_data(self._data, 'inline_message_id')
+
+    @property
+    def chat_instance(self) -> str:
+        return self._data['chat_instance']
+
+    @property
+    def data(self) -> Optional[str]:
+        return _wrap_data(self._data, 'data')
+
+    @property
+    def game_short_name(self) -> Optional[str]:
+        return _wrap_data(self._data, 'game_short_name')
+
+
 class ForceReply(object):
 
     def __init__(self, force_reply, selective=None):
