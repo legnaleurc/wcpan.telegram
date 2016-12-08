@@ -1,5 +1,5 @@
-TeleZombie
-==========
+wcpan.telegram
+==============
 
 Telegram Bot API with Tornado.
 
