@@ -8,12 +8,12 @@ from . import types, util
 _API_TEMPLATE = 'https://api.telegram.org/bot{api_token}/{api_method}'
 
 
-class TeleZombie(object):
+class BotClient(object):
 
     def __init__(self, api_token):
         self._api_token = api_token
         if not self._api_token:
-            raise TeleError('invalid API token')
+            raise BotError('invalid API token')
 
     async def get_updates(self, offset=0, limit=100, timeout=0):
         args = {
@@ -199,7 +199,7 @@ class TeleZombie(object):
         data = response.body.decode('utf-8')
         data = json.loads(data)
         if not data['ok']:
-            raise TeleError(data['description'])
+            raise BotError(data['description'])
         return data['result']
 
     async def _get(self, api_method, args=None):
@@ -305,16 +305,16 @@ class _DispatcherMixin(object):
         elif message.voice is not None:
             pass
         else:
-            raise TeleError('unknown message type')
+            raise BotError('unknown message type')
 
 
-class TeleLich(_DispatcherMixin):
+class BotAgent(_DispatcherMixin):
 
     def __init__(self, api_token):
-        self._api = TeleZombie(api_token)
+        self._api = BotClient(api_token)
 
     @property
-    def zombie(self):
+    def client(self):
         return self._api
 
     async def get_updates(self, timeout=0):
@@ -412,7 +412,7 @@ class TeleLich(_DispatcherMixin):
         await self._api.set_webhook()
 
 
-class TeleHookHandler(tw.RequestHandler, _DispatcherMixin):
+class BotHookHandler(tw.RequestHandler, _DispatcherMixin):
 
     async def post(self):
         data = self.request.body
@@ -424,7 +424,7 @@ class TeleHookHandler(tw.RequestHandler, _DispatcherMixin):
         await self._receive_message(update.message)
 
 
-class TeleError(Exception):
+class BotError(Exception):
 
     def __init__(self, description):
         self.description = description
