@@ -340,31 +340,34 @@ class Document(object):
 
 class Sticker(object):
 
-    def __init__(self, data):
+    def __init__(self, data: dict) -> None:
         self._data = data
-        self._thumb = PhotoSize(data['thumb'])
 
-    def __str__(self):
+    def __str__(self) -> str:
         return json.dumps(self._data)
 
     @property
-    def file_id(self):
+    def file_id(self) -> str:
         return self._data['file_id']
 
     @property
-    def width(self):
+    def width(self) -> int:
         return self._data['width']
 
     @property
-    def height(self):
+    def height(self) -> int:
         return self._data['height']
 
     @property
-    def thumb(self):
-        return self._thumb
+    def thumb(self) -> Optional[PhotoSize]:
+        return _wrap_data(self._data, 'thumb', PhotoSize)
 
     @property
-    def file_size(self):
+    def emoji(self) -> Optional[str]:
+        return _wrap_data(self._data, 'emoji')
+
+    @property
+    def file_size(self) -> Optional[int]:
         return self._data.get('file_size', None)
 
 
