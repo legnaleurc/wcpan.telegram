@@ -743,7 +743,7 @@ class CallbackQuery(object):
 
 class ForceReply(object):
 
-    def __init__(self, force_reply, selective=None):
+    def __init__(self, force_reply: bool, selective: bool = None) -> None:
         data = {
             'force_reply': force_reply,
         }
@@ -751,7 +751,7 @@ class ForceReply(object):
             data['selective'] = selective
         self._data = data
 
-    def __str__(self):
+    def __str__(self) -> None:
         return json.dumps(self._data)
 
 
