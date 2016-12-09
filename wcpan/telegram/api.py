@@ -411,6 +411,14 @@ class BotClient(object):
         data = await self._get('unbanChatMember', args)
         return data
 
+    async def get_chat(self, chat_id: Union[int, str]) -> Awaitable[types.Chat]:
+        args = {
+            'chat_id': chat_id,
+        }
+
+        data = await self._get('getChat', args)
+        return types.Chat(data)
+
     def _get_api_url(self, api_method):
         return _API_TEMPLATE.format(api_token=self._api_token,
                                     api_method=api_method)
