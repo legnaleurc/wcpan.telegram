@@ -60,11 +60,11 @@ class BotClient(object):
                            disable_notification: bool = None,
                            reply_to_message_id: int = None,
                            reply_markup: Union[
-                               InlineKeyboardMarkup,
-                               ReplyKeyboardMarkup,
-                               ReplyKeyboardRemove,
-                               ForceReply,
-                           ] = None) -> Awaitable[Message]:
+                               types.InlineKeyboardMarkup,
+                               types.ReplyKeyboardMarkup,
+                               types.ReplyKeyboardRemove,
+                               types.ForceReply,
+                           ] = None) -> Awaitable[types.Message]:
         args = {
             'chat_id': chat_id,
             'text': text,
@@ -83,12 +83,17 @@ class BotClient(object):
         data = await self._get('sendMessage', args)
         return types.Message(data)
 
-    async def forward_message(self, chat_id, from_chat_id, message_id):
+    async def forward_message(self, chat_id: Union[int, str],
+                              from_chat_id: Union[int, str], message_id: int,
+                              disable_notification: bool = None,
+                              ) -> Awaitable[types.Message]:
         args = {
             'chat_id': chat_id,
             'from_chat_id': from_chat_id,
             'message_id': message_id,
         }
+        if disable_notification is not None:
+            args['disable_notification'] = disable_notification
 
         data = await self._get('forwardMessage', args)
         return types.Message(data)
