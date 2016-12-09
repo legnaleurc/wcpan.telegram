@@ -41,18 +41,23 @@ class BotClient(object):
         return [types.Update(u) for u in data]
 
     async def set_webhook(self, url: str, certificate: types.InputFile = None,
-                          max_connections: int = 40,
+                          max_connections: int = None,
                           allowed_updates: List[str] = None) -> Awaitable[bool]:
         args = {
             'url': '' if not url else str(url),
-            'max_connections': max_connections,
         }
         if certificate is not None:
-            args['certificate'] = str(certificate)
-        args['allowed_updates'] = ([] if allowed_updates is None
-                                   else str(allowed_updates))
+            args['certificate'] = certificate
+        if max_connections is not None:
+            args['max_connections'] = max_connections
+        if allowed_updates is not None:
+            args['allowed_updates'] = allowed_updates
 
-        data = await self._get('setWebhook', args)
+        if isinstance(certificate, types.InputFile):
+            data = await self._post('setWebhook', args)
+        else:
+            data = await self._get('setWebhook', args)
+
         return data
 
     async def delete_webhook(self) -> Awaitable[bool]:
