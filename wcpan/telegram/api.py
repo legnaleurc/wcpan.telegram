@@ -272,13 +272,18 @@ class BotClient(object):
 
         return types.Message(data)
 
-    async def send_location(self, chat_id, latitude, longitude,
-                            reply_to_message_id=None, reply_markup=None):
+    async def send_location(self, chat_id: Union[int, str], latitude: float,
+                            longitude: float, disable_notification: bool = None,
+                            reply_to_message_id: int = None,
+                            reply_markup: ReplyMarkup = None
+                            ) -> Awaitable[types.Message]:
         args = {
             'chat_id': chat_id,
             'latitude': latitude,
             'longitude': longitude,
         }
+        if disable_notification is not None:
+            args['disable_notification'] = disable_notification
         if reply_to_message_id is not None:
             args['reply_to_message_id'] = reply_to_message_id
         if reply_markup is not None:
