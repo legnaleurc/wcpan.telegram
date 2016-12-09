@@ -428,6 +428,14 @@ class BotClient(object):
         data = await self._get('getChatAdministrators', args)
         return [types.ChatMember(_) for _ in data]
 
+    async def get_chat_members_count(self, chat_id: Union[int, str]) -> Awaitable[int]:
+        args = {
+            'chat_id': chat_id,
+        }
+
+        data = await self._get('getChatMembersCount', args)
+        return data
+
     def _get_api_url(self, api_method):
         return _API_TEMPLATE.format(api_token=self._api_token,
                                     api_method=api_method)
