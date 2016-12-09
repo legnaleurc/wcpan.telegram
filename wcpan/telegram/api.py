@@ -245,6 +245,33 @@ class BotClient(object):
 
         return types.Message(data)
 
+    async def send_voice(self, chat_id: Union[int, str],
+                         voice: Union[types.InputFile, str],
+                         caption: str = None, duration: int = None,
+                         disable_notification: bool = None,
+                         reply_to_message_id: int = None,
+                         reply_markup: ReplyMarkup = None
+                         ) -> Awaitable[types.Message]:
+        args = {
+            'chat_id': chat_id,
+            'voice': voice,
+        }
+        if caption is not None:
+            args['caption'] = caption
+        if duration is not None:
+            args['duration'] = duration
+        if disable_notification is not None:
+            args['disable_notification'] = disable_notification
+        if reply_markup is not None:
+            args['reply_markup'] = str(reply_markup)
+
+        if isinstance(audio, str):
+            data = await self._get('sendVoice', args)
+        else:
+            data = await self._post('sendVoice', args)
+
+        return types.Message(data)
+
     async def send_location(self, chat_id, latitude, longitude,
                             reply_to_message_id=None, reply_markup=None):
         args = {
