@@ -128,14 +128,28 @@ class BotClient(object):
 
         return types.Message(data)
 
-    async def send_audio(self, chat_id, audio, reply_to_message_id=None,
-                         reply_markup=None):
+    async def send_audio(self, chat_id: Union[int, str],
+                         audio: Union[types.InputFile, str],
+                         caption: str = None, duration: int = None,
+                         performer: str = None, title: str = None,
+                         disable_notification: bool = None,
+                         reply_to_message_id: int = None,
+                         reply_markup: ReplyMarkup = None
+                         ) -> Awaitable[types.Message]:
         args = {
             'chat_id': chat_id,
             'audio': audio,
         }
-        if reply_to_message_id is not None:
-            args['reply_to_message_id'] = reply_to_message_id
+        if caption is not None:
+            args['caption'] = caption
+        if duration is not None:
+            args['duration'] = duration
+        if performer is not None:
+            args['performer'] = performer
+        if title is not None:
+            args['title'] = title
+        if disable_notification is not None:
+            args['disable_notification'] = disable_notification
         if reply_markup is not None:
             args['reply_markup'] = str(reply_markup)
 
