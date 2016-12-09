@@ -375,6 +375,14 @@ class BotClient(object):
         data = await self._get('getUserProfilePhotos', args)
         return types.UserProfilePhotos(data)
 
+    async def get_file(self, file_id: str) -> Awaitable[types.File]:
+        args = {
+            'file_id': file_id,
+        }
+
+        data = await self._get('getFile', args)
+        return types.File(data)
+
     def _get_api_url(self, api_method):
         return _API_TEMPLATE.format(api_token=self._api_token,
                                     api_method=api_method)
