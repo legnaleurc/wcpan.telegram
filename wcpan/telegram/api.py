@@ -1,5 +1,5 @@
 import json
-from typing import List, Awaitable
+from typing import List, Awaitable, Union
 
 from tornado import httpclient as thc, web as tw, httputil as thu
 
@@ -50,18 +50,31 @@ class BotClient(object):
         data = await self._get('getWebhookInfo')
         return types.WebhookInfo(data)
 
-    async def get_me(self):
+    async def get_me(self) -> Awaitable[types.User]:
         data = await self._get('getMe')
         return types.User(data)
 
-    async def send_message(self, chat_id, text, disable_web_page_preview=None,
-                           reply_to_message_id=None, reply_markup=None):
+    async def send_message(self, chat_id: Union[int, str], text: str,
+                           parse_mode: str = None,
+                           disable_web_page_preview: bool = None,
+                           disable_notification: bool = None,
+                           reply_to_message_id: int = None,
+                           reply_markup: Union[
+                               InlineKeyboardMarkup,
+                               ReplyKeyboardMarkup,
+                               ReplyKeyboardRemove,
+                               ForceReply,
+                           ] = None) -> Awaitable[Message]:
         args = {
             'chat_id': chat_id,
             'text': text,
         }
+        if parse_mode is not None:
+            args['parse_mode'] = parse_mode
         if disable_web_page_preview is not None:
             args['disable_web_page_preview'] = disable_web_page_preview
+        if disable_notification is not None:
+            args['disable_notification'] = disable_notification
         if reply_to_message_id is not None:
             args['reply_to_message_id'] = reply_to_message_id
         if reply_markup is not None:
