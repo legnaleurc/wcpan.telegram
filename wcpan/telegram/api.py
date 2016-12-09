@@ -24,14 +24,19 @@ class BotClient(object):
         if not self._api_token:
             raise BotError('invalid API token')
 
-    async def get_updates(self, offset: int = 0, limit: int = 100,
-                          timeout: int = 0, allowed_updates: List[str] = None
+    async def get_updates(self, offset: int = None, limit: int = None,
+                          timeout: int = None, allowed_updates: List[str] = None
                           ) -> Awaitable[List[types.Update]]:
-        args = {
-            'offset': offset,
-            'limit': limit,
-            'timeout': timeout,
-        }
+        args = {}
+        if offset is not None:
+            args['offset'] = offset
+        if limit is not None:
+            args['limit'] = limit
+        if timeout is not None:
+            args['timeout'] = timeout
+        if allowed_updates is not None:
+            args['allowed_updates'] = allowed_updates
+
         data = await self._get('getUpdates', args)
         return [types.Update(u) for u in data]
 
