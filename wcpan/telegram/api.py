@@ -318,6 +318,29 @@ class BotClient(object):
         data = await self._get('sendVenue', args)
         return types.Message(data)
 
+    async def send_contact(self, chat_id: Union[int, str], phone_number: str,
+                           first_name: str, last_name: str = None,
+                           disable_notification: bool = None,
+                           reply_to_message_id: int = None,
+                           reply_markup: ReplyMarkup = None
+                           ) -> Awaitable[types.Message]:
+        args = {
+            'chat_id': chat_id,
+            'phone_number': phone_number,
+            'first_name': first_name,
+        }
+        if last_name is not None:
+            args['last_name'] = last_name
+        if disable_notification is not None:
+            args['disable_notification'] = disable_notification
+        if reply_to_message_id is not None:
+            args['reply_to_message_id'] = reply_to_message_id
+        if reply_markup is not None:
+            args['reply_markup'] = str(reply_markup)
+
+        data = await self._get('sendContact', args)
+        return types.Message(data)
+
     async def send_chat_action(self, chat_id, action):
         args = {
             'chat_id': chat_id,
