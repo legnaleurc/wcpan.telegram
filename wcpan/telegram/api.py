@@ -341,14 +341,15 @@ class BotClient(object):
         data = await self._get('sendContact', args)
         return types.Message(data)
 
-    async def send_chat_action(self, chat_id, action):
+    async def send_chat_action(self, chat_id: Union[int, str],
+                               action: str) -> Awaitable[bool]:
         args = {
             'chat_id': chat_id,
             'action': action,
         }
 
-        # TODO undocumented return type
         data = await self._get('sendChatAction', args)
+        return data
 
     async def get_user_profile_photos(self, user_id, offset=0, limit=100):
         args = {
