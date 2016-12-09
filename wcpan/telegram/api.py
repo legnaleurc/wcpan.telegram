@@ -351,12 +351,16 @@ class BotClient(object):
         data = await self._get('sendChatAction', args)
         return data
 
-    async def get_user_profile_photos(self, user_id, offset=0, limit=100):
+    async def get_user_profile_photos(self, user_id: int, offset: int = None,
+                                      limit: int = None
+                                      ) -> Awaitable[types.UserProfilePhotos]:
         args = {
             'user_id': user_id,
-            'offset': offset,
-            'limit': limit,
         }
+        if offset is not None:
+            args['offset'] = offset
+        if limit is not None:
+            args['limit'] = limit
 
         data = await self._get('getUserProfilePhotos', args)
         return types.UserProfilePhotos(data)
