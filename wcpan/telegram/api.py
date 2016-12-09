@@ -401,6 +401,16 @@ class BotClient(object):
         data = await self._get('leaveChat', args)
         return data
 
+    async def unban_chat_member(self, chat_id: Union[int, str],
+                               user_id: int) -> Awaitable[bool]:
+        args = {
+            'chat_id': chat_id,
+            'user_id': user_id,
+        }
+
+        data = await self._get('unbanChatMember', args)
+        return data
+
     def _get_api_url(self, api_method):
         return _API_TEMPLATE.format(api_token=self._api_token,
                                     api_method=api_method)
