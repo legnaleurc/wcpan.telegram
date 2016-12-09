@@ -393,6 +393,14 @@ class BotClient(object):
         data = await self._get('kickChatMember', args)
         return data
 
+    async def leave_chat(self, chat_id: Union[int, str]) -> Awaitable[bool]:
+        args = {
+            'chat_id': chat_id,
+        }
+
+        data = await self._get('leaveChat', args)
+        return data
+
     def _get_api_url(self, api_method):
         return _API_TEMPLATE.format(api_token=self._api_token,
                                     api_method=api_method)
