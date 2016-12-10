@@ -822,6 +822,35 @@ class InputFile(object):
                 yield chunk
 
 
+class InlineQuery(object):
+
+    def __init__(self, data: dict) -> None:
+        self._data = data
+
+    def __str__(self) -> str:
+        return json.dumps(self._data)
+
+    @property
+    def id_(self) -> str:
+        return self._data['id']
+
+    @property
+    def from_(self) -> User:
+        return User(self._data['from'])
+
+    @property
+    def location(self) -> Optinal[Location]:
+        return _wrap_data(self._data, 'location', Location)
+
+    @property
+    def query(self) -> str:
+        return self._data['query']
+
+    @property
+    def offset(self) -> str:
+        return self._data['offset']
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
