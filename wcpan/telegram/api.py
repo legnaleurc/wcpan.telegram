@@ -454,7 +454,7 @@ class BotClient(object):
             'callback_query_id': callback_query_id,
         }
         if text is not None:
-            args['text'] = foursquare_id
+            args['text'] = text
         if show_alert is not None:
             args['show_alert'] = show_alert
         if url is not None:
@@ -464,6 +464,35 @@ class BotClient(object):
 
         data = await self._get('answerCallbackQuery', args)
         return data
+
+    async def edit_message_text(self, text: str,
+                                chat_id: Union[int, str] = None,
+                                message_id: int = None,
+                                inline_message_id: str = None,
+                                parse_mode: str = None,
+                                disable_web_page_preview: bool = None,
+                                reply_markup: types.InlineKeyboardMarkup = None
+                                ) -> Awaitable[Union[types.Message, bool]]:
+        args = {
+            'text': text,
+        }
+        if chat_id is not None:
+            args['chat_id'] = chat_id
+        if message_id is not None:
+            args['message_id'] = message_id
+        if inline_message_id is not None:
+            args['inline_message_id'] = inline_message_id
+        if parse_mode is not None:
+            args['parse_mode'] = parse_mode
+        if disable_web_page_preview is not None:
+            args['disable_web_page_preview'] = disable_web_page_preview
+        if reply_markup is not None:
+            args['reply_markup'] = reply_markup
+
+        data = await self._get('editMessageText', args)
+        if isinstance(data, bool):
+            return data
+        return types.Message(data)
 
     def _get_api_url(self, api_method):
         return _API_TEMPLATE.format(api_token=self._api_token,
