@@ -518,6 +518,28 @@ class BotClient(object):
             return data
         return types.Message(data)
 
+    async def edit_message_reply_markup(self, chat_id: Union[int, str] = None,
+                                        message_id: int = None,
+                                        inline_message_id: str = None,
+                                        reply_markup:
+                                            types.InlineKeyboardMarkup = None
+                                        ) -> Awaitable[
+                                            Union[types.Message, bool]]:
+        args = {}
+        if chat_id is not None:
+            args['chat_id'] = chat_id
+        if message_id is not None:
+            args['message_id'] = message_id
+        if inline_message_id is not None:
+            args['inline_message_id'] = inline_message_id
+        if reply_markup is not None:
+            args['reply_markup'] = reply_markup
+
+        data = await self._get('editMessageReplyMarkup', args)
+        if isinstance(data, bool):
+            return data
+        return types.Message(data)
+
     def _get_api_url(self, api_method):
         return _API_TEMPLATE.format(api_token=self._api_token,
                                     api_method=api_method)
