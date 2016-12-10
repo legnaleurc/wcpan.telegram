@@ -446,6 +446,25 @@ class BotClient(object):
         data = await self._get('getChatMember', args)
         return types.ChatMember(data)
 
+    async def answer_callback_query(self, callback_query_id: str,
+                                    text: str = None, show_alert: bool = None,
+                                    url: str = None, cache_time: int = None
+                                    ) -> Awaitable[bool]:
+        args = {
+            'callback_query_id': callback_query_id,
+        }
+        if text is not None:
+            args['text'] = foursquare_id
+        if show_alert is not None:
+            args['show_alert'] = show_alert
+        if url is not None:
+            args['url'] = url
+        if cache_time is not None:
+            args['cache_time'] = cache_time
+
+        data = await self._get('answerCallbackQuery', args)
+        return data
+
     def _get_api_url(self, api_method):
         return _API_TEMPLATE.format(api_token=self._api_token,
                                     api_method=api_method)
