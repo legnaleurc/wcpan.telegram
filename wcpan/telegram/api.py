@@ -540,6 +540,32 @@ class BotClient(object):
             return data
         return types.Message(data)
 
+    async def answer_inline_query(self, inline_query_id: str,
+                                  results: List[types.InlineQueryResult],
+                                  cache_time: int = None,
+                                  is_personal: bool = None,
+                                  next_offset: str = None,
+                                  switch_pm_text: str = None,
+                                  switch_pm_parameter: str = None
+                                  ) -> Awaitable[bool]:
+        args = {
+            'inline_query_id': inline_query_id,
+            'results': results,
+        }
+        if cache_time is not None:
+            args['cache_time'] = cache_time
+        if is_personal is not None:
+            args['is_personal'] = is_personal
+        if next_offset is not None:
+            args['next_offset'] = next_offset
+        if switch_pm_text is not None:
+            args['switch_pm_text'] = switch_pm_text
+        if switch_pm_parameter is not None:
+            args['switch_pm_parameter'] = switch_pm_parameter
+
+        data = await self._get('answerInlineQuery', args)
+        return data
+
     def _get_api_url(self, api_method):
         return _API_TEMPLATE.format(api_token=self._api_token,
                                     api_method=api_method)
