@@ -1398,6 +1398,23 @@ class InputLocationMessageContent(InputMessageContent):
         })
 
 
+class InputVenueMessageContent(InputMessageContent):
+
+    def __init__(self, latitude: float, longitude: float, title: str,
+                 address: str, foursquare_id: str = None) -> None:
+        super(InputVenueMessageContent, self).__init__()
+
+        self._data.update({
+            'latitude': latitude,
+            'longitude': longitude,
+            'title': title,
+            'address': address,
+        })
+
+        if foursquare_id is not None:
+            self._data['foursquare_id'] = foursquare_id
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
