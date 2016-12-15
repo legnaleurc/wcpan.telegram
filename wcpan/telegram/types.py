@@ -1120,6 +1120,37 @@ class InlineQueryResultLocation(InlineQueryResult):
             self._data['thumb_height'] = thumb_height
 
 
+class InlineQueryResultVenue(InlineQueryResult):
+
+    def __init__(self, id_: int, latitude: float, longitude: float, title: str,
+                 address: str, foursquare_id: str = None,
+                 reply_markup: InlineKeyboardMarkup = None,
+                 input_message_content: InputMessageContent = None,
+                 thumb_url: str = None, thumb_width: int = None,
+                 thumb_height: int = None) -> None:
+        super(InlineQueryResultVenue, self).__init__('venue', id_)
+
+        self._data.update({
+            'latitude': latitude,
+            'longitude': longitude,
+            'title': title,
+            'address': address,
+        })
+
+        if foursquare_id is not None:
+            self._data['foursquare_id'] = foursquare_id
+        if reply_markup is not None:
+            self._data['reply_markup'] = reply_markup
+        if input_message_content is not None:
+            self._data['input_message_content'] = input_message_content
+        if thumb_url is not None:
+            self._data['thumb_url'] = thumb_url
+        if thumb_width is not None:
+            self._data['thumb_width'] = thumb_width
+        if thumb_height is not None:
+            self._data['thumb_height'] = thumb_height
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
