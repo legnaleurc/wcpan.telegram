@@ -1526,6 +1526,11 @@ class Animation(object):
         return _wrap_data(self._data, 'file_size')
 
 
+class CallbackGame(object):
+
+    pass
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
