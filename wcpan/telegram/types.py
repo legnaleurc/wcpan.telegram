@@ -1430,6 +1430,35 @@ class InputContactMessageContent(InputMessageContent):
             self._data['last_name'] = last_name
 
 
+class ChosenInlineResult(object):
+
+    def __init__(self, data: dict) -> None:
+        self._data = data
+
+    def __str__(self) -> None:
+        return json.dumps(self._data)
+
+    @property
+    def result_id(self) -> str:
+        return self._data['result_id']
+
+    @property
+    def from_(self) -> User:
+        return self._data['from']
+
+    @property
+    def location(self) -> Optional[Location]:
+        return _wrap_data(self._data, 'location', Location)
+
+    @property
+    def inline_message_id(self) -> Optional[str]:
+        return _wrap_data(self._data, 'inline_message_id')
+
+    @property
+    def query(self) -> str:
+        return self._data['query']
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
