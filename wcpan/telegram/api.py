@@ -676,6 +676,9 @@ class _DispatcherMixin(object):
     async def on_document(self, message):
         pass
 
+    async def on_game(self, message):
+        pass
+
     async def on_photo(self, message):
         pass
 
@@ -685,16 +688,25 @@ class _DispatcherMixin(object):
     async def on_video(self, message):
         pass
 
+    async def on_voice(self, message):
+        pass
+
+    async def on_caption(self, message):
+        pass
+
     async def on_contact(self, message):
         pass
 
     async def on_location(self, message):
         pass
 
-    async def on_new_chat_participant(self, message):
+    async def on_venue(self, message):
         pass
 
-    async def on_left_chat_participant(self, message):
+    async def on_new_chat_member(self, message):
+        pass
+
+    async def on_left_chat_member(self, message):
         pass
 
     async def on_new_chat_title(self, message):
@@ -709,6 +721,15 @@ class _DispatcherMixin(object):
     async def on_group_chat_created(self, message):
         pass
 
+    async def on_supergroup_chat_created(self, message):
+        pass
+
+    async def on_channel_chat_created(self, message):
+        pass
+
+    async def on_pinned_message(self, message):
+        pass
+
     async def _receive_message(self, message):
         if message.text is not None:
             await self.on_text(message)
@@ -716,20 +737,28 @@ class _DispatcherMixin(object):
             await self.on_audio(message)
         elif message.document is not None:
             await self.on_document(message)
+        elif message.game is not None:
+            await self.on_game(message)
         elif message.photo is not None:
             await self.on_photo(message)
         elif message.sticker is not None:
             await self.on_sticker(message)
         elif message.video is not None:
             await self.on_video(message)
+        elif message.voice is not None:
+            await self.on_voice(message)
+        elif message.caption is not None:
+            await self.on_caption(message)
         elif message.contact is not None:
             await self.on_contact(message)
         elif message.location is not None:
             await self.on_location(message)
-        elif message.new_chat_participant is not None:
-            await self.on_new_chat_participant(message)
-        elif message.left_chat_participant is not None:
-            await self.on_left_chat_participant(message)
+        elif message.venue is not None:
+            await self.on_venue(message)
+        elif message.new_chat_member is not None:
+            await self.on_new_chat_member(message)
+        elif message.left_chat_member is not None:
+            await self.on_left_chat_member(message)
         elif message.new_chat_title is not None:
             await self.on_new_chat_title(message)
         elif message.new_chat_photo is not None:
@@ -738,8 +767,12 @@ class _DispatcherMixin(object):
             await self.on_delete_chat_photo(message)
         elif message.group_chat_created is not None:
             await self.on_group_chat_created(message)
-        elif message.voice is not None:
-            pass
+        elif message.supergroup_chat_created is not None:
+            await self.on_supergroup_chat_created(message)
+        elif message.channel_chat_created is not None:
+            await self.on_channel_chat_created(message)
+        elif message.pinned_message is not None:
+            await self.on_pinned_message(message)
         else:
             raise BotError('unknown message type')
 
