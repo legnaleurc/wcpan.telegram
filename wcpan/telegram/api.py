@@ -566,6 +566,25 @@ class BotClient(object):
         data = await self._get('answerInlineQuery', args)
         return data
 
+    async def send_game(self, chat_id: int, game_short_name: str,
+                        disable_notification: bool = None,
+                        reply_to_message_id: int = None,
+                        reply_markup: types.InlineKeyboardMarkup = None,
+                        ) -> Awaitable[types.Message]:
+        args = {
+            'chat_id': chat_id,
+            'game_short_name': game_short_name,
+        }
+        if disable_notification is not None:
+            args['disable_notification'] = disable_notification
+        if reply_to_message_id is not None:
+            args['reply_to_message_id'] = reply_to_message_id
+        if reply_markup is not None:
+            args['reply_markup'] = reply_markup
+
+        data = await self._get('sendGame', args)
+        return types.Message(data)
+
     def _get_api_url(self, api_method):
         return _API_TEMPLATE.format(api_token=self._api_token,
                                     api_method=api_method)
