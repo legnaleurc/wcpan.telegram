@@ -664,73 +664,73 @@ class BotClient(object):
 
 class _DispatcherMixin(object):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super(_DispatcherMixin, self).__init__()
 
-    async def on_text(self, message):
+    async def on_text(self, message: types.Message) -> None:
         pass
 
-    async def on_audio(self, message):
+    async def on_audio(self, message: types.Message) -> None:
         pass
 
-    async def on_document(self, message):
+    async def on_document(self, message: types.Message) -> None:
         pass
 
-    async def on_game(self, message):
+    async def on_game(self, message: types.Message) -> None:
         pass
 
-    async def on_photo(self, message):
+    async def on_photo(self, message: types.Message) -> None:
         pass
 
-    async def on_sticker(self, message):
+    async def on_sticker(self, message: types.Message) -> None:
         pass
 
-    async def on_video(self, message):
+    async def on_video(self, message: types.Message) -> None:
         pass
 
-    async def on_voice(self, message):
+    async def on_voice(self, message: types.Message) -> None:
         pass
 
-    async def on_caption(self, message):
+    async def on_caption(self, message: types.Message) -> None:
         pass
 
-    async def on_contact(self, message):
+    async def on_contact(self, message: types.Message) -> None:
         pass
 
-    async def on_location(self, message):
+    async def on_location(self, message: types.Message) -> None:
         pass
 
-    async def on_venue(self, message):
+    async def on_venue(self, message: types.Message) -> None:
         pass
 
-    async def on_new_chat_member(self, message):
+    async def on_new_chat_member(self, message: types.Message) -> None:
         pass
 
-    async def on_left_chat_member(self, message):
+    async def on_left_chat_member(self, message: types.Message) -> None:
         pass
 
-    async def on_new_chat_title(self, message):
+    async def on_new_chat_title(self, message: types.Message) -> None:
         pass
 
-    async def on_new_chat_photo(self, message):
+    async def on_new_chat_photo(self, message: types.Message) -> None:
         pass
 
-    async def on_delete_chat_photo(self, message):
+    async def on_delete_chat_photo(self, message: types.Message) -> None:
         pass
 
-    async def on_group_chat_created(self, message):
+    async def on_group_chat_created(self, message: types.Message) -> None:
         pass
 
-    async def on_supergroup_chat_created(self, message):
+    async def on_supergroup_chat_created(self, message: types.Message) -> None:
         pass
 
-    async def on_channel_chat_created(self, message):
+    async def on_channel_chat_created(self, message: types.Message) -> None:
         pass
 
-    async def on_pinned_message(self, message):
+    async def on_pinned_message(self, message: types.Message) -> None:
         pass
 
-    async def _receive_message(self, message):
+    async def _receive_message(self, message: types.Message) -> None:
         if message.text is not None:
             await self.on_text(message)
         elif message.audio is not None:
