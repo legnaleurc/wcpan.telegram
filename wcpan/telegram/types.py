@@ -1012,6 +1012,32 @@ class InlineQueryResultVideo(InlineQueryResult):
             self._data['input_message_content'] = input_message_content
 
 
+class InlineQueryResultAudio(InlineQueryResult):
+
+    def __init__(self, id_: int, audio_url: str, title: str,
+                 caption: str = None, performer: str = None,
+                 audio_duration: int = None,
+                 reply_markup: InlineKeyboardMarkup = None,
+                 input_message_content: InputMessageContent = None) -> None:
+        super(InlineQueryResultAudio, self).__init__('audio', id_)
+
+        self._data.update({
+            'audio_url': audio_url,
+            'title': title,
+        })
+
+        if caption is not None:
+            self._data['caption'] = caption
+        if performer is not None:
+            self._data['performer'] = performer
+        if audio_duration is not None:
+            self._data['audio_duration'] = audio_duration
+        if reply_markup is not None:
+            self._data['reply_markup'] = reply_markup
+        if input_message_content is not None:
+            self._data['input_message_content'] = input_message_content
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
