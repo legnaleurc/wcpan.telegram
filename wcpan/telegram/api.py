@@ -92,7 +92,7 @@ class BotClient(object):
         if reply_to_message_id is not None:
             args['reply_to_message_id'] = reply_to_message_id
         if reply_markup is not None:
-            args['reply_markup'] = str(reply_markup)
+            args['reply_markup'] = reply_markup
 
         data = await self._get('sendMessage', args)
         return types.Message(data)
@@ -129,7 +129,7 @@ class BotClient(object):
         if reply_to_message_id is not None:
             args['reply_to_message_id'] = reply_to_message_id
         if reply_markup is not None:
-            args['reply_markup'] = str(reply_markup)
+            args['reply_markup'] = reply_markup
 
         if isinstance(photo, str):
             data = await self._get('sendPhoto', args)
@@ -161,7 +161,7 @@ class BotClient(object):
         if disable_notification is not None:
             args['disable_notification'] = disable_notification
         if reply_markup is not None:
-            args['reply_markup'] = str(reply_markup)
+            args['reply_markup'] = reply_markup
 
         if isinstance(audio, str):
             data = await self._get('sendAudio', args)
@@ -188,7 +188,7 @@ class BotClient(object):
         if reply_to_message_id is not None:
             args['reply_to_message_id'] = reply_to_message_id
         if reply_markup is not None:
-            args['reply_markup'] = str(reply_markup)
+            args['reply_markup'] = reply_markup
 
         if isinstance(document, str):
             data = await self._get('sendDocument', args)
@@ -212,7 +212,7 @@ class BotClient(object):
         if reply_to_message_id is not None:
             args['reply_to_message_id'] = reply_to_message_id
         if reply_markup is not None:
-            args['reply_markup'] = str(reply_markup)
+            args['reply_markup'] = reply_markup
 
         if isinstance(sticker, str):
             data = await self._get('sendSticker', args)
@@ -246,7 +246,7 @@ class BotClient(object):
         if reply_to_message_id is not None:
             args['reply_to_message_id'] = reply_to_message_id
         if reply_markup is not None:
-            args['reply_markup'] = str(reply_markup)
+            args['reply_markup'] = reply_markup
 
         if isinstance(video, str):
             data = await self._get('sendVideo', args)
@@ -273,7 +273,7 @@ class BotClient(object):
         if disable_notification is not None:
             args['disable_notification'] = disable_notification
         if reply_markup is not None:
-            args['reply_markup'] = str(reply_markup)
+            args['reply_markup'] = reply_markup
 
         if isinstance(audio, str):
             data = await self._get('sendVoice', args)
@@ -297,7 +297,7 @@ class BotClient(object):
         if reply_to_message_id is not None:
             args['reply_to_message_id'] = reply_to_message_id
         if reply_markup is not None:
-            args['reply_markup'] = str(reply_markup)
+            args['reply_markup'] = reply_markup
 
         data = await self._get('sendLocation', args)
         return types.Message(data)
@@ -323,7 +323,7 @@ class BotClient(object):
         if reply_to_message_id is not None:
             args['reply_to_message_id'] = reply_to_message_id
         if reply_markup is not None:
-            args['reply_markup'] = str(reply_markup)
+            args['reply_markup'] = reply_markup
 
         data = await self._get('sendVenue', args)
         return types.Message(data)
@@ -346,7 +346,7 @@ class BotClient(object):
         if reply_to_message_id is not None:
             args['reply_to_message_id'] = reply_to_message_id
         if reply_markup is not None:
-            args['reply_markup'] = str(reply_markup)
+            args['reply_markup'] = reply_markup
 
         data = await self._get('sendContact', args)
         return types.Message(data)
@@ -641,6 +641,7 @@ class BotClient(object):
     async def _get(self, api_method, args=None):
         url = self._get_api_url(api_method)
         if args is not None:
+            args = util.normalize_args(args)
             url = thu.url_concat(url, args)
 
         link = thc.AsyncHTTPClient()
@@ -651,6 +652,7 @@ class BotClient(object):
 
     async def _post(self, api_method, args):
         url = self._get_api_url(api_method)
+        args = util.normalize_args(args)
         content_type, stream = util.generate_multipart_formdata(args.items())
 
         link = thc.AsyncHTTPClient()

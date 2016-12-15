@@ -56,6 +56,12 @@ def generate_multipart_formdata(fields):
     return content_type, stream
 
 
+def normalize_args(args):
+    PrimitiveTypes = (bool, int, float, str, list, dict, types.InputFile)
+    new_args = ((k, v if isinstance(v, PrimitiveTypes) else str(v)) for k, v in args.items())
+    return dict(new_args)
+
+
 def _append_bytes(l, value):
     l.append(_to_bytes(value))
 
