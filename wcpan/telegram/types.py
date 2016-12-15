@@ -923,6 +923,34 @@ class InlineQueryResultPhoto(InlineQueryResult):
             self._data['input_message_content'] = input_message_content
 
 
+class InlineQueryResultGif(InlineQueryResult):
+
+    def __init__(self, id_: int, gif_url: str, thumb_url: str,
+                 gif_width: int = None, gif_height: int = None,
+                 title: str = None, caption: str = None,
+                 reply_markup: InlineKeyboardMarkup = None,
+                 input_message_content: InputMessageContent = None) -> None:
+        super(InlineQueryResultGif, self).__init__('gif', id_)
+
+        self._data.update({
+            'gif_url': gif_url,
+            'thumb_url': thumb_url,
+        })
+
+        if gif_width is not None:
+            self._data['gif_width'] = gif_width
+        if gif_height is not None:
+            self._data['gif_height'] = gif_height
+        if title is not None:
+            self._data['title'] = title
+        if caption is not None:
+            self._data['caption'] = caption
+        if reply_markup is not None:
+            self._data['reply_markup'] = reply_markup
+        if input_message_content is not None:
+            self._data['input_message_content'] = input_message_content
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
