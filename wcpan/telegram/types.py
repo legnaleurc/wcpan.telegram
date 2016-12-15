@@ -839,7 +839,7 @@ class InlineQuery(object):
         return User(self._data['from'])
 
     @property
-    def location(self) -> Optinal[Location]:
+    def location(self) -> Optional[Location]:
         return _wrap_data(self._data, 'location', Location)
 
     @property
