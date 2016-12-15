@@ -951,6 +951,34 @@ class InlineQueryResultGif(InlineQueryResult):
             self._data['input_message_content'] = input_message_content
 
 
+class InlineQueryResultMpeg4Gif(InlineQueryResult):
+
+    def __init__(self, id_: int, mpeg4_url: str, thumb_url: str,
+                 mpeg4_width: int = None, mpeg4_height: int = None,
+                 title: str = None, caption: str = None,
+                 reply_markup: InlineKeyboardMarkup = None,
+                 input_message_content: InputMessageContent = None) -> None:
+        super(InlineQueryResultMpeg4Gif, self).__init__('mpeg4_gif', id_)
+
+        self._data.update({
+            'mpeg4_url': mpeg4_url,
+            'thumb_url': thumb_url,
+        })
+
+        if mpeg4_width is not None:
+            self._data['mpeg4_width'] = mpeg4_width
+        if mpeg4_height is not None:
+            self._data['mpeg4_height'] = mpeg4_height
+        if title is not None:
+            self._data['title'] = title
+        if caption is not None:
+            self._data['caption'] = caption
+        if reply_markup is not None:
+            self._data['reply_markup'] = reply_markup
+        if input_message_content is not None:
+            self._data['input_message_content'] = input_message_content
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
