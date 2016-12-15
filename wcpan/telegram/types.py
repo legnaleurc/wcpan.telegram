@@ -1259,6 +1259,23 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryResult):
         if input_message_content is not None:
             self._data['input_message_content'] = input_message_content
 
+
+class InlineQueryResultCachedSticker(InlineQueryResult):
+
+    def __init__(self, id_: int, sticker_file_id: str,
+                 reply_markup: InlineKeyboardMarkup = None,
+                 input_message_content: InputMessageContent = None) -> None:
+        super(InlineQueryResultCachedSticker, self).__init__('sticker', id_)
+
+        self._data.update({
+            'sticker_file_id': sticker_file_id,
+        })
+
+        if reply_markup is not None:
+            self._data['reply_markup'] = reply_markup
+        if input_message_content is not None:
+            self._data['input_message_content'] = input_message_content
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
