@@ -1387,6 +1387,17 @@ class InputTextMessageContent(InputMessageContent):
             self._data['disable_web_page_preview'] = disable_web_page_preview
 
 
+class InputLocationMessageContent(InputMessageContent):
+
+    def __init__(self, latitude: float, longitude: float) -> None:
+        super(InputLocationMessageContent, self).__init__()
+
+        self._data.update({
+            'latitude': latitude,
+            'longitude': longitude,
+        })
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
