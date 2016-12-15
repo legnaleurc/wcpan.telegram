@@ -610,6 +610,23 @@ class BotClient(object):
             return data
         return types.Message(data)
 
+    async def get_game_high_scores(self, user_id: int, chat_id: int = None,
+                             message_id: int = None,
+                             inline_message_id: str = None
+                             ) -> Awaitable[List[types.GameHighScore]]:
+        args = {
+            'user_id': user_id,
+        }
+        if chat_id is not None:
+            args['chat_id'] = chat_id
+        if message_id is not None:
+            args['message_id'] = message_id
+        if inline_message_id is not None:
+            args['inline_message_id'] = inline_message_id
+
+        data = await self._get('getGameHighScores', args)
+        return [types.GameHighScore(_) for _ in data]
+
     def _get_api_url(self, api_method):
         return _API_TEMPLATE.format(api_token=self._api_token,
                                     api_method=api_method)
