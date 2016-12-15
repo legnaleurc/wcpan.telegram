@@ -1415,6 +1415,21 @@ class InputVenueMessageContent(InputMessageContent):
             self._data['foursquare_id'] = foursquare_id
 
 
+class InputContactMessageContent(InputMessageContent):
+
+    def __init__(self, phone_number: str, first_name: str,
+                 last_name: str = None) -> None:
+        super(InputContactMessageContent, self).__init__()
+
+        self._data.update({
+            'phone_number': phone_number,
+            'first_name': first_name,
+        })
+
+        if last_name is not None:
+            self._data['last_name'] = last_name
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
