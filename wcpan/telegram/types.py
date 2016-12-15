@@ -1093,6 +1093,33 @@ class InlineQueryResultDocument(InlineQueryResult):
             self._data['thumb_height'] = thumb_height
 
 
+class InlineQueryResultLocation(InlineQueryResult):
+
+    def __init__(self, id_: int, latitude: float, longitude: float, title: str,
+                 reply_markup: InlineKeyboardMarkup = None,
+                 input_message_content: InputMessageContent = None,
+                 thumb_url: str = None, thumb_width: int = None,
+                 thumb_height: int = None) -> None:
+        super(InlineQueryResultLocation, self).__init__('location', id_)
+
+        self._data.update({
+            'latitude': latitude,
+            'longitude': longitude,
+            'title': title,
+        })
+
+        if reply_markup is not None:
+            self._data['reply_markup'] = reply_markup
+        if input_message_content is not None:
+            self._data['input_message_content'] = input_message_content
+        if thumb_url is not None:
+            self._data['thumb_url'] = thumb_url
+        if thumb_width is not None:
+            self._data['thumb_width'] = thumb_width
+        if thumb_height is not None:
+            self._data['thumb_height'] = thumb_height
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
