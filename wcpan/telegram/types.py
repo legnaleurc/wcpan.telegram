@@ -1217,6 +1217,27 @@ class InlineQueryResultCachedPhoto(InlineQueryResult):
         if input_message_content is not None:
             self._data['input_message_content'] = input_message_content
 
+
+class InlineQueryResultCachedGif(InlineQueryResult):
+
+    def __init__(self, id_: int, gif_file_id: str, title: str = None,
+                 caption: str = None, reply_markup: InlineKeyboardMarkup = None,
+                 input_message_content: InputMessageContent = None) -> None:
+        super(InlineQueryResultCachedGif, self).__init__('gif', id_)
+
+        self._data.update({
+            'gif_file_id': gif_file_id,
+        })
+
+        if title is not None:
+            self._data['title'] = title
+        if caption is not None:
+            self._data['caption'] = caption
+        if reply_markup is not None:
+            self._data['reply_markup'] = reply_markup
+        if input_message_content is not None:
+            self._data['input_message_content'] = input_message_content
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
