@@ -162,7 +162,7 @@ class Message(object):
 
     @property
     def chat(self) -> Chat:
-        return Chat(data['chat'])
+        return Chat(self._data['chat'])
 
     @property
     def forward_from(self) -> Optional[User]:
