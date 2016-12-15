@@ -1180,6 +1180,20 @@ class InlineQueryResultContact(InlineQueryResult):
             self._data['thumb_height'] = thumb_height
 
 
+class InlineQueryResultGame(InlineQueryResult):
+
+    def __init__(self, id_: int, game_short_name: str,
+                 reply_markup: InlineKeyboardMarkup = None) -> None:
+        super(InlineQueryResultGame, self).__init__('game', id_)
+
+        self._data.update({
+            'game_short_name': game_short_name,
+        })
+
+        if reply_markup is not None:
+            self._data['reply_markup'] = reply_markup
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
