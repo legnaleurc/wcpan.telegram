@@ -851,6 +851,18 @@ class InlineQuery(object):
         return self._data['offset']
 
 
+class InlineQueryResult(object):
+
+    def __init__(self, type_: str, id_: int):
+        self._data = {
+            'type': type_,
+            'id': id_,
+        }
+
+    def __str__(self) -> None:
+        return json.dumps(self._data)
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
