@@ -1531,6 +1531,27 @@ class CallbackGame(object):
     pass
 
 
+class GameHighScore(object):
+
+    def __init__(self, data: dict) -> None:
+        self._data = data
+
+    def __str__(self) -> str:
+        return json.dumps(self._data)
+
+    @property
+    def position(self) -> int:
+        return self._data['position']
+
+    @property
+    def user(self) -> User:
+        return User(self._data['user'])
+
+    @property
+    def score(self) -> int:
+        return self._data['score']
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
