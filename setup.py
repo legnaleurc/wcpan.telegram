@@ -1,6 +1,6 @@
 import os.path as op
 
-from setuptools import setup, find_packages
+from setuptools import setup
 
 
 with open(op.join(op.dirname(__file__), './README.rst')) as fin:
@@ -36,7 +36,9 @@ setup(
 
     keywords='telegram bot tornado',
 
-    packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
+    packages=[
+        'wcpan.telegram',
+    ],
 
     install_requires=['tornado >= 4'],
 )
