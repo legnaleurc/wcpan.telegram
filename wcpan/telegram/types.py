@@ -1323,6 +1323,26 @@ class InlineQueryResultCachedVideo(InlineQueryResult):
             self._data['input_message_content'] = input_message_content
 
 
+class InlineQueryResultCachedVoice(InlineQueryResult):
+
+    def __init__(self, id_: int, voice_file_id: str, title: str,
+                 caption: str = None, reply_markup: InlineKeyboardMarkup = None,
+                 input_message_content: InputMessageContent = None) -> None:
+        super(InlineQueryResultCachedVoice, self).__init__('voice', id_)
+
+        self._data.update({
+            'voice_file_id': voice_file_id,
+            'title': title,
+        })
+
+        if caption is not None:
+            self._data['caption'] = caption
+        if reply_markup is not None:
+            self._data['reply_markup'] = reply_markup
+        if input_message_content is not None:
+            self._data['input_message_content'] = input_message_content
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
