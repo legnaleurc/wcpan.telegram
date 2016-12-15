@@ -874,7 +874,7 @@ class InlineQueryResultArticle(InlineQueryResult):
         super(InlineQueryResultArticle, self).__init__('article', id_)
 
         self._data.update({
-            'input_message_content': str(input_message_content),
+            'input_message_content': input_message_content,
         })
 
         if reply_markup is not None:
@@ -891,6 +891,36 @@ class InlineQueryResultArticle(InlineQueryResult):
             self._data['thumb_width'] = thumb_width
         if thumb_height is not None:
             self._data['thumb_height'] = thumb_height
+
+
+class InlineQueryResultPhoto(InlineQueryResult):
+
+    def __init__(self, id_: int, photo_url: str, thumb_url: str,
+                 photo_width: int = None, photo_height: int = None,
+                 title: str = None, description: str = None,
+                 caption: str = None, reply_markup: InlineKeyboardMarkup = None,
+                 input_message_content: InputMessageContent = None):
+        super(InlineQueryResultPhoto, self).__init__('photo', id_)
+
+        self._data.update({
+            'photo_url': photo_url,
+            'thumb_url': thumb_url,
+        })
+
+        if photo_width is not None:
+            self._data['photo_width'] = photo_width
+        if photo_height is not None:
+            self._data['photo_height'] = photo_height
+        if title is not None:
+            self._data['title'] = title
+        if description is not None:
+            self._data['description'] = description
+        if caption is not None:
+            self._data['caption'] = caption
+        if reply_markup is not None:
+            self._data['reply_markup'] = reply_markup
+        if input_message_content is not None:
+            self._data['input_message_content'] = input_message_content
 
 
 def _wrap_data(data, key, type_=None):
