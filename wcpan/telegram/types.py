@@ -863,6 +863,36 @@ class InlineQueryResult(object):
         return json.dumps(self._data)
 
 
+class InlineQueryResultArticle(InlineQueryResult):
+
+    def __init__(self, id_: int, title: str,
+                 input_message_content: InputMessageContent,
+                 reply_markup: InlineKeyboardMarkup = None,
+                 url: str = None, hide_url: bool = None,
+                 description: str = None, thumb_url: str = None,
+                 thumb_width: int = None, thumb_height: int = None):
+        super(InlineQueryResultArticle, self).__init__('article', id_)
+
+        self._data.update({
+            'input_message_content': str(input_message_content),
+        })
+
+        if reply_markup is not None:
+            self._data['reply_markup'] = reply_markup
+        if url is not None:
+            self._data['url'] = url
+        if hide_url is not None:
+            self._data['hide_url'] = hide_url
+        if description is not None:
+            self._data['description'] = description
+        if thumb_url is not None:
+            self._data['thumb_url'] = thumb_url
+        if thumb_width is not None:
+            self._data['thumb_width'] = thumb_width
+        if thumb_height is not None:
+            self._data['thumb_height'] = thumb_height
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
