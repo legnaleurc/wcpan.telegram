@@ -1371,6 +1371,22 @@ class InputMessageContent(object):
         return json.dumps(self._data)
 
 
+class InputTextMessageContent(InputMessageContent):
+
+    def __init__(self, message_text: str, parse_mode: str = None,
+                 disable_web_page_preview: bool = None) -> None:
+        super(InputTextMessageContent, self).__init__()
+
+        self._data.update({
+            'message_text': message_text,
+        })
+
+        if parse_mode is not None:
+            self._data['parse_mode'] = parse_mode
+        if disable_web_page_preview is not None:
+            self._data['disable_web_page_preview'] = disable_web_page_preview
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
