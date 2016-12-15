@@ -1459,6 +1459,44 @@ class ChosenInlineResult(object):
         return self._data['query']
 
 
+class Game(object):
+
+    def __init__(self, data: dict) -> None:
+        self._data = data
+
+    def __str__(self) -> str:
+        return json.dumps(self._data)
+
+    @property
+    def title(self) -> str:
+        return self._data['title']
+
+    @property
+    def description(self) -> str:
+        return self._data['description']
+
+    @property
+    def photo(self) -> List[PhotoSize]:
+        data = self._data['photo']
+        data = [PhotoSize(_) for _ in data]
+
+    @property
+    def text(self) -> Optional[str]:
+        return _wrap_data(self._data, 'text')
+
+    @property
+    def text_entities(self) -> Optional[List[MessageEntity]]:
+        if 'text_entities' not in self._data:
+            return None
+        data = self._data['text_entities']
+        data = [MessageEntity(_) for _ in data]
+        return data
+
+    @property
+    def animation(self) -> Optional[Animation]:
+        return _wrap_data(self._data, 'animation', Animation)
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
