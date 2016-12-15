@@ -1497,6 +1497,35 @@ class Game(object):
         return _wrap_data(self._data, 'animation', Animation)
 
 
+class Animation(object):
+
+    def __init__(self, data: dict) -> None:
+        self._data = data
+
+    def __str__(self) -> str:
+        return json.dumps(self._data)
+
+    @property
+    def file_id(self) -> str:
+        return self._data['file_id']
+
+    @property
+    def thumb(self) -> Optional[PhotoSize]:
+        return _wrap_data(self._data, 'thumb', PhotoSize)
+
+    @property
+    def file_name(self) -> Optional[str]:
+        return _wrap_data(self._data, 'file_name')
+
+    @property
+    def mime_type(self) -> Optional[str]:
+        return _wrap_data(self._data, 'mime_type')
+
+    @property
+    def file_size(self) -> Optional[int]:
+        return _wrap_data(self._data, 'file_size')
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
