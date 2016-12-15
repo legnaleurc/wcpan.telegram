@@ -585,6 +585,31 @@ class BotClient(object):
         data = await self._get('sendGame', args)
         return types.Message(data)
 
+    async def set_game_score(self, user_id: int, score: int, force: bool = None,
+                             disable_edit_message: bool = None,
+                             chat_id: int = None, message_id: int = None,
+                             inline_message_id: str = None
+                             ) -> Awaitable[Union[types.Message, bool]]:
+        args = {
+            'user_id': user_id,
+            'score': score,
+        }
+        if force is not None:
+            args['force'] = force
+        if disable_edit_message is not None:
+            args['disable_edit_message'] = disable_edit_message
+        if chat_id is not None:
+            args['chat_id'] = chat_id
+        if message_id is not None:
+            args['message_id'] = message_id
+        if inline_message_id is not None:
+            args['inline_message_id'] = inline_message_id
+
+        data = await self._get('setGameScore', args)
+        if isinstance(data, bool):
+            return data
+        return types.Message(data)
+
     def _get_api_url(self, api_method):
         return _API_TEMPLATE.format(api_token=self._api_token,
                                     api_method=api_method)
