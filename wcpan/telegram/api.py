@@ -779,14 +779,15 @@ class _DispatcherMixin(object):
 
 class BotAgent(_DispatcherMixin):
 
-    def __init__(self, api_token):
+    def __init__(self, api_token: str) -> None:
         self._api = BotClient(api_token)
 
     @property
-    def client(self):
+    def client(self) -> BotClient:
         return self._api
 
-    async def get_updates(self, timeout=0):
+    async def get_updates(self,
+                          timeout: int = 0) -> Awaitable[List[types.Update]]:
         offset = 0
         updates = []
         while True:
@@ -797,53 +798,8 @@ class BotAgent(_DispatcherMixin):
             offset = us[-1].update_id + 1
         return updates
 
-    async def get_me(self):
-        return await self._api.get_me()
-
-    async def send_message(self, chat_id, text, disable_web_page_preview=None,
-                           reply_to_message_id=None, reply_markup=None):
-        return await self._api.send_message(chat_id, text,
-                                            disable_web_page_preview,
-                                            reply_to_message_id, reply_markup)
-
-    async def forward_message(self, chat_id, from_chat_id, message_id):
-        return await self._api.forward_message(chat_id, from_chat_id,
-                                               message_id)
-
-    async def send_photo(self, chat_id, photo, caption=None,
-                         reply_to_message_id=None, reply_markup=None):
-        return await self._api.send_photo(chat_id, photo, caption,
-                                          reply_to_message_id, reply_markup)
-
-    async def send_audio(self, chat_id, audio, reply_to_message_id=None,
-                         reply_markup=None):
-        return await self._api.send_audio(chat_id, audio, reply_to_message_id,
-                                          reply_markup)
-
-    async def send_document(self, chat_id, document, reply_to_message_id=None,
-                            reply_markup=None):
-        return await self._api.send_document(chat_id, document,
-                                             reply_to_message_id, reply_markup)
-
-    async def send_sticker(self, chat_id, sticker, reply_to_message_id=None,
-                           reply_markup=None):
-        return await self._api.send_sticker(chat_id, sticker,
-                                            reply_to_message_id, reply_markup)
-
-    async def send_video(self, chat_id, video, reply_to_message_id=None,
-                         reply_markup=None):
-        return await self._api.send_video(chat_id, video, reply_to_message_id,
-                                          reply_markup)
-
-    async def send_location(self, chat_id, latitude, longitude,
-                            reply_to_message_id=None, reply_markup=None):
-        return await self._api.send_location(chat_id, latitude, longitude,
-                                             reply_to_message_id, reply_markup)
-
-    async def send_chat_action(self, chat_id, action):
-        return await self._api.send_chat_action(chat_id, action)
-
-    async def get_user_profile_photos(self, user_id):
+    async def get_user_profile_photos(self, user_id: int
+                                      ) -> Awaitable[types.UserProfilePhotos]:
         offset = 0
         photos = []
         total = 0
@@ -860,9 +816,11 @@ class BotAgent(_DispatcherMixin):
             'photos': photos,
         })
 
-    async def poll(self, timeout=1):
+    async def poll(self, timeout: int) -> Awaitable[None]:
         # remove previous webhook first
-        await self._api.set_webhook()
+        ok = False
+        while not ok:
+            ok = await self._api.delete_webhook()
         # forever
         while True:
             try:
@@ -873,12 +831,11 @@ class BotAgent(_DispatcherMixin):
                 if e.code != 599:
                     raise
 
-    async def listen(self, hook_url):
+    async def listen(self, hook_url: str) -> Awaitable[None]:
         await self._api.set_webhook(url=hook_url)
 
     async def close(self):
-        # remove webhook
-        await self._api.set_webhook()
+        await self._api.delete_webhook()
 
 
 class BotHookHandler(tw.RequestHandler, _DispatcherMixin):
