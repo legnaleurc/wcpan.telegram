@@ -1064,7 +1064,7 @@ class InlineQueryResultVoice(InlineQueryResult):
 class InlineQueryResultDocument(InlineQueryResult):
 
     def __init__(self, id_: int, title: str, document_url: str, mime_type: str,
-                 caption: str = None, description: str = None
+                 caption: str = None, description: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: InputMessageContent = None,
                  thumb_url: str = None, thumb_width: int = None,
@@ -1275,6 +1275,30 @@ class InlineQueryResultCachedSticker(InlineQueryResult):
             self._data['reply_markup'] = reply_markup
         if input_message_content is not None:
             self._data['input_message_content'] = input_message_content
+
+
+class InlineQueryResultCachedDocument(InlineQueryResult):
+
+    def __init__(self, id_: int, title: str, document_file_id: str,
+                 description: str = None, caption: str = None,
+                 reply_markup: InlineKeyboardMarkup = None,
+                 input_message_content: InputMessageContent = None) -> None:
+        super(InlineQueryResultCachedDocument, self).__init__('document', id_)
+
+        self._data.update({
+            'title': title,
+            'document_file_id': document_file_id,
+        })
+
+        if description is not None:
+            self._data['description'] = description
+        if caption is not None:
+            self._data['caption'] = caption
+        if reply_markup is not None:
+            self._data['reply_markup'] = reply_markup
+        if input_message_content is not None:
+            self._data['input_message_content'] = input_message_content
+
 
 def _wrap_data(data, key, type_=None):
     if key not in data:
