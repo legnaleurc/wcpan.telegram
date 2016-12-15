@@ -1362,6 +1362,15 @@ class InlineQueryResultCachedAudio(InlineQueryResult):
             self._data['input_message_content'] = input_message_content
 
 
+class InputMessageContent(object):
+
+    def __init__(self) -> None:
+        self._data = {}
+
+    def __str__(self) -> None:
+        return json.dumps(self._data)
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
