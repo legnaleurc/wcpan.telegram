@@ -1300,6 +1300,29 @@ class InlineQueryResultCachedDocument(InlineQueryResult):
             self._data['input_message_content'] = input_message_content
 
 
+class InlineQueryResultCachedVideo(InlineQueryResult):
+
+    def __init__(self, id_: int, video_file_id: str, title: str,
+                 description: str = None, caption: str = None,
+                 reply_markup: InlineKeyboardMarkup = None,
+                 input_message_content: InputMessageContent = None) -> None:
+        super(InlineQueryResultCachedVideo, self).__init__('video', id_)
+
+        self._data.update({
+            'video_file_id': video_file_id,
+            'title': title,
+        })
+
+        if description is not None:
+            self._data['description'] = description
+        if caption is not None:
+            self._data['caption'] = caption
+        if reply_markup is not None:
+            self._data['reply_markup'] = reply_markup
+        if input_message_content is not None:
+            self._data['input_message_content'] = input_message_content
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
