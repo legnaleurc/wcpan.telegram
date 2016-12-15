@@ -979,6 +979,39 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
             self._data['input_message_content'] = input_message_content
 
 
+class InlineQueryResultVideo(InlineQueryResult):
+
+    def __init__(self, id_: int, video_url: str, mime_type: str, thumb_url: str,
+                 title: str, caption: str = None, video_width: int = None,
+                 video_height: int = None, video_duration: int = None,
+                 description: str = None,
+                 reply_markup: InlineKeyboardMarkup = None,
+                 input_message_content: InputMessageContent = None) -> None:
+        super(InlineQueryResultVideo, self).__init__('video', id_)
+
+        self._data.update({
+            'video_url': video_url,
+            'mime_type': mime_type,
+            'thumb_url': thumb_url,
+            'title': title,
+        })
+
+        if caption is not None:
+            self._data['caption'] = caption
+        if video_width is not None:
+            self._data['video_width'] = video_width
+        if video_height is not None:
+            self._data['video_height'] = video_height
+        if video_duration is not None:
+            self._data['video_duration'] = video_duration
+        if description is not None:
+            self._data['description'] = description
+        if reply_markup is not None:
+            self._data['reply_markup'] = reply_markup
+        if input_message_content is not None:
+            self._data['input_message_content'] = input_message_content
+
+
 def _wrap_data(data, key, type_=None):
     if key not in data:
         return None
