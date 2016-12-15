@@ -181,7 +181,7 @@ class Message(object):
         return self._data.get('forward_date', None)
 
     @property
-    def reply_to_message(self) -> Optional[Message]:
+    def reply_to_message(self) -> Optional['Message']:
         return _wrap_data(self._data, 'reply_to_message', Message)
 
     @property
@@ -293,7 +293,7 @@ class Message(object):
         return _wrap_data(self._data, 'migrate_from_chat_id')
 
     @property
-    def pinned_message(self) -> Optional[Message]:
+    def pinned_message(self) -> Optional['Message']:
         return _wrap_data(self._data, 'pinned_message', Message)
 
 
