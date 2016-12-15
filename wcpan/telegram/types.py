@@ -1,6 +1,6 @@
 import json
 import os.path as op
-from typing import Optional
+from typing import Optional, List
 
 
 class Update(object):
@@ -16,31 +16,31 @@ class Update(object):
         return self._data['update_id']
 
     @property
-    def message(self) -> Optional[Message]:
+    def message(self) -> Optional['Message']:
         return _wrap_data(self._data, 'message', Message)
 
     @property
-    def edited_message(self) -> Optional[Message]:
+    def edited_message(self) -> Optional['Message']:
         return _wrap_data(self._data, 'edited_message', Message)
 
     @property
-    def channel_post(self) -> Optional[Message]:
+    def channel_post(self) -> Optional['Message']:
         return _wrap_data(self._data, 'channel_post', Message)
 
     @property
-    def edited_channel_post(self) -> Optional[Message]:
+    def edited_channel_post(self) -> Optional['Message']:
         return _wrap_data(self._data, 'edited_channel_post', Message)
 
     @property
-    def inline_query(self) -> Optional[InlineQuery]:
+    def inline_query(self) -> Optional['InlineQuery']:
         return _wrap_data(self._data, 'inline_query', InlineQuery)
 
     @property
-    def chosen_inline_result(self) -> Optional[ChosenInlineResult]:
+    def chosen_inline_result(self) -> Optional['ChosenInlineResult']:
         return _wrap_data(self._data, 'chosen_inline_result', ChosenInlineResult)
 
     @property
-    def callback_query(self) -> Optional[CallbackQuery]:
+    def callback_query(self) -> Optional['CallbackQuery']:
         return _wrap_data(self._data, 'callback_query', CallbackQuery)
 
 
@@ -193,7 +193,7 @@ class Message(object):
         return self._data.get('text', None)
 
     @property
-    def entities(self) -> Optional[List[MessageEntity]]:
+    def entities(self) -> Optional[List['MessageEntity']]:
         if 'entities' not in self._data:
             return None
         data = self._data['entities']
@@ -201,19 +201,19 @@ class Message(object):
         return data
 
     @property
-    def audio(self) -> Optional[Audio]:
+    def audio(self) -> Optional['Audio']:
         return _wrap_data(self._data, 'audio', Audio)
 
     @property
-    def document(self) -> Optional[Document]:
+    def document(self) -> Optional['Document']:
         return _wrap_data(self._data, 'document', Document)
 
     @property
-    def game(self) -> Optional[Game]:
+    def game(self) -> Optional['Game']:
         return _wrap_data(self._data, 'game', Game)
 
     @property
-    def photo(self) -> Optional[List[PhotoSize]]:
+    def photo(self) -> Optional[List['PhotoSize']]:
         if 'photo' not in self._data:
             return None
         data = self._data['photo']
@@ -221,15 +221,15 @@ class Message(object):
         return data
 
     @property
-    def sticker(self) -> Optional[Sticker]:
+    def sticker(self) -> Optional['Sticker']:
         return _wrap_data(self._data, 'sticker', Sticker)
 
     @property
-    def video(self) -> Optional[Video]:
+    def video(self) -> Optional['Video']:
         return _wrap_data(self._data, 'video', Video)
 
     @property
-    def voice(self) -> Optional[Voice]:
+    def voice(self) -> Optional['Voice']:
         return _wrap_data(self._data, 'voice', Voice)
 
     @property
@@ -237,15 +237,15 @@ class Message(object):
         return _wrap_data(self._data, 'caption')
 
     @property
-    def contact(self) -> Optional[Contact]:
+    def contact(self) -> Optional['Contact']:
         return _wrap_data(self._data, 'contact', Contact)
 
     @property
-    def location(self) -> Optional[Location]:
+    def location(self) -> Optional['Location']:
         return _wrap_data(self._data, 'location', Location)
 
     @property
-    def venue(self) -> Optional[Venue]:
+    def venue(self) -> Optional['Venue']:
         return _wrap_data(self._data, 'venue', Venue)
 
     @property
@@ -261,7 +261,7 @@ class Message(object):
         return self._data.get('new_chat_title', None)
 
     @property
-    def new_chat_photo(self) -> Optional[List[PhotoSize]]:
+    def new_chat_photo(self) -> Optional[List['PhotoSize']]:
         if 'new_chat_photo' not in self._data:
             return None
         data = self._data['new_chat_photo']
@@ -866,7 +866,7 @@ class InlineQueryResult(object):
 class InlineQueryResultArticle(InlineQueryResult):
 
     def __init__(self, id_: int, title: str,
-                 input_message_content: InputMessageContent,
+                 input_message_content: 'InputMessageContent',
                  reply_markup: InlineKeyboardMarkup = None,
                  url: str = None, hide_url: bool = None,
                  description: str = None, thumb_url: str = None,
@@ -899,7 +899,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
                  photo_width: int = None, photo_height: int = None,
                  title: str = None, description: str = None,
                  caption: str = None, reply_markup: InlineKeyboardMarkup = None,
-                 input_message_content: InputMessageContent = None) -> None:
+                 input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultPhoto, self).__init__('photo', id_)
 
         self._data.update({
@@ -929,7 +929,7 @@ class InlineQueryResultGif(InlineQueryResult):
                  gif_width: int = None, gif_height: int = None,
                  title: str = None, caption: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
-                 input_message_content: InputMessageContent = None) -> None:
+                 input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultGif, self).__init__('gif', id_)
 
         self._data.update({
@@ -957,7 +957,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
                  mpeg4_width: int = None, mpeg4_height: int = None,
                  title: str = None, caption: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
-                 input_message_content: InputMessageContent = None) -> None:
+                 input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultMpeg4Gif, self).__init__('mpeg4_gif', id_)
 
         self._data.update({
@@ -986,7 +986,7 @@ class InlineQueryResultVideo(InlineQueryResult):
                  video_height: int = None, video_duration: int = None,
                  description: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
-                 input_message_content: InputMessageContent = None) -> None:
+                 input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultVideo, self).__init__('video', id_)
 
         self._data.update({
@@ -1018,7 +1018,7 @@ class InlineQueryResultAudio(InlineQueryResult):
                  caption: str = None, performer: str = None,
                  audio_duration: int = None,
                  reply_markup: InlineKeyboardMarkup = None,
-                 input_message_content: InputMessageContent = None) -> None:
+                 input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultAudio, self).__init__('audio', id_)
 
         self._data.update({
@@ -1043,7 +1043,7 @@ class InlineQueryResultVoice(InlineQueryResult):
     def __init__(self, id_: int, voice_url: str, title: str,
                  caption: str = None, voice_duration: int = None,
                  reply_markup: InlineKeyboardMarkup = None,
-                 input_message_content: InputMessageContent = None) -> None:
+                 input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultVoice, self).__init__('voice', id_)
 
         self._data.update({
@@ -1066,7 +1066,7 @@ class InlineQueryResultDocument(InlineQueryResult):
     def __init__(self, id_: int, title: str, document_url: str, mime_type: str,
                  caption: str = None, description: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
-                 input_message_content: InputMessageContent = None,
+                 input_message_content: 'InputMessageContent' = None,
                  thumb_url: str = None, thumb_width: int = None,
                  thumb_height: int = None) -> None:
         super(InlineQueryResultDocument, self).__init__('document', id_)
@@ -1097,7 +1097,7 @@ class InlineQueryResultLocation(InlineQueryResult):
 
     def __init__(self, id_: int, latitude: float, longitude: float, title: str,
                  reply_markup: InlineKeyboardMarkup = None,
-                 input_message_content: InputMessageContent = None,
+                 input_message_content: 'InputMessageContent' = None,
                  thumb_url: str = None, thumb_width: int = None,
                  thumb_height: int = None) -> None:
         super(InlineQueryResultLocation, self).__init__('location', id_)
@@ -1125,7 +1125,7 @@ class InlineQueryResultVenue(InlineQueryResult):
     def __init__(self, id_: int, latitude: float, longitude: float, title: str,
                  address: str, foursquare_id: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
-                 input_message_content: InputMessageContent = None,
+                 input_message_content: 'InputMessageContent' = None,
                  thumb_url: str = None, thumb_width: int = None,
                  thumb_height: int = None) -> None:
         super(InlineQueryResultVenue, self).__init__('venue', id_)
@@ -1156,7 +1156,7 @@ class InlineQueryResultContact(InlineQueryResult):
     def __init__(self, id_: int, phone_number: str, first_name: str,
                  last_name: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
-                 input_message_content: InputMessageContent = None,
+                 input_message_content: 'InputMessageContent' = None,
                  thumb_url: str = None, thumb_width: int = None,
                  thumb_height: int = None) -> None:
         super(InlineQueryResultContact, self).__init__('contact', id_)
@@ -1199,7 +1199,7 @@ class InlineQueryResultCachedPhoto(InlineQueryResult):
     def __init__(self, id_: int, photo_file_id: str, title: str = None,
                  description: str = None, caption: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
-                 input_message_content: InputMessageContent = None) -> None:
+                 input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultCachedPhoto, self).__init__('photo', id_)
 
         self._data.update({
@@ -1222,7 +1222,7 @@ class InlineQueryResultCachedGif(InlineQueryResult):
 
     def __init__(self, id_: int, gif_file_id: str, title: str = None,
                  caption: str = None, reply_markup: InlineKeyboardMarkup = None,
-                 input_message_content: InputMessageContent = None) -> None:
+                 input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultCachedGif, self).__init__('gif', id_)
 
         self._data.update({
@@ -1243,7 +1243,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryResult):
 
     def __init__(self, id_: int, mpeg4_file_id: str, title: str = None,
                  caption: str = None, reply_markup: InlineKeyboardMarkup = None,
-                 input_message_content: InputMessageContent = None) -> None:
+                 input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultCachedMpeg4Gif, self).__init__('mpeg4_gif', id_)
 
         self._data.update({
@@ -1264,7 +1264,7 @@ class InlineQueryResultCachedSticker(InlineQueryResult):
 
     def __init__(self, id_: int, sticker_file_id: str,
                  reply_markup: InlineKeyboardMarkup = None,
-                 input_message_content: InputMessageContent = None) -> None:
+                 input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultCachedSticker, self).__init__('sticker', id_)
 
         self._data.update({
@@ -1282,7 +1282,7 @@ class InlineQueryResultCachedDocument(InlineQueryResult):
     def __init__(self, id_: int, title: str, document_file_id: str,
                  description: str = None, caption: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
-                 input_message_content: InputMessageContent = None) -> None:
+                 input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultCachedDocument, self).__init__('document', id_)
 
         self._data.update({
@@ -1305,7 +1305,7 @@ class InlineQueryResultCachedVideo(InlineQueryResult):
     def __init__(self, id_: int, video_file_id: str, title: str,
                  description: str = None, caption: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
-                 input_message_content: InputMessageContent = None) -> None:
+                 input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultCachedVideo, self).__init__('video', id_)
 
         self._data.update({
@@ -1327,7 +1327,7 @@ class InlineQueryResultCachedVoice(InlineQueryResult):
 
     def __init__(self, id_: int, voice_file_id: str, title: str,
                  caption: str = None, reply_markup: InlineKeyboardMarkup = None,
-                 input_message_content: InputMessageContent = None) -> None:
+                 input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultCachedVoice, self).__init__('voice', id_)
 
         self._data.update({
@@ -1347,7 +1347,7 @@ class InlineQueryResultCachedAudio(InlineQueryResult):
 
     def __init__(self, id_: int, audio_file_id: str, caption: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
-                 input_message_content: InputMessageContent = None) -> None:
+                 input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultCachedAudio, self).__init__('audio', id_)
 
         self._data.update({
@@ -1493,7 +1493,7 @@ class Game(object):
         return data
 
     @property
-    def animation(self) -> Optional[Animation]:
+    def animation(self) -> Optional['Animation']:
         return _wrap_data(self._data, 'animation', Animation)
 
 
