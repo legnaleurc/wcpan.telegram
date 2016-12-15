@@ -853,7 +853,7 @@ class InlineQuery(object):
 
 class InlineQueryResult(object):
 
-    def __init__(self, type_: str, id_: int):
+    def __init__(self, type_: str, id_: int) -> None:
         self._data = {
             'type': type_,
             'id': id_,
@@ -870,7 +870,7 @@ class InlineQueryResultArticle(InlineQueryResult):
                  reply_markup: InlineKeyboardMarkup = None,
                  url: str = None, hide_url: bool = None,
                  description: str = None, thumb_url: str = None,
-                 thumb_width: int = None, thumb_height: int = None):
+                 thumb_width: int = None, thumb_height: int = None) -> None:
         super(InlineQueryResultArticle, self).__init__('article', id_)
 
         self._data.update({
@@ -899,7 +899,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
                  photo_width: int = None, photo_height: int = None,
                  title: str = None, description: str = None,
                  caption: str = None, reply_markup: InlineKeyboardMarkup = None,
-                 input_message_content: InputMessageContent = None):
+                 input_message_content: InputMessageContent = None) -> None:
         super(InlineQueryResultPhoto, self).__init__('photo', id_)
 
         self._data.update({
