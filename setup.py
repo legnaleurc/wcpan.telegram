@@ -1,4 +1,4 @@
-from os import path
+import os.path as op
 
 from setuptools import setup, find_packages
 
