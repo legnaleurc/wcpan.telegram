@@ -275,7 +275,7 @@ class BotClient(object):
         if reply_markup is not None:
             args['reply_markup'] = reply_markup
 
-        if isinstance(audio, str):
+        if isinstance(voice, str):
             data = await self._get('sendVoice', args)
         else:
             data = await self._post('sendVoice', args)
@@ -611,9 +611,9 @@ class BotClient(object):
         return types.Message(data)
 
     async def get_game_high_scores(self, user_id: int, chat_id: int = None,
-                             message_id: int = None,
-                             inline_message_id: str = None
-                             ) -> Awaitable[List[types.GameHighScore]]:
+                                   message_id: int = None,
+                                   inline_message_id: str = None
+                                   ) -> Awaitable[List[types.GameHighScore]]:
         args = {
             'user_id': user_id,
         }
@@ -631,7 +631,8 @@ class BotClient(object):
         return _API_TEMPLATE.format(api_token=self._api_token,
                                     api_method=api_method)
 
-    def _parse_response(self, response):
+    @staticmethod
+    def _parse_response(response):
         data = response.body.decode('utf-8')
         data = json.loads(data)
         if not data['ok']:
@@ -778,10 +779,23 @@ class _DispatcherMixin(object):
         else:
             raise BotError('unknown message type')
 
+    async def _receive_callback_query(self, callback_query: types.CallbackQuery) -> None:
+        if callback_query.data is not None:
+            await self.on_callback_data(callback_query)
+        elif callback_query.game_short_name is not None:
+            await self.on_game_short_name(callback_query)
+
+    async def on_callback_data(self, callback_query: types.CallbackQuery) -> None:
+        pass
+
+    async def on_game_short_name(self, callback_query: types.CallbackQuery) -> None:
+        pass
+
 
 class BotAgent(_DispatcherMixin):
 
-    def __init__(self, api_token: str) -> None:
+    def __init__(self, api_token: str, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
         self._api = BotClient(api_token)
 
     @property
@@ -793,7 +807,7 @@ class BotAgent(_DispatcherMixin):
         offset = 0
         updates = []
         while True:
-            us = await self._api.get_updates(offset, timeout=timeout)
+            us = await self._api.get_updates(offset, timeout=timeout)  # type: List[types.Update]
             updates.extend(us)
             if not us:
                 break
@@ -804,9 +818,8 @@ class BotAgent(_DispatcherMixin):
                                       ) -> Awaitable[types.UserProfilePhotos]:
         offset = 0
         photos = []
-        total = 0
         while True:
-            ps = await self._api.get_user_profile_photos(user_id, offset)
+            ps = await self._api.get_user_profile_photos(user_id, offset)  # type: types.UserProfilePhotos
             total = ps.total_count
             photos.extend(ps.photos)
             if not ps:
@@ -846,10 +859,11 @@ class BotHookHandler(tw.RequestHandler, _DispatcherMixin):
         data = self.request.body
         data = data.decode('utf-8')
         data = json.loads(data)
-        if 'message' not in data:
-            return
         update = types.Update(data)
-        await self._receive_message(update.message)
+        if update.message is not None:
+            await self._receive_message(update.message)
+        elif update.callback_query is not None:
+            await self._receive_callback_query(update.callback_query)
 
 
 class BotError(Exception):

@@ -45,7 +45,6 @@ class Update(object):
 
 
 class WebhookInfo(object):
-
     def __init__(self, data) -> None:
         self._data = data
 
@@ -584,6 +583,9 @@ class UserProfilePhotos(object):
     def __str__(self) -> str:
         return json.dumps(self._data)
 
+    def __getitem__(self, item):
+        return self._photos[item]
+
     @property
     def total_count(self) -> int:
         return self._data['total_count']
@@ -796,7 +798,6 @@ class InputFile(object):
 
     @property
     def name(self):
-        import os.path as op
         return op.basename(self._file_path)
 
     @property
@@ -1478,7 +1479,7 @@ class Game(object):
     @property
     def photo(self) -> List[PhotoSize]:
         data = self._data['photo']
-        data = [PhotoSize(_) for _ in data]
+        return [PhotoSize(_) for _ in data]
 
     @property
     def text(self) -> Optional[str]:
