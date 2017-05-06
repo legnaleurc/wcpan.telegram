@@ -45,7 +45,8 @@ class Update(object):
 
 
 class WebhookInfo(object):
-    def __init__(self, data) -> None:
+
+    def __init__(self, data: dict) -> None:
         self._data = data
 
     @property
@@ -298,7 +299,7 @@ class Message(object):
 
 class MessageEntity(object):
 
-    def __init__(self, data) -> None:
+    def __init__(self, data: dict) -> None:
         self._data = data
 
     def __repr__(self) -> str:
