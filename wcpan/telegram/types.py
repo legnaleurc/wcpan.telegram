@@ -864,7 +864,7 @@ class InlineQuery(object):
 
 class InlineQueryResult(object):
 
-    def __init__(self, type_: str, id_: int) -> None:
+    def __init__(self, type_: str, id_: str) -> None:
         self._data = {
             'type': type_,
             'id': id_,
@@ -876,7 +876,7 @@ class InlineQueryResult(object):
 
 class InlineQueryResultArticle(InlineQueryResult):
 
-    def __init__(self, id_: int, title: str,
+    def __init__(self, id_: str, title: str,
                  input_message_content: 'InputMessageContent',
                  reply_markup: InlineKeyboardMarkup = None,
                  url: str = None, hide_url: bool = None,
@@ -907,7 +907,7 @@ class InlineQueryResultArticle(InlineQueryResult):
 
 class InlineQueryResultPhoto(InlineQueryResult):
 
-    def __init__(self, id_: int, photo_url: str, thumb_url: str,
+    def __init__(self, id_: str, photo_url: str, thumb_url: str,
                  photo_width: int = None, photo_height: int = None,
                  title: str = None, description: str = None,
                  caption: str = None, reply_markup: InlineKeyboardMarkup = None,
@@ -937,7 +937,7 @@ class InlineQueryResultPhoto(InlineQueryResult):
 
 class InlineQueryResultGif(InlineQueryResult):
 
-    def __init__(self, id_: int, gif_url: str, thumb_url: str,
+    def __init__(self, id_: str, gif_url: str, thumb_url: str,
                  gif_width: int = None, gif_height: int = None,
                  title: str = None, caption: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
@@ -965,7 +965,7 @@ class InlineQueryResultGif(InlineQueryResult):
 
 class InlineQueryResultMpeg4Gif(InlineQueryResult):
 
-    def __init__(self, id_: int, mpeg4_url: str, thumb_url: str,
+    def __init__(self, id_: str, mpeg4_url: str, thumb_url: str,
                  mpeg4_width: int = None, mpeg4_height: int = None,
                  title: str = None, caption: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
@@ -993,7 +993,7 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
 
 class InlineQueryResultVideo(InlineQueryResult):
 
-    def __init__(self, id_: int, video_url: str, mime_type: str, thumb_url: str,
+    def __init__(self, id_: str, video_url: str, mime_type: str, thumb_url: str,
                  title: str, caption: str = None, video_width: int = None,
                  video_height: int = None, video_duration: int = None,
                  description: str = None,
@@ -1026,7 +1026,7 @@ class InlineQueryResultVideo(InlineQueryResult):
 
 class InlineQueryResultAudio(InlineQueryResult):
 
-    def __init__(self, id_: int, audio_url: str, title: str,
+    def __init__(self, id_: str, audio_url: str, title: str,
                  caption: str = None, performer: str = None,
                  audio_duration: int = None,
                  reply_markup: InlineKeyboardMarkup = None,
@@ -1052,7 +1052,7 @@ class InlineQueryResultAudio(InlineQueryResult):
 
 class InlineQueryResultVoice(InlineQueryResult):
 
-    def __init__(self, id_: int, voice_url: str, title: str,
+    def __init__(self, id_: str, voice_url: str, title: str,
                  caption: str = None, voice_duration: int = None,
                  reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None) -> None:
@@ -1075,7 +1075,7 @@ class InlineQueryResultVoice(InlineQueryResult):
 
 class InlineQueryResultDocument(InlineQueryResult):
 
-    def __init__(self, id_: int, title: str, document_url: str, mime_type: str,
+    def __init__(self, id_: str, title: str, document_url: str, mime_type: str,
                  caption: str = None, description: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None,
@@ -1107,7 +1107,7 @@ class InlineQueryResultDocument(InlineQueryResult):
 
 class InlineQueryResultLocation(InlineQueryResult):
 
-    def __init__(self, id_: int, latitude: float, longitude: float, title: str,
+    def __init__(self, id_: str, latitude: float, longitude: float, title: str,
                  reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None,
                  thumb_url: str = None, thumb_width: int = None,
@@ -1134,7 +1134,7 @@ class InlineQueryResultLocation(InlineQueryResult):
 
 class InlineQueryResultVenue(InlineQueryResult):
 
-    def __init__(self, id_: int, latitude: float, longitude: float, title: str,
+    def __init__(self, id_: str, latitude: float, longitude: float, title: str,
                  address: str, foursquare_id: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None,
@@ -1165,7 +1165,7 @@ class InlineQueryResultVenue(InlineQueryResult):
 
 class InlineQueryResultContact(InlineQueryResult):
 
-    def __init__(self, id_: int, phone_number: str, first_name: str,
+    def __init__(self, id_: str, phone_number: str, first_name: str,
                  last_name: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None,
@@ -1194,7 +1194,7 @@ class InlineQueryResultContact(InlineQueryResult):
 
 class InlineQueryResultGame(InlineQueryResult):
 
-    def __init__(self, id_: int, game_short_name: str,
+    def __init__(self, id_: str, game_short_name: str,
                  reply_markup: InlineKeyboardMarkup = None) -> None:
         super(InlineQueryResultGame, self).__init__('game', id_)
 
@@ -1208,7 +1208,7 @@ class InlineQueryResultGame(InlineQueryResult):
 
 class InlineQueryResultCachedPhoto(InlineQueryResult):
 
-    def __init__(self, id_: int, photo_file_id: str, title: str = None,
+    def __init__(self, id_: str, photo_file_id: str, title: str = None,
                  description: str = None, caption: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None) -> None:
@@ -1232,7 +1232,7 @@ class InlineQueryResultCachedPhoto(InlineQueryResult):
 
 class InlineQueryResultCachedGif(InlineQueryResult):
 
-    def __init__(self, id_: int, gif_file_id: str, title: str = None,
+    def __init__(self, id_: str, gif_file_id: str, title: str = None,
                  caption: str = None, reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultCachedGif, self).__init__('gif', id_)
@@ -1253,7 +1253,7 @@ class InlineQueryResultCachedGif(InlineQueryResult):
 
 class InlineQueryResultCachedMpeg4Gif(InlineQueryResult):
 
-    def __init__(self, id_: int, mpeg4_file_id: str, title: str = None,
+    def __init__(self, id_: str, mpeg4_file_id: str, title: str = None,
                  caption: str = None, reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultCachedMpeg4Gif, self).__init__('mpeg4_gif', id_)
@@ -1274,7 +1274,7 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryResult):
 
 class InlineQueryResultCachedSticker(InlineQueryResult):
 
-    def __init__(self, id_: int, sticker_file_id: str,
+    def __init__(self, id_: str, sticker_file_id: str,
                  reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultCachedSticker, self).__init__('sticker', id_)
@@ -1291,7 +1291,7 @@ class InlineQueryResultCachedSticker(InlineQueryResult):
 
 class InlineQueryResultCachedDocument(InlineQueryResult):
 
-    def __init__(self, id_: int, title: str, document_file_id: str,
+    def __init__(self, id_: str, title: str, document_file_id: str,
                  description: str = None, caption: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None) -> None:
@@ -1314,7 +1314,7 @@ class InlineQueryResultCachedDocument(InlineQueryResult):
 
 class InlineQueryResultCachedVideo(InlineQueryResult):
 
-    def __init__(self, id_: int, video_file_id: str, title: str,
+    def __init__(self, id_: str, video_file_id: str, title: str,
                  description: str = None, caption: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None) -> None:
@@ -1337,7 +1337,7 @@ class InlineQueryResultCachedVideo(InlineQueryResult):
 
 class InlineQueryResultCachedVoice(InlineQueryResult):
 
-    def __init__(self, id_: int, voice_file_id: str, title: str,
+    def __init__(self, id_: str, voice_file_id: str, title: str,
                  caption: str = None, reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultCachedVoice, self).__init__('voice', id_)
@@ -1357,7 +1357,7 @@ class InlineQueryResultCachedVoice(InlineQueryResult):
 
 class InlineQueryResultCachedAudio(InlineQueryResult):
 
-    def __init__(self, id_: int, audio_file_id: str, caption: str = None,
+    def __init__(self, id_: str, audio_file_id: str, caption: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultCachedAudio, self).__init__('audio', id_)
