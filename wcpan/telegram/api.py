@@ -567,7 +567,7 @@ class BotClient(object):
         if switch_pm_parameter is not None:
             args['switch_pm_parameter'] = switch_pm_parameter
 
-        data = await self._get('answerInlineQuery', args)
+        data = await self._post('answerInlineQuery', args)
         return data
 
     async def send_game(self, chat_id: int, game_short_name: str,
