@@ -795,6 +795,12 @@ class _DispatcherMixin(object):
     async def on_game_short_name(self, callback_query: types.CallbackQuery) -> None:
         pass
 
+    async def _receive_inline_query(self, inline_query: types.InlineQuery) -> None:
+        await self.on_inline_query(inline_query)
+
+    async def on_inline_query(self, inline_query: types.InlineQuery) -> None:
+        pass
+
 
 class BotAgent(_DispatcherMixin):
 
@@ -843,9 +849,14 @@ class BotAgent(_DispatcherMixin):
         # forever
         while True:
             try:
-                updates = await self.get_updates(timeout)
-                for u in updates:
-                    await self._receive_message(u.message)
+                updates = await self.get_updates(timeout)  # type: List[types.Update]
+                for update in updates:
+                    if update.message is not None:
+                        await self._receive_message(update.message)
+                    elif update.callback_query is not None:
+                        await self._receive_callback_query(update.callback_query)
+                    elif update.inline_query is not None:
+                        await self._receive_inline_query(update.inline_query)
             except thc.HTTPError as e:
                 if e.code != 599:
                     raise
@@ -868,6 +879,8 @@ class BotHookHandler(tw.RequestHandler, _DispatcherMixin):
             await self._receive_message(update.message)
         elif update.callback_query is not None:
             await self._receive_callback_query(update.callback_query)
+        elif update.inline_query is not None:
+            await self._receive_inline_query(update.inline_query)
 
 
 class BotError(Exception):
