@@ -150,6 +150,8 @@ class BotClient(object):
             'chat_id': chat_id,
             'audio': audio,
         }
+        if reply_to_message_id is not None:
+            args['reply_to_message_id'] = reply_to_message_id
         if caption is not None:
             args['caption'] = caption
         if duration is not None:
@@ -266,6 +268,8 @@ class BotClient(object):
             'chat_id': chat_id,
             'voice': voice,
         }
+        if reply_to_message_id is not None:
+            args['reply_to_message_id'] = reply_to_message_id
         if caption is not None:
             args['caption'] = caption
         if duration is not None:
