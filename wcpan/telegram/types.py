@@ -623,7 +623,7 @@ class ReplyKeyboardMarkup(object):
                  resize_keyboard: bool = None, one_time_keyboard: bool = None,
                  selective: bool = None) -> None:
         data = {
-            'keyboard': [[button.serialize() for button in row] for row in keyboard],
+            'keyboard': [[button.to_dict() for button in row] for row in keyboard],
         }
         if resize_keyboard is not None:
             data['resize_keyboard'] = resize_keyboard
@@ -654,7 +654,7 @@ class KeyboardButton(object):
     def __repr__(self) -> str:
         return json.dumps(self._data)
 
-    def serialize(self):
+    def to_dict(self):
         return self._data
 
 
@@ -677,14 +677,14 @@ class InlineKeyboardMarkup(object):
     def __init__(self, inline_keyboard: List[List['InlineKeyboardButton']]
                  ) -> None:
         data = {
-            'inline_keyboard': [[button.serialize() for button in row] for row in inline_keyboard],
+            'inline_keyboard': [[button.to_dict() for button in row] for row in inline_keyboard],
         }
         self._data = data
 
     def __repr__(self) -> str:
         return json.dumps(self._data)
 
-    def serialize(self):
+    def to_dict(self):
         return self._data
 
 
@@ -712,7 +712,7 @@ class InlineKeyboardButton(object):
     def __repr__(self) -> str:
         return json.dumps(self._data)
 
-    def serialize(self):
+    def to_dict(self):
         return self._data
 
 
@@ -886,11 +886,11 @@ class InlineQueryResultArticle(InlineQueryResult):
 
         self._data.update({
             'title': title,
-            'input_message_content': input_message_content.serialize(),
+            'input_message_content': input_message_content.to_dict(),
         })
 
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup.serialize()
+            self._data['reply_markup'] = reply_markup.to_dict()
         if url is not None:
             self._data['url'] = url
         if hide_url is not None:
@@ -930,9 +930,9 @@ class InlineQueryResultPhoto(InlineQueryResult):
         if caption is not None:
             self._data['caption'] = caption
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup.serialize()
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content.serialize()
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultGif(InlineQueryResult):
@@ -958,9 +958,9 @@ class InlineQueryResultGif(InlineQueryResult):
         if caption is not None:
             self._data['caption'] = caption
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup.serialize()
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content.serialize()
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultMpeg4Gif(InlineQueryResult):
@@ -986,9 +986,9 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         if caption is not None:
             self._data['caption'] = caption
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup.serialize()
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content.serialize()
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultVideo(InlineQueryResult):
@@ -1019,9 +1019,9 @@ class InlineQueryResultVideo(InlineQueryResult):
         if description is not None:
             self._data['description'] = description
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup.serialize()
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content.serialize()
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultAudio(InlineQueryResult):
@@ -1045,9 +1045,9 @@ class InlineQueryResultAudio(InlineQueryResult):
         if audio_duration is not None:
             self._data['audio_duration'] = audio_duration
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup.serialize()
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content.serialize()
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultVoice(InlineQueryResult):
@@ -1068,9 +1068,9 @@ class InlineQueryResultVoice(InlineQueryResult):
         if voice_duration is not None:
             self._data['voice_duration'] = voice_duration
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup.serialize()
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content.serialize()
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultDocument(InlineQueryResult):
@@ -1094,9 +1094,9 @@ class InlineQueryResultDocument(InlineQueryResult):
         if description is not None:
             self._data['description'] = description
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup.serialize()
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content.serialize()
+            self._data['input_message_content'] = input_message_content.to_dict()
         if thumb_url is not None:
             self._data['thumb_url'] = thumb_url
         if thumb_width is not None:
@@ -1121,9 +1121,9 @@ class InlineQueryResultLocation(InlineQueryResult):
         })
 
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup.serialize()
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content.serialize()
+            self._data['input_message_content'] = input_message_content.to_dict()
         if thumb_url is not None:
             self._data['thumb_url'] = thumb_url
         if thumb_width is not None:
@@ -1152,9 +1152,9 @@ class InlineQueryResultVenue(InlineQueryResult):
         if foursquare_id is not None:
             self._data['foursquare_id'] = foursquare_id
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup.serialize()
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content.serialize()
+            self._data['input_message_content'] = input_message_content.to_dict()
         if thumb_url is not None:
             self._data['thumb_url'] = thumb_url
         if thumb_width is not None:
@@ -1181,9 +1181,9 @@ class InlineQueryResultContact(InlineQueryResult):
         if last_name is not None:
             self._data['last_name'] = last_name
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup.serialize()
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content.serialize()
+            self._data['input_message_content'] = input_message_content.to_dict()
         if thumb_url is not None:
             self._data['thumb_url'] = thumb_url
         if thumb_width is not None:
@@ -1203,7 +1203,7 @@ class InlineQueryResultGame(InlineQueryResult):
         })
 
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup.serialize()
+            self._data['reply_markup'] = reply_markup.to_dict()
 
 
 class InlineQueryResultCachedPhoto(InlineQueryResult):
@@ -1225,9 +1225,9 @@ class InlineQueryResultCachedPhoto(InlineQueryResult):
         if caption is not None:
             self._data['caption'] = caption
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup.serialize()
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content.serialize()
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultCachedGif(InlineQueryResult):
@@ -1246,9 +1246,9 @@ class InlineQueryResultCachedGif(InlineQueryResult):
         if caption is not None:
             self._data['caption'] = caption
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup.serialize()
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content.serialize()
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultCachedMpeg4Gif(InlineQueryResult):
@@ -1267,9 +1267,9 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryResult):
         if caption is not None:
             self._data['caption'] = caption
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup.serialize()
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content.serialize()
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultCachedSticker(InlineQueryResult):
@@ -1284,9 +1284,9 @@ class InlineQueryResultCachedSticker(InlineQueryResult):
         })
 
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup.serialize()
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content.serialize()
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultCachedDocument(InlineQueryResult):
@@ -1307,9 +1307,9 @@ class InlineQueryResultCachedDocument(InlineQueryResult):
         if caption is not None:
             self._data['caption'] = caption
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup.serialize()
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content.serialize()
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultCachedVideo(InlineQueryResult):
@@ -1330,9 +1330,9 @@ class InlineQueryResultCachedVideo(InlineQueryResult):
         if caption is not None:
             self._data['caption'] = caption
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup.serialize()
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content.serialize()
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultCachedVoice(InlineQueryResult):
@@ -1350,9 +1350,9 @@ class InlineQueryResultCachedVoice(InlineQueryResult):
         if caption is not None:
             self._data['caption'] = caption
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup.serialize()
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content.serialize()
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultCachedAudio(InlineQueryResult):
@@ -1369,9 +1369,9 @@ class InlineQueryResultCachedAudio(InlineQueryResult):
         if caption is not None:
             self._data['caption'] = caption
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup.serialize()
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content.serialize()
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InputMessageContent(object):
@@ -1382,7 +1382,7 @@ class InputMessageContent(object):
     def __repr__(self) -> str:
         return json.dumps(self._data)
 
-    def serialize(self):
+    def to_dict(self):
         return self._data
 
 
