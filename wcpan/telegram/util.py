@@ -58,8 +58,7 @@ def generate_multipart_formdata(fields):
 
 def normalize_args(args):
     primitive_types = (bool, int, float, str, types.InputFile)
-    new_args = ((k, v if isinstance(v, primitive_types) else repr(v)) for k, v in args.items())
-    return dict(new_args)
+    return {k: v if isinstance(v, primitive_types) else repr(v) for k, v in args.items()}
 
 
 def _append_bytes(l, value):
