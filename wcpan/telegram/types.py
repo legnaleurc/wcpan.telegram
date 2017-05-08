@@ -8,7 +8,7 @@ class Update(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -45,7 +45,8 @@ class Update(object):
 
 
 class WebhookInfo(object):
-    def __init__(self, data) -> None:
+
+    def __init__(self, data: dict) -> None:
         self._data = data
 
     @property
@@ -82,7 +83,7 @@ class User(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -107,7 +108,7 @@ class Chat(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -144,7 +145,7 @@ class Message(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -298,10 +299,10 @@ class Message(object):
 
 class MessageEntity(object):
 
-    def __init__(self, data) -> None:
+    def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -330,7 +331,7 @@ class PhotoSize(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -355,7 +356,7 @@ class Audio(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -388,7 +389,7 @@ class Document(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -417,7 +418,7 @@ class Sticker(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -450,7 +451,7 @@ class Video(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -487,7 +488,7 @@ class Voice(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -512,7 +513,7 @@ class Contact(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -537,7 +538,7 @@ class Location(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -554,7 +555,7 @@ class Venue(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -580,7 +581,7 @@ class UserProfilePhotos(object):
         self._data = data
         self._photos = [[PhotoSize(ps) for ps in pss] for pss in data['photos']]
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     def __getitem__(self, item):
@@ -600,7 +601,7 @@ class File(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -622,7 +623,7 @@ class ReplyKeyboardMarkup(object):
                  resize_keyboard: bool = None, one_time_keyboard: bool = None,
                  selective: bool = None) -> None:
         data = {
-            'keyboard': keyboard,
+            'keyboard': [[button.to_dict() for button in row] for row in keyboard],
         }
         if resize_keyboard is not None:
             data['resize_keyboard'] = resize_keyboard
@@ -632,7 +633,7 @@ class ReplyKeyboardMarkup(object):
             data['selective'] = selective
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
 
@@ -650,8 +651,11 @@ class KeyboardButton(object):
             data['request_location'] = request_location
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
+
+    def to_dict(self):
+        return self._data
 
 
 class ReplyKeyboardRemove(object):
@@ -664,7 +668,7 @@ class ReplyKeyboardRemove(object):
             data['selective'] = selective
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
 
@@ -673,12 +677,15 @@ class InlineKeyboardMarkup(object):
     def __init__(self, inline_keyboard: List[List['InlineKeyboardButton']]
                  ) -> None:
         data = {
-            'inline_keyboard': inline_keyboard,
+            'inline_keyboard': [[button.to_dict() for button in row] for row in inline_keyboard],
         }
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
+
+    def to_dict(self):
+        return self._data
 
 
 class InlineKeyboardButton(object):
@@ -702,8 +709,11 @@ class InlineKeyboardButton(object):
             data['callback_game'] = callback_game
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
+
+    def to_dict(self):
+        return self._data
 
 
 class CallbackQuery(object):
@@ -711,7 +721,7 @@ class CallbackQuery(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -753,7 +763,7 @@ class ForceReply(object):
             data['selective'] = selective
         self._data = data
 
-    def __str__(self) -> None:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
 
@@ -762,7 +772,7 @@ class ChatMember(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -779,7 +789,7 @@ class ResponseParameters(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -828,7 +838,7 @@ class InlineQuery(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -854,19 +864,19 @@ class InlineQuery(object):
 
 class InlineQueryResult(object):
 
-    def __init__(self, type_: str, id_: int) -> None:
+    def __init__(self, type_: str, id_: str) -> None:
         self._data = {
             'type': type_,
             'id': id_,
         }
 
-    def __str__(self) -> None:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
 
 class InlineQueryResultArticle(InlineQueryResult):
 
-    def __init__(self, id_: int, title: str,
+    def __init__(self, id_: str, title: str,
                  input_message_content: 'InputMessageContent',
                  reply_markup: InlineKeyboardMarkup = None,
                  url: str = None, hide_url: bool = None,
@@ -875,11 +885,12 @@ class InlineQueryResultArticle(InlineQueryResult):
         super(InlineQueryResultArticle, self).__init__('article', id_)
 
         self._data.update({
-            'input_message_content': input_message_content,
+            'title': title,
+            'input_message_content': input_message_content.to_dict(),
         })
 
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup
+            self._data['reply_markup'] = reply_markup.to_dict()
         if url is not None:
             self._data['url'] = url
         if hide_url is not None:
@@ -896,7 +907,7 @@ class InlineQueryResultArticle(InlineQueryResult):
 
 class InlineQueryResultPhoto(InlineQueryResult):
 
-    def __init__(self, id_: int, photo_url: str, thumb_url: str,
+    def __init__(self, id_: str, photo_url: str, thumb_url: str,
                  photo_width: int = None, photo_height: int = None,
                  title: str = None, description: str = None,
                  caption: str = None, reply_markup: InlineKeyboardMarkup = None,
@@ -919,14 +930,14 @@ class InlineQueryResultPhoto(InlineQueryResult):
         if caption is not None:
             self._data['caption'] = caption
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultGif(InlineQueryResult):
 
-    def __init__(self, id_: int, gif_url: str, thumb_url: str,
+    def __init__(self, id_: str, gif_url: str, thumb_url: str,
                  gif_width: int = None, gif_height: int = None,
                  title: str = None, caption: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
@@ -947,14 +958,14 @@ class InlineQueryResultGif(InlineQueryResult):
         if caption is not None:
             self._data['caption'] = caption
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultMpeg4Gif(InlineQueryResult):
 
-    def __init__(self, id_: int, mpeg4_url: str, thumb_url: str,
+    def __init__(self, id_: str, mpeg4_url: str, thumb_url: str,
                  mpeg4_width: int = None, mpeg4_height: int = None,
                  title: str = None, caption: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
@@ -975,14 +986,14 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
         if caption is not None:
             self._data['caption'] = caption
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultVideo(InlineQueryResult):
 
-    def __init__(self, id_: int, video_url: str, mime_type: str, thumb_url: str,
+    def __init__(self, id_: str, video_url: str, mime_type: str, thumb_url: str,
                  title: str, caption: str = None, video_width: int = None,
                  video_height: int = None, video_duration: int = None,
                  description: str = None,
@@ -1008,14 +1019,14 @@ class InlineQueryResultVideo(InlineQueryResult):
         if description is not None:
             self._data['description'] = description
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultAudio(InlineQueryResult):
 
-    def __init__(self, id_: int, audio_url: str, title: str,
+    def __init__(self, id_: str, audio_url: str, title: str,
                  caption: str = None, performer: str = None,
                  audio_duration: int = None,
                  reply_markup: InlineKeyboardMarkup = None,
@@ -1034,14 +1045,14 @@ class InlineQueryResultAudio(InlineQueryResult):
         if audio_duration is not None:
             self._data['audio_duration'] = audio_duration
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultVoice(InlineQueryResult):
 
-    def __init__(self, id_: int, voice_url: str, title: str,
+    def __init__(self, id_: str, voice_url: str, title: str,
                  caption: str = None, voice_duration: int = None,
                  reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None) -> None:
@@ -1057,14 +1068,14 @@ class InlineQueryResultVoice(InlineQueryResult):
         if voice_duration is not None:
             self._data['voice_duration'] = voice_duration
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultDocument(InlineQueryResult):
 
-    def __init__(self, id_: int, title: str, document_url: str, mime_type: str,
+    def __init__(self, id_: str, title: str, document_url: str, mime_type: str,
                  caption: str = None, description: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None,
@@ -1083,9 +1094,9 @@ class InlineQueryResultDocument(InlineQueryResult):
         if description is not None:
             self._data['description'] = description
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content
+            self._data['input_message_content'] = input_message_content.to_dict()
         if thumb_url is not None:
             self._data['thumb_url'] = thumb_url
         if thumb_width is not None:
@@ -1096,7 +1107,7 @@ class InlineQueryResultDocument(InlineQueryResult):
 
 class InlineQueryResultLocation(InlineQueryResult):
 
-    def __init__(self, id_: int, latitude: float, longitude: float, title: str,
+    def __init__(self, id_: str, latitude: float, longitude: float, title: str,
                  reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None,
                  thumb_url: str = None, thumb_width: int = None,
@@ -1110,9 +1121,9 @@ class InlineQueryResultLocation(InlineQueryResult):
         })
 
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content
+            self._data['input_message_content'] = input_message_content.to_dict()
         if thumb_url is not None:
             self._data['thumb_url'] = thumb_url
         if thumb_width is not None:
@@ -1123,7 +1134,7 @@ class InlineQueryResultLocation(InlineQueryResult):
 
 class InlineQueryResultVenue(InlineQueryResult):
 
-    def __init__(self, id_: int, latitude: float, longitude: float, title: str,
+    def __init__(self, id_: str, latitude: float, longitude: float, title: str,
                  address: str, foursquare_id: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None,
@@ -1141,9 +1152,9 @@ class InlineQueryResultVenue(InlineQueryResult):
         if foursquare_id is not None:
             self._data['foursquare_id'] = foursquare_id
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content
+            self._data['input_message_content'] = input_message_content.to_dict()
         if thumb_url is not None:
             self._data['thumb_url'] = thumb_url
         if thumb_width is not None:
@@ -1154,7 +1165,7 @@ class InlineQueryResultVenue(InlineQueryResult):
 
 class InlineQueryResultContact(InlineQueryResult):
 
-    def __init__(self, id_: int, phone_number: str, first_name: str,
+    def __init__(self, id_: str, phone_number: str, first_name: str,
                  last_name: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None,
@@ -1170,9 +1181,9 @@ class InlineQueryResultContact(InlineQueryResult):
         if last_name is not None:
             self._data['last_name'] = last_name
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content
+            self._data['input_message_content'] = input_message_content.to_dict()
         if thumb_url is not None:
             self._data['thumb_url'] = thumb_url
         if thumb_width is not None:
@@ -1183,7 +1194,7 @@ class InlineQueryResultContact(InlineQueryResult):
 
 class InlineQueryResultGame(InlineQueryResult):
 
-    def __init__(self, id_: int, game_short_name: str,
+    def __init__(self, id_: str, game_short_name: str,
                  reply_markup: InlineKeyboardMarkup = None) -> None:
         super(InlineQueryResultGame, self).__init__('game', id_)
 
@@ -1192,12 +1203,12 @@ class InlineQueryResultGame(InlineQueryResult):
         })
 
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup
+            self._data['reply_markup'] = reply_markup.to_dict()
 
 
 class InlineQueryResultCachedPhoto(InlineQueryResult):
 
-    def __init__(self, id_: int, photo_file_id: str, title: str = None,
+    def __init__(self, id_: str, photo_file_id: str, title: str = None,
                  description: str = None, caption: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None) -> None:
@@ -1214,14 +1225,14 @@ class InlineQueryResultCachedPhoto(InlineQueryResult):
         if caption is not None:
             self._data['caption'] = caption
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultCachedGif(InlineQueryResult):
 
-    def __init__(self, id_: int, gif_file_id: str, title: str = None,
+    def __init__(self, id_: str, gif_file_id: str, title: str = None,
                  caption: str = None, reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultCachedGif, self).__init__('gif', id_)
@@ -1235,14 +1246,14 @@ class InlineQueryResultCachedGif(InlineQueryResult):
         if caption is not None:
             self._data['caption'] = caption
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultCachedMpeg4Gif(InlineQueryResult):
 
-    def __init__(self, id_: int, mpeg4_file_id: str, title: str = None,
+    def __init__(self, id_: str, mpeg4_file_id: str, title: str = None,
                  caption: str = None, reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultCachedMpeg4Gif, self).__init__('mpeg4_gif', id_)
@@ -1256,14 +1267,14 @@ class InlineQueryResultCachedMpeg4Gif(InlineQueryResult):
         if caption is not None:
             self._data['caption'] = caption
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultCachedSticker(InlineQueryResult):
 
-    def __init__(self, id_: int, sticker_file_id: str,
+    def __init__(self, id_: str, sticker_file_id: str,
                  reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultCachedSticker, self).__init__('sticker', id_)
@@ -1273,14 +1284,14 @@ class InlineQueryResultCachedSticker(InlineQueryResult):
         })
 
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultCachedDocument(InlineQueryResult):
 
-    def __init__(self, id_: int, title: str, document_file_id: str,
+    def __init__(self, id_: str, title: str, document_file_id: str,
                  description: str = None, caption: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None) -> None:
@@ -1296,14 +1307,14 @@ class InlineQueryResultCachedDocument(InlineQueryResult):
         if caption is not None:
             self._data['caption'] = caption
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultCachedVideo(InlineQueryResult):
 
-    def __init__(self, id_: int, video_file_id: str, title: str,
+    def __init__(self, id_: str, video_file_id: str, title: str,
                  description: str = None, caption: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None) -> None:
@@ -1319,14 +1330,14 @@ class InlineQueryResultCachedVideo(InlineQueryResult):
         if caption is not None:
             self._data['caption'] = caption
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultCachedVoice(InlineQueryResult):
 
-    def __init__(self, id_: int, voice_file_id: str, title: str,
+    def __init__(self, id_: str, voice_file_id: str, title: str,
                  caption: str = None, reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultCachedVoice, self).__init__('voice', id_)
@@ -1339,14 +1350,14 @@ class InlineQueryResultCachedVoice(InlineQueryResult):
         if caption is not None:
             self._data['caption'] = caption
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InlineQueryResultCachedAudio(InlineQueryResult):
 
-    def __init__(self, id_: int, audio_file_id: str, caption: str = None,
+    def __init__(self, id_: str, audio_file_id: str, caption: str = None,
                  reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultCachedAudio, self).__init__('audio', id_)
@@ -1358,9 +1369,9 @@ class InlineQueryResultCachedAudio(InlineQueryResult):
         if caption is not None:
             self._data['caption'] = caption
         if reply_markup is not None:
-            self._data['reply_markup'] = reply_markup
+            self._data['reply_markup'] = reply_markup.to_dict()
         if input_message_content is not None:
-            self._data['input_message_content'] = input_message_content
+            self._data['input_message_content'] = input_message_content.to_dict()
 
 
 class InputMessageContent(object):
@@ -1368,8 +1379,11 @@ class InputMessageContent(object):
     def __init__(self) -> None:
         self._data = {}
 
-    def __str__(self) -> None:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
+
+    def to_dict(self):
+        return self._data
 
 
 class InputTextMessageContent(InputMessageContent):
@@ -1436,7 +1450,7 @@ class ChosenInlineResult(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> None:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -1465,7 +1479,7 @@ class Game(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -1503,7 +1517,7 @@ class Animation(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
@@ -1537,7 +1551,7 @@ class GameHighScore(object):
     def __init__(self, data: dict) -> None:
         self._data = data
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return json.dumps(self._data)
 
     @property
