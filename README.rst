@@ -79,15 +79,15 @@ Implemented Functions
     - [ ] deleteMessage
 - Stickers
     - [x] Sticker
-    - [ ] StickerSet
-    - [ ] MaskPosition
+    - [x] StickerSet
+    - [x] MaskPosition
     - [x] sendSticker
-    - [ ] getStickerSet
-    - [ ] uploadStickerSet
-    - [ ] createNewStickerSet
-    - [ ] addStickerToSet
-    - [ ] setStickerPositionInSet
-    - [ ] deleteStickerFromSet
+    - [x] getStickerSet
+    - [x] uploadStickerSet
+    - [x] createNewStickerSet
+    - [x] addStickerToSet
+    - [x] setStickerPositionInSet
+    - [x] deleteStickerFromSet
 - Inline Mode
     - [x] InlineQuery
     - [x] answerInlineQuery
