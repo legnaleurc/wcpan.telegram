@@ -199,30 +199,6 @@ class BotClient(object):
 
         return types.Message(data)
 
-    async def send_sticker(self, chat_id: Union[int, str],
-                           sticker: Union[types.InputFile, str],
-                           disable_notification: bool = None,
-                           reply_to_message_id: int = None,
-                           reply_markup: ReplyMarkup = None
-                           ) -> Awaitable[types.Message]:
-        args = {
-            'chat_id': chat_id,
-            'sticker': sticker,
-        }
-        if disable_notification is not None:
-            args['disable_notification'] = disable_notification
-        if reply_to_message_id is not None:
-            args['reply_to_message_id'] = reply_to_message_id
-        if reply_markup is not None:
-            args['reply_markup'] = reply_markup
-
-        if isinstance(sticker, str):
-            data = await self._get('sendSticker', args)
-        else:
-            data = await self._post('sendSticker', args)
-
-        return types.Message(data)
-
     async def send_video(self, chat_id: Union[int, str],
                          video: Union[types.InputFile, str],
                          duration: int = None, width: int = None,
@@ -543,6 +519,108 @@ class BotClient(object):
         if isinstance(data, bool):
             return data
         return types.Message(data)
+
+    async def send_sticker(self, chat_id: Union[int, str],
+                           sticker: Union[types.InputFile, str],
+                           disable_notification: bool = None,
+                           reply_to_message_id: int = None,
+                           reply_markup: ReplyMarkup = None
+                           ) -> Awaitable[types.Message]:
+        args = {
+            'chat_id': chat_id,
+            'sticker': sticker,
+        }
+        if disable_notification is not None:
+            args['disable_notification'] = disable_notification
+        if reply_to_message_id is not None:
+            args['reply_to_message_id'] = reply_to_message_id
+        if reply_markup is not None:
+            args['reply_markup'] = reply_markup
+
+        if isinstance(sticker, str):
+            data = await self._get('sendSticker', args)
+        else:
+            data = await self._post('sendSticker', args)
+
+        return types.Message(data)
+
+    async def get_sticker_set(self, name: str) -> Awaitable[types.StickerSet]:
+        args = {
+            'name': name,
+        }
+        data = await self._get('getStickerSet', args)
+        return types.StickerSet(data)
+
+    async def upload_sticker_file(self, user_id: int,
+                                  png_sticker: types.InputFile
+                                  ) -> Awaitable[types.File]:
+        args = {
+            'user_id': user_id,
+            'png_sticker': png_sticker,
+        }
+        data = await self._post('uploadStickerFile', args)
+        return types.File(data)
+
+    async def create_new_sticker_set(self, user_id: int, name: str, title: str,
+                                     png_sticker: Union[types.InputFile, str],
+                                     emojis: str, contains_masks: bool = None,
+                                     mask_position: types.MaskPosition = None
+                                     ) -> Awaitable[bool]:
+        args = {
+            'user_id': user_id,
+            'name': name,
+            'title': title,
+            'png_sticker': png_sticker,
+            'emojis': emojis,
+        }
+        if contains_masks is not None:
+            args['contains_masks'] = contains_masks
+        if mask_position is not None:
+            args['mask_position'] = mask_position
+
+        if isinstance(png_sticker, str):
+            data = await self._get('createNewStickerSet', args)
+        else:
+            data = await self._post('createNewStickerSet', args)
+
+        return data
+
+    async def add_sticker_to_set(self, user_id: int, name: str,
+                                     png_sticker: Union[types.InputFile, str],
+                                     emojis: str,
+                                     mask_position: types.MaskPosition = None
+                                     ) -> Awaitable[types.Message]:
+        args = {
+            'user_id': user_id,
+            'name': name,
+            'png_sticker': png_sticker,
+            'emojis': emojis,
+        }
+        if mask_position is not None:
+            args['mask_position'] = mask_position
+
+        if isinstance(png_sticker, str):
+            data = await self._get('addStickerToSet', args)
+        else:
+            data = await self._post('addStickerToSet', args)
+
+        return data
+
+    async def set_sticker_position_in_set(self, sticker: str,
+                                          position: int) -> Awaitable[bool]:
+        args = {
+            'sticker': sticker,
+            'position': position,
+        }
+        data = await self._get('setStickerPositionInSet', args)
+        return data
+
+    async def delete_sticker_from_set(self, sticker: str) -> Awaitable[bool]:
+        args = {
+            'sticker': sticker,
+        }
+        data = await self._get('deleteStickerFromSet', args)
+        return data
 
     async def answer_inline_query(self, inline_query_id: str,
                                   results: List[types.InlineQueryResult],
