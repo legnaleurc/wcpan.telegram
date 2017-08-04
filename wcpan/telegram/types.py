@@ -413,39 +413,6 @@ class Document(object):
         return self._data.get('file_size', None)
 
 
-class Sticker(object):
-
-    def __init__(self, data: dict) -> None:
-        self._data = data
-
-    def __repr__(self) -> str:
-        return json.dumps(self._data)
-
-    @property
-    def file_id(self) -> str:
-        return self._data['file_id']
-
-    @property
-    def width(self) -> int:
-        return self._data['width']
-
-    @property
-    def height(self) -> int:
-        return self._data['height']
-
-    @property
-    def thumb(self) -> Optional[PhotoSize]:
-        return _wrap_data(self._data, 'thumb', PhotoSize)
-
-    @property
-    def emoji(self) -> Optional[str]:
-        return _wrap_data(self._data, 'emoji')
-
-    @property
-    def file_size(self) -> Optional[int]:
-        return self._data.get('file_size', None)
-
-
 class Video(object):
 
     def __init__(self, data: dict) -> None:
@@ -831,6 +798,95 @@ class InputFile(object):
                 if not chunk:
                     break
                 yield chunk
+
+
+class Sticker(object):
+
+    def __init__(self, data: dict) -> None:
+        self._data = data
+
+    def __repr__(self) -> str:
+        return json.dumps(self._data)
+
+    @property
+    def file_id(self) -> str:
+        return self._data['file_id']
+
+    @property
+    def width(self) -> int:
+        return self._data['width']
+
+    @property
+    def height(self) -> int:
+        return self._data['height']
+
+    @property
+    def thumb(self) -> Optional[PhotoSize]:
+        return _wrap_data(self._data, 'thumb', PhotoSize)
+
+    @property
+    def emoji(self) -> Optional[str]:
+        return _wrap_data(self._data, 'emoji')
+
+    @property
+    def set_name(self) -> Optional[str]:
+        return _wrap_data(self._data, 'set_name')
+
+    @property
+    def mask_position(self) -> Optional['MaskPosition']:
+        return _wrap_data(self._data, 'mask_position', MaskPosition)
+
+    @property
+    def file_size(self) -> Optional[int]:
+        return self._data.get('file_size', None)
+
+
+class StickerSet(object):
+
+    def __init__(self, data):
+        self._data = data
+        self._stickers = [Sticker(_) for _ in data['stickers']]
+
+    def __repr__(self) -> str:
+        return json.dumps(self._data)
+
+    @property
+    def name(self) -> str:
+        return self._data['name']
+
+    @property
+    def title(self) -> str:
+        return self._data['title']
+
+    @property
+    def contains_masks(self) -> bool:
+        return self._data['contains_masks']
+
+    @property
+    def stickers(self) -> List[Sticker]:
+        return self._stickers
+
+
+class MaskPosition(object):
+
+    def __init__(self, data):
+        self._data = data
+
+    @property
+    def point(self) -> str:
+        return self._data['point']
+
+    @property
+    def x_shift(self) -> float:
+        return self._data['x_shift']
+
+    @property
+    def y_shift(self) -> float:
+        return self._data['y_shift']
+
+    @property
+    def scale(self) -> float:
+        return self._data['scale']
 
 
 class InlineQuery(object):
