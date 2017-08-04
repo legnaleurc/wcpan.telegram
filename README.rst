@@ -3,6 +3,142 @@ wcpan.telegram
 
 Telegram Bot API with Tornado.
 
+Implemented Functions
+---------------------
+
+- Getting Updates
+    - [x] Update
+    - [x] getUpdates
+    - [x] setWebhook
+    - [x] deleteWebhook
+    - [x] getWebhookInfo
+    - [x] WebhookInfo
+- Available Types
+    - [x] User
+    - [x] Chat
+    - [x] Message
+    - [x] MessageEntity
+    - [x] PhotoSize
+    - [x] Audio
+    - [x] Document
+    - [x] Video
+    - [x] Voice
+    - [ ] VideoNote
+    - [x] Contact
+    - [x] Location
+    - [x] Venue
+    - [x] UserProfilePhotos
+    - [x] ReplyKeyboardMarkup
+    - [x] KeyboardButton
+    - [x] ReplyKeyboardRemove
+    - [x] InlineKeyboardMarkup
+    - [x] InlineKeyboardButton
+    - [x] CallbackQuery
+    - [x] ForceReply
+    - [ ] ChatPhoto
+    - [x] ChatMember
+    - [x] ResponseParameters
+    - [x] InputFile
+- Available Methods
+    - [x] getMe
+    - [x] sendMessage
+    - [x] forwardMessage
+    - [x] sendPhoto
+    - [x] sendAudio
+    - [x] sendDocument
+    - [x] sendVideo
+    - [x] sendVoice
+    - [ ] sendVoiceNote
+    - [x] sendLocation
+    - [x] sendVenue
+    - [x] sendContact
+    - [x] sendChatAction
+    - [x] getUserProfilePhotos
+    - [x] getFile
+    - [x] kickChatMember
+    - [x] unbanChatMember
+    - [ ] restrictChatMember
+    - [ ] promoteChatMember
+    - [ ] exportChatInviteLink
+    - [ ] setChatPhoto
+    - [ ] deleteChatPhoto
+    - [ ] setChatTitle
+    - [ ] setChatDescription
+    - [ ] pinChatMessage
+    - [ ] unpinChatMessage
+    - [x] leaveChat
+    - [x] getChat
+    - [x] getChatAdministrators
+    - [x] getChatMembersCount
+    - [x] getChatMember
+    - [x] answerCallbackQuery
+- Updating Messages
+    - [x] editMessageText
+    - [x] editMessageCaption
+    - [x] editMessageReplyMarkup
+    - [ ] deleteMessage
+- Stickers
+    - [x] Sticker
+    - [ ] StickerSet
+    - [ ] MaskPosition
+    - [x] sendSticker
+    - [ ] getStickerSet
+    - [ ] uploadStickerSet
+    - [ ] createNewStickerSet
+    - [ ] addStickerToSet
+    - [ ] setStickerPositionInSet
+    - [ ] deleteStickerFromSet
+- Inline Mode
+    - [x] InlineQuery
+    - [x] answerInlineQuery
+    - [x] InlineQueryResult
+    - [x] InlineQueryResultArticle
+    - [x] InlineQueryResultPhoto
+    - [x] InlineQueryResultGif
+    - [x] InlineQueryResultMpeg4Gif
+    - [x] InlineQueryResultVideo
+    - [x] InlineQueryResultAudio
+    - [x] InlineQueryResultVoice
+    - [x] InlineQueryResultDocument
+    - [x] InlineQueryResultLocation
+    - [x] InlineQueryResultVenue
+    - [x] InlineQueryResultContact
+    - [x] InlineQueryResultGame
+    - [x] InlineQueryResultCachedPhoto
+    - [x] InlineQueryResultCachedGif
+    - [x] InlineQueryResultCachedMpeg4Gif
+    - [x] InlineQueryResultCachedSticker
+    - [x] InlineQueryResultCachedDocument
+    - [x] InlineQueryResultCachedVideo
+    - [x] InlineQueryResultCachedVoice
+    - [x] InlineQueryResultCachedAudio
+    - [x] InputMessageContent
+    - [x] InputTextMessageContent
+    - [x] InputLocationMessageContent
+    - [x] InputVenueMessageContent
+    - [x] InputContactMessageContent
+    - [x] ChosenInlineResult
+- Payments
+    - [ ] sendInvoice
+    - [ ] answerShippingQuery
+    - [ ] answerPreCheckoutQuery
+    - [ ] LabeledPrice
+    - [ ] Invoice
+    - [ ] ShippingAddress
+    - [ ] OrderInfo
+    - [ ] ShippingOption
+    - [ ] SuccessfulPayment
+    - [ ] ShippingQuery
+    - [ ] PreCheckoutQuery
+- Games
+    - [x] sendGame
+    - [x] Game
+    - [x] Animation
+    - [x] CallbackGame
+    - [x] setGameScore
+    - [x] getGameHighScores
+    - [x] GameHighScore
+
 High Level API Example
 ----------------------
 
