@@ -262,6 +262,35 @@ class BotClient(object):
 
         return types.Message(data)
 
+    async def send_video_note(self, chat_id: Union[int, str],
+                              video_note: Union[types.InputFile, str],
+                              duration: int = None, length: int = None,
+                              disable_notification: bool = None,
+                              reply_to_message_id: int = None,
+                              reply_markup: ReplyMarkup = None
+                              ) -> Awaitable[types.Message]:
+        args = {
+            'chat_id': chat_id,
+            'video_note': video_note,
+        }
+        if duration is not None:
+            args['duration'] = duration
+        if length is not None:
+            args['length'] = length
+        if disable_notification is not None:
+            args['disable_notification'] = disable_notification
+        if reply_to_message_id is not None:
+            args['reply_to_message_id'] = reply_to_message_id
+        if reply_markup is not None:
+            args['reply_markup'] = reply_markup
+
+        if isinstance(video_note, str):
+            data = await self._get('sendVideoNote', args)
+        else:
+            data = await self._post('sendVideoNote', args)
+
+        return types.Message(data)
+
     async def send_location(self, chat_id: Union[int, str], latitude: float,
                             longitude: float, disable_notification: bool = None,
                             reply_to_message_id: int = None,
@@ -776,6 +805,9 @@ class _DispatcherMixin(object):
     async def on_voice(self, message: types.Message) -> None:
         pass
 
+    async def on_video_note(self, message: types.Message) -> None:
+        pass
+
     async def on_caption(self, message: types.Message) -> None:
         pass
 
@@ -832,6 +864,8 @@ class _DispatcherMixin(object):
             await self.on_video(message)
         elif message.voice is not None:
             await self.on_voice(message)
+        elif message.video_note is not None:
+            await self.on_video_note(message)
         elif message.caption is not None:
             await self.on_caption(message)
         elif message.contact is not None:

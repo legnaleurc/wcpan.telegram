@@ -233,6 +233,10 @@ class Message(object):
         return _wrap_data(self._data, 'voice', Voice)
 
     @property
+    def video_note(self) -> Optional['VideoNote']:
+        return _wrap_data(self._data, 'video_note', VideoNote)
+
+    @property
     def caption(self) -> Optional[str]:
         return _wrap_data(self._data, 'caption')
 
@@ -473,6 +477,35 @@ class Voice(object):
     @property
     def file_size(self) -> Optional[int]:
         return _wrap_data(self._data, 'file_size')
+
+
+class VideoNote(object):
+
+    def __init__(self, data: dict) -> None:
+        self._data = data
+
+    def __repr__(self) -> str:
+        return json.dumps(self._data)
+
+    @property
+    def file_id(self) -> str:
+        return self._data['file_id']
+
+    @property
+    def length(self) -> int:
+        return self._data['length']
+
+    @property
+    def duration(self) -> int:
+        return self._data['duration']
+
+    @property
+    def thumb(self) -> Optional[PhotoSize]:
+        return _wrap_data(self._data, 'thumb', PhotoSize)
+
+    @property
+    def file_size(self) -> Optional[int]:
+        return self._data.get('file_size', None)
 
 
 class Contact(object):
