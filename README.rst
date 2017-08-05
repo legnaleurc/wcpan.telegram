@@ -23,7 +23,7 @@ Implemented Functions
     - [x] Document
     - [x] Video
     - [x] Voice
-    - [ ] VideoNote
+    - [x] VideoNote
     - [x] Contact
     - [x] Location
     - [x] Venue
@@ -48,7 +48,7 @@ Implemented Functions
     - [x] sendDocument
     - [x] sendVideo
     - [x] sendVoice
-    - [ ] sendVoiceNote
+    - [x] sendVoiceNote
     - [x] sendLocation
     - [x] sendVenue
     - [x] sendContact
@@ -76,7 +76,7 @@ Implemented Functions
     - [x] editMessageText
     - [x] editMessageCaption
     - [x] editMessageReplyMarkup
-    - [ ] deleteMessage
+    - [x] deleteMessage
 - Stickers
     - [x] Sticker
     - [x] StickerSet
