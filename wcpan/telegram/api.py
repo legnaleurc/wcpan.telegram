@@ -549,6 +549,15 @@ class BotClient(object):
             return data
         return types.Message(data)
 
+    async def delete_message(self, chat_id: Union[int, str],
+                             message_id: int) -> Awaitable[bool]:
+        args = {
+            'chat_id': chat_id,
+            'message_id': message_id,
+        }
+        data = await self._get('deleteMessage', args)
+        return data
+
     async def send_sticker(self, chat_id: Union[int, str],
                            sticker: Union[types.InputFile, str],
                            disable_notification: bool = None,
