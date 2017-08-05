@@ -257,8 +257,8 @@ class Message(object):
         return _wrap_data(self._data, 'venue', Venue)
 
     @property
-    def new_chat_member(self) -> Optional[User]:
-        return _wrap_data(self._data, 'new_chat_member', User)
+    def new_chat_members(self) -> Optional[User]:
+        return _wrap_data(self._data, 'new_chat_members', User)
 
     @property
     def left_chat_member(self) -> Optional[User]:
@@ -1032,8 +1032,8 @@ class InlineQueryResultGif(InlineQueryResult):
 
     def __init__(self, id_: str, gif_url: str, thumb_url: str,
                  gif_width: int = None, gif_height: int = None,
-                 title: str = None, caption: str = None,
-                 reply_markup: InlineKeyboardMarkup = None,
+                 gif_duration: int = None, title: str = None,
+                 caption: str = None, reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultGif, self).__init__('gif', id_)
 
@@ -1046,6 +1046,8 @@ class InlineQueryResultGif(InlineQueryResult):
             self._data['gif_width'] = gif_width
         if gif_height is not None:
             self._data['gif_height'] = gif_height
+        if gif_duration is not None:
+            self._data['gif_duration'] = gif_duration
         if title is not None:
             self._data['title'] = title
         if caption is not None:
@@ -1060,8 +1062,8 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
 
     def __init__(self, id_: str, mpeg4_url: str, thumb_url: str,
                  mpeg4_width: int = None, mpeg4_height: int = None,
-                 title: str = None, caption: str = None,
-                 reply_markup: InlineKeyboardMarkup = None,
+                 mpeg4_duration: int = None, title: str = None,
+                 caption: str = None, reply_markup: InlineKeyboardMarkup = None,
                  input_message_content: 'InputMessageContent' = None) -> None:
         super(InlineQueryResultMpeg4Gif, self).__init__('mpeg4_gif', id_)
 
@@ -1074,6 +1076,8 @@ class InlineQueryResultMpeg4Gif(InlineQueryResult):
             self._data['mpeg4_width'] = mpeg4_width
         if mpeg4_height is not None:
             self._data['mpeg4_height'] = mpeg4_height
+        if mpeg4_duration is not None:
+            self._data['mpeg4_duration'] = mpeg4_duration
         if title is not None:
             self._data['title'] = title
         if caption is not None:
