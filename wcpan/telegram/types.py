@@ -102,6 +102,10 @@ class User(object):
     def username(self) -> Optional[str]:
         return self._data.get('username', None)
 
+    @property
+    def language_code(self) -> Optional[str]:
+        return self._data.get('language_code', None)
+
 
 class Chat(object):
 
