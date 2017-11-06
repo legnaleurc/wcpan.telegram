@@ -547,11 +547,11 @@ class Location(object):
 
     @property
     def longitude(self) -> float:
-        return self._data['phone_number']
+        return self._data['longitude']
 
     @property
     def latitude(self) -> float:
-        return self._data['first_name']
+        return self._data['latitude']
 
 
 class Venue(object):
