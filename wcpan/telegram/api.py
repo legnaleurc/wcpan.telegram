@@ -829,7 +829,7 @@ class _DispatcherMixin(object):
     async def on_venue(self, message: types.Message) -> None:
         pass
 
-    async def on_new_chat_member(self, message: types.Message) -> None:
+    async def on_new_chat_members(self, message: types.Message) -> None:
         pass
 
     async def on_left_chat_member(self, message: types.Message) -> None:
@@ -883,8 +883,8 @@ class _DispatcherMixin(object):
             await self.on_location(message)
         elif message.venue is not None:
             await self.on_venue(message)
-        elif message.new_chat_member is not None:
-            await self.on_new_chat_member(message)
+        elif message.new_chat_members is not None:
+            await self.on_new_chat_members(message)
         elif message.left_chat_member is not None:
             await self.on_left_chat_member(message)
         elif message.new_chat_title is not None:
