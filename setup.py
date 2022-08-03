@@ -10,7 +10,7 @@ with open(op.join(op.dirname(__file__), './README.rst')) as fin:
 setup(
     name='wcpan.telegram',
 
-    version='0.3.0.dev6',
+    version='0.3.0.dev7',
 
     description='Telegram Bot API with Tornado',
     long_description=long_description,
